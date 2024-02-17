@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Application Models
+// Types: https://www.prisma.io/docs/orm/reference/prisma-schema-reference#decimal
+model Product {
+  id              Int @id @default(autoincrement())
+  name            String
+  price           Decimal @db.Decimal(13, 2)
+  quantity        Int @db.UnsignedInt
+  SKU             String? @db.VarChar(255)
+  description     String @db.Text
+  observaciones   String? @db.VarChar(500)
+  createdAt       DateTime @default(now())
+  modifiedAt      DateTime @default(now())
+  deletedAt       DateTime?
+
+  pricingHistory  PricingHistory[]
+  Category        ProductCategory? @relation(fields: [categoryId], references: [id])
+  categoryId      Int?
+  Brand           Brand? @relation(fields: [brandId], references: [id])
+  brandId         Int?
+}
+model PricingHistory {
+  id              Int @id @default(autoincrement())
+  price           Decimal @db.Decimal(13, 2)
+  startedAt       DateTime
+  endedAt         DateTime?
+  Product         Product @relation(fields: [productId], references: [id])
+  productId       Int
+}
+model ProductCategory {
+  id              Int @id @default(autoincrement())
+  name            String
+  code            String @unique
+  description     String
+  Product         Product[]
+}
+model Brand {
+  id                Int @id @default(autoincrement())
+  name              String
+  logoImgURL        String?
+  shortDescription  String?
+  Product           Product[]
+}
