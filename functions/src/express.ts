@@ -1,7 +1,6 @@
 import express from "express"
 import cors from "cors"
-import prisma  from "./prisma"
-// import v1ProductRouter from './src/routes/v1/productRoutes.js'
+import v1ProductRouter from './routes/v1/productRoutes'
 
 const expressApp = express()
 
@@ -10,13 +9,7 @@ expressApp.use(cors())
 expressApp.use(express.json())
 
 // Register Routes
-expressApp.get('/test', async (_, res) => {
-    const products = await prisma.product.findMany()
-    res.send({
-        data: products,
-        status: 'OK'
-    })
-})
+expressApp.use('/api/v1/products', v1ProductRouter)
 
 export {
     expressApp
