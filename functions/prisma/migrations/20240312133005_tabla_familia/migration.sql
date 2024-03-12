@@ -1,0 +1,23 @@
+/*
+  Warnings:
+
+  - You are about to drop the column `FA_CODIGO` on the `articulo` table. All the data in the column will be lost.
+
+*/
+-- AlterTable
+ALTER TABLE `articulo` DROP COLUMN `FA_CODIGO`;
+
+-- CreateTable
+CREATE TABLE `FAMILIA` (
+    `FA_CODIGO` VARCHAR(20) NOT NULL,
+    `FA_NOMBRE` VARCHAR(30) NULL,
+    `FA_NIVEL` VARCHAR(2) NULL,
+    `FA_PALM` VARCHAR(1) NULL,
+    `AR_CODIGO` VARCHAR(24) NOT NULL,
+
+    UNIQUE INDEX `FAMILIA_AR_CODIGO_key`(`AR_CODIGO`),
+    PRIMARY KEY (`FA_CODIGO`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `FAMILIA` ADD CONSTRAINT `FAMILIA_AR_CODIGO_fkey` FOREIGN KEY (`AR_CODIGO`) REFERENCES `ARTICULO`(`AR_CODIGO`) ON DELETE RESTRICT ON UPDATE CASCADE;

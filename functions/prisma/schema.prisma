@@ -9,46 +9,50 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
+// Naming: https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/custom-model-and-field-names
+// Relations: https://www.prisma.io/docs/orm/prisma-schema/data-model/relations
 // Application Models
 // Types: https://www.prisma.io/docs/orm/reference/prisma-schema-reference#decimal
-model Product {
-  id              Int @id @default(autoincrement())
-  name            String
-  price           Decimal @db.Decimal(13, 2)
-  quantity        Int @db.UnsignedInt
-  SKU             String? @db.VarChar(255)
-  description     String @db.Text
-  observaciones   String? @db.VarChar(500)
-  createdAt       DateTime @default(now())
-  modifiedAt      DateTime @default(now())
-  deletedAt       DateTime?
+model ARTICULO {
+  AR_CODIGO       String @db.VarChar(24) @id
+  AR_DESCRI       String? @db.VarChar(100)
+  // FA_CODIGO       String? @db.VarChar(20)
+  UM_CODIGO       String? @db.VarChar(2)
+  AR_MEMO         String? @db.VarChar(4000)
+  II_CODIGO       String? @db.VarChar(2)
+  AR_BARRAS       String? @db.VarChar(20)
+  AR_COSNET       Float?
+  MA_CODIGO       String? @db.VarChar(3)
+  RE1_CODIGO      String? @db.VarChar(5)
+  RE2_CODIGO      String? @db.VarChar(5)
+  ALI_CODVEN      String? @db.VarChar(2)
+  ALI_CODCOM      String? @db.VarChar(2)
+  ESA_CODIGO      String? @db.VarChar(2)
+  AR_ALTO         Float?
+  AR_ANCHO        Float?
+  AR_PROFUNDO     Float?
+  AR_COLOR        String? @db.VarChar(20)
+  AR_DESMAX       String? @db.VarChar(20)
+  AR_DESCRIA      String? @db.VarChar(100)
+  AR_COSREP       Float?
+  AR_COSUCP       Float?
+  AR_FECHAMODIF   DateTime?
+  PR_CODIGO       String? @db.VarChar(5)
+  AR_MESESGARANTIA Float?
 
-  pricingHistory  PricingHistory[]
-  Category        ProductCategory? @relation(fields: [categoryId], references: [id])
-  categoryId      Int?
-  Brand           Brand? @relation(fields: [brandId], references: [id])
-  brandId         Int?
+  FAMILIA         FAMILIA @relation(fields:[FA_CODIGO], references:[FA_CODIGO])
+  FA_CODIGO       String @db.VarChar(20) @unique
+  
+
+  @@map("ARTICULO")
 }
-model PricingHistory {
-  id              Int @id @default(autoincrement())
-  price           Decimal @db.Decimal(13, 2)
-  startedAt       DateTime
-  endedAt         DateTime?
-  Product         Product @relation(fields: [productId], references: [id])
-  productId       Int
-}
-model ProductCategory {
-  id              Int @id @default(autoincrement())
-  name            String
-  code            String @unique
-  description     String
-  Product         Product[]
-}
-model Brand {
-  id                Int @id @default(autoincrement())
-  name              String
-  logoImgURL        String?
-  shortDescription  String?
-  Product           Product[]
+
+model FAMILIA {
+  FA_CODIGO       String  @db.VarChar(20) @id
+  FA_NOMBRE       String? @db.VarChar(30)
+  FA_NIVEL        String? @db.VarChar(2)
+  FA_PALM         String? @db.VarChar(1)
+
+  ARTICULO        ARTICULO?
+  @@map("FAMILIA")
 }
