@@ -1,0 +1,59 @@
+/*
+  Warnings:
+
+  - You are about to drop the `articulo` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `familia` table. If the table is not empty, all the data it contains will be lost.
+
+*/
+-- DropForeignKey
+ALTER TABLE `articulo` DROP FOREIGN KEY `ARTICULO_FA_CODIGO_fkey`;
+
+-- DropTable
+DROP TABLE `articulo`;
+
+-- DropTable
+DROP TABLE `familia`;
+
+-- CreateTable
+CREATE TABLE `AIKON_FAMILIA` (
+    `FA_CODIGO` VARCHAR(20) NOT NULL,
+    `FA_NOMBRE` VARCHAR(30) NULL,
+    `FA_NIVEL` VARCHAR(2) NULL,
+    `FA_PALM` VARCHAR(1) NULL,
+
+    PRIMARY KEY (`FA_CODIGO`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `AIKON_ARTICULO` (
+    `AR_CODIGO` VARCHAR(24) NOT NULL,
+    `AR_DESCRI` VARCHAR(200) NULL,
+    `UM_CODIGO` VARCHAR(2) NULL,
+    `AR_MEMO` VARCHAR(4000) NULL,
+    `II_CODIGO` VARCHAR(2) NULL,
+    `AR_BARRAS` VARCHAR(20) NULL,
+    `AR_COSNET` DECIMAL(15, 2) NULL,
+    `MA_CODIGO` VARCHAR(3) NULL,
+    `RE1_CODIGO` VARCHAR(5) NULL,
+    `RE2_CODIGO` VARCHAR(5) NULL,
+    `ALI_CODVEN` VARCHAR(2) NULL,
+    `ALI_CODCOM` VARCHAR(2) NULL,
+    `ESA_CODIGO` VARCHAR(2) NULL,
+    `AR_ALTO` DOUBLE NULL,
+    `AR_ANCHO` DOUBLE NULL,
+    `AR_PROFUNDO` DOUBLE NULL,
+    `AR_COLOR` VARCHAR(20) NULL,
+    `AR_DESMAX` DECIMAL(5, 2) NULL,
+    `AR_DESCRIA` VARCHAR(200) NULL,
+    `AR_COSREP` DECIMAL(15, 2) NULL,
+    `AR_COSUCP` DECIMAL(15, 2) NULL,
+    `AR_FECHAMODIF` DATETIME(3) NULL,
+    `PR_CODIGO` VARCHAR(5) NULL,
+    `AR_MESESGARANTIA` DOUBLE NULL,
+    `FA_CODIGO` VARCHAR(20) NOT NULL,
+
+    PRIMARY KEY (`AR_CODIGO`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `AIKON_ARTICULO` ADD CONSTRAINT `AIKON_ARTICULO_FA_CODIGO_fkey` FOREIGN KEY (`FA_CODIGO`) REFERENCES `AIKON_FAMILIA`(`FA_CODIGO`) ON DELETE RESTRICT ON UPDATE CASCADE;

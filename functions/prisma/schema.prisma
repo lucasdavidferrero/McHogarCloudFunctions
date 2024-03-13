@@ -13,9 +13,19 @@ datasource db {
 // Relations: https://www.prisma.io/docs/orm/prisma-schema/data-model/relations
 // Application Models
 // Types: https://www.prisma.io/docs/orm/reference/prisma-schema-reference#decimal
-model ARTICULO {
+
+model AIKON_FAMILIA {
+  FA_CODIGO       String  @db.VarChar(20) @id
+  FA_NOMBRE       String? @db.VarChar(30)
+  FA_NIVEL        String? @db.VarChar(2)
+  FA_PALM         String? @db.VarChar(1)
+
+  ARTICULO        AIKON_ARTICULO[]
+  @@map("AIKON_FAMILIA")
+}
+model AIKON_ARTICULO {
   AR_CODIGO       String @db.VarChar(24) @id
-  AR_DESCRI       String? @db.VarChar(100)
+  AR_DESCRI       String? @db.VarChar(200)
   UM_CODIGO       String? @db.VarChar(2)
   AR_MEMO         String? @db.VarChar(4000)
   II_CODIGO       String? @db.VarChar(2)
@@ -32,26 +42,16 @@ model ARTICULO {
   AR_PROFUNDO     Float?
   AR_COLOR        String? @db.VarChar(20)
   AR_DESMAX       Decimal? @db.Decimal(5,2)
-  AR_DESCRIA      String? @db.VarChar(100)
+  AR_DESCRIA      String? @db.VarChar(200)
   AR_COSREP       Decimal? @db.Decimal(15,2)
   AR_COSUCP       Decimal? @db.Decimal(15,2)
   AR_FECHAMODIF   DateTime?
   PR_CODIGO       String? @db.VarChar(5)
   AR_MESESGARANTIA Float?
 
-  FAMILIA         FAMILIA @relation(fields:[FA_CODIGO], references:[FA_CODIGO])
+  AIKON_FAMILIA   AIKON_FAMILIA @relation(fields:[FA_CODIGO], references:[FA_CODIGO])
   FA_CODIGO       String @db.VarChar(20)
   
-
-  @@map("ARTICULO")
+  @@map("AIKON_ARTICULO")
 }
 
-model FAMILIA {
-  FA_CODIGO       String  @db.VarChar(20) @id
-  FA_NOMBRE       String? @db.VarChar(30)
-  FA_NIVEL        String? @db.VarChar(2)
-  FA_PALM         String? @db.VarChar(1)
-
-  ARTICULO        ARTICULO[]
-  @@map("FAMILIA")
-}
