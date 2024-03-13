@@ -16,12 +16,11 @@ datasource db {
 model ARTICULO {
   AR_CODIGO       String @db.VarChar(24) @id
   AR_DESCRI       String? @db.VarChar(100)
-  // FA_CODIGO       String? @db.VarChar(20)
   UM_CODIGO       String? @db.VarChar(2)
   AR_MEMO         String? @db.VarChar(4000)
   II_CODIGO       String? @db.VarChar(2)
   AR_BARRAS       String? @db.VarChar(20)
-  AR_COSNET       Float?
+  AR_COSNET       Decimal? @db.Decimal(15,2)
   MA_CODIGO       String? @db.VarChar(3)
   RE1_CODIGO      String? @db.VarChar(5)
   RE2_CODIGO      String? @db.VarChar(5)
@@ -32,16 +31,16 @@ model ARTICULO {
   AR_ANCHO        Float?
   AR_PROFUNDO     Float?
   AR_COLOR        String? @db.VarChar(20)
-  AR_DESMAX       String? @db.VarChar(20)
+  AR_DESMAX       Decimal? @db.Decimal(5,2)
   AR_DESCRIA      String? @db.VarChar(100)
-  AR_COSREP       Float?
-  AR_COSUCP       Float?
+  AR_COSREP       Decimal? @db.Decimal(15,2)
+  AR_COSUCP       Decimal? @db.Decimal(15,2)
   AR_FECHAMODIF   DateTime?
   PR_CODIGO       String? @db.VarChar(5)
   AR_MESESGARANTIA Float?
 
   FAMILIA         FAMILIA @relation(fields:[FA_CODIGO], references:[FA_CODIGO])
-  FA_CODIGO       String @db.VarChar(20) @unique
+  FA_CODIGO       String @db.VarChar(20)
   
 
   @@map("ARTICULO")
@@ -53,6 +52,6 @@ model FAMILIA {
   FA_NIVEL        String? @db.VarChar(2)
   FA_PALM         String? @db.VarChar(1)
 
-  ARTICULO        ARTICULO?
+  ARTICULO        ARTICULO[]
   @@map("FAMILIA")
 }
