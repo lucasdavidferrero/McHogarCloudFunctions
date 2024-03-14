@@ -14,16 +14,26 @@ datasource db {
 // Application Models
 // Types: https://www.prisma.io/docs/orm/reference/prisma-schema-reference#decimal
 
-model AIKON_FAMILIA {
+model aikon_familia {
   FA_CODIGO       String  @db.VarChar(20) @id
   FA_NOMBRE       String? @db.VarChar(30)
   FA_NIVEL        String? @db.VarChar(2)
   FA_PALM         String? @db.VarChar(1)
 
-  ARTICULO        AIKON_ARTICULO[]
-  @@map("AIKON_FAMILIA")
+  aikon_articulo  aikon_articulo[]
+  @@map("aikon_familia")
 }
-model AIKON_ARTICULO {
+
+model aikon_marca {
+  MA_CODIGO       String  @db.VarChar(3) @id
+  MA_DESCRI       String? @db.VarChar(30)
+  MA_FECHAMODIF   DateTime?
+
+  aikon_articulo  aikon_articulo[]
+  @@map("aikon_marca")
+}
+
+model aikon_articulo {
   AR_CODIGO       String @db.VarChar(24) @id
   AR_DESCRI       String? @db.VarChar(200)
   UM_CODIGO       String? @db.VarChar(2)
@@ -31,7 +41,6 @@ model AIKON_ARTICULO {
   II_CODIGO       String? @db.VarChar(2)
   AR_BARRAS       String? @db.VarChar(20)
   AR_COSNET       Decimal? @db.Decimal(15,2)
-  MA_CODIGO       String? @db.VarChar(3)
   RE1_CODIGO      String? @db.VarChar(5)
   RE2_CODIGO      String? @db.VarChar(5)
   ALI_CODVEN      String? @db.VarChar(2)
@@ -49,9 +58,12 @@ model AIKON_ARTICULO {
   PR_CODIGO       String? @db.VarChar(5)
   AR_MESESGARANTIA Float?
 
-  AIKON_FAMILIA   AIKON_FAMILIA @relation(fields:[FA_CODIGO], references:[FA_CODIGO])
-  FA_CODIGO       String @db.VarChar(20)
+  aikon_familia   aikon_familia? @relation(fields:[FA_CODIGO], references:[FA_CODIGO])
+  FA_CODIGO       String? @db.VarChar(20)
+
+  aikon_marca     aikon_marca? @relation(fields: [MA_CODIGO], references: [MA_CODIGO])
+  MA_CODIGO       String? @db.VarChar(3)
   
-  @@map("AIKON_ARTICULO")
+  @@map("aikon_articulo")
 }
 
