@@ -33,19 +33,57 @@ model aikon_marca {
   @@map("aikon_marca")
 }
 
+model aikon_estado_articulo {
+  ESA_CODIGO      String  @db.VarChar(2) @id
+  ESA_DESCRI      String? @db.VarChar(30)
+
+  aikon_articulo  aikon_articulo[]
+  @@map("aikon_estado_articulo")
+}
+
+model aikon_unidad_medida {
+  UM_CODIGO       String  @db.VarChar(2) @id
+  UM_DESCRI       String? @db.VarChar(30)
+
+  aikon_articulo  aikon_articulo[]
+  @@map("aikon_unidad_medida")
+}
+
+model aikon_impuesto_interno {
+  II_CODIGO       String    @db.VarChar(2) @id
+  II_DESCRI       String?   @db.VarChar(40)
+  II_PORCEN       Decimal?  @db.Decimal(6, 2)
+  II_TIPO         String?   @db.VarChar(1)
+  PL_CODINT       String?   @db.VarChar(4)
+
+  aikon_articulo  aikon_articulo[]
+  @@map("aikon_impuesto_interno")
+}
+
+model aikon_lista_precio {
+  LP_CODIGO         String    @db.VarChar(2) @id
+  LP_DESCRI         String?   @db.VarChar(30)
+  LP_FECACT         DateTime?
+  LP_FECVIG         DateTime?
+  LP_PVCONSULTA     String?   @db.VarChar(1)
+  LP_VERCOLCONSART  String?   @db.VarChar(1)  
+  LP_FECHAMODIF     DateTime?
+
+  aikon_art_precio  aikon_art_precio[]
+
+  @@map("aikon_lista_precio")
+}
+
 model aikon_articulo {
   AR_CODIGO       String @db.VarChar(24) @id
   AR_DESCRI       String? @db.VarChar(200)
-  UM_CODIGO       String? @db.VarChar(2)
   AR_MEMO         String? @db.VarChar(4000)
-  II_CODIGO       String? @db.VarChar(2)
   AR_BARRAS       String? @db.VarChar(20)
   AR_COSNET       Decimal? @db.Decimal(15,2)
   RE1_CODIGO      String? @db.VarChar(5)
   RE2_CODIGO      String? @db.VarChar(5)
   ALI_CODVEN      String? @db.VarChar(2)
   ALI_CODCOM      String? @db.VarChar(2)
-  ESA_CODIGO      String? @db.VarChar(2)
   AR_ALTO         Float?
   AR_ANCHO        Float?
   AR_PROFUNDO     Float?
@@ -63,7 +101,31 @@ model aikon_articulo {
 
   aikon_marca     aikon_marca? @relation(fields: [MA_CODIGO], references: [MA_CODIGO])
   MA_CODIGO       String? @db.VarChar(3)
+
+  aikon_estado_articulo   aikon_estado_articulo? @relation(fields: [ESA_CODIGO], references: [ESA_CODIGO])
+  ESA_CODIGO      String? @db.VarChar(2)
+
+  aikon_unidad_medida     aikon_unidad_medida? @relation(fields: [UM_CODIGO], references: [UM_CODIGO])
+  UM_CODIGO       String? @db.VarChar(2)
+
+  aikon_impuesto_interno    aikon_impuesto_interno? @relation(fields: [II_CODIGO], references: [II_CODIGO])
+  II_CODIGO       String?   @db.VarChar(2)
+
+  aikon_art_precio  aikon_art_precio[]
   
   @@map("aikon_articulo")
 }
 
+model aikon_art_precio {
+  AR_CODIGO     String    @db.VarChar(24)
+  LP_CODIGO     String    @db.VarChar(2)
+  AP_PRECIO     Decimal?  @db.Decimal(15,2)
+  AP_UTILID     Decimal?  @db.Decimal(6, 2)
+  AP_FECMOD     DateTime?
+  
+  aikon_articulo        aikon_articulo        @relation(fields:[AR_CODIGO], references: [AR_CODIGO])
+  aikon_lista_precio    aikon_lista_precio    @relation(fields: [LP_CODIGO], references: [LP_CODIGO])
+
+  @@id([AR_CODIGO, LP_CODIGO])
+  @@map("aikon_art_precio")
+}
