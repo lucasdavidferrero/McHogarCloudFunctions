@@ -27,7 +27,6 @@ model aikon_familia {
 model aikon_marca {
   ma_codigo       String  @db.VarChar(3) @id
   ma_descri       String? @db.VarChar(30)
-  ma_fechamodif   DateTime?
 
   aikon_articulo  aikon_articulo[]
   @@map("aikon_marca")
@@ -41,7 +40,7 @@ model aikon_estado_articulo {
   @@map("aikon_estado_articulo")
 }
 
-// AIK_RE1_CODIGO, AIK_RE2_CODIGO. crear relaciones
+// agregar AIK_RE1_CODIGO, AIK_RE2_CODIGO. crear relaciones
 model aikon_articulo {
   aik_ar_codigo           String @db.VarChar(24) @id
   aik_ar_descri           String? @db.VarChar(200)
