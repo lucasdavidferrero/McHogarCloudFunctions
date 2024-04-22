@@ -15,26 +15,57 @@ datasource db {
 // Types: https://www.prisma.io/docs/orm/reference/prisma-schema-reference#decimal
 
 model aikon_familia {
-  fa_codigo       String  @db.VarChar(20) @id
-  fa_nombre       String? @db.VarChar(30)
-  fa_nivel        String? @db.VarChar(2)
-  fa_palm         String? @db.VarChar(1)
+  aik_fa_codigo       String  @db.VarChar(20) @id
+  aik_fa_nombre       String? @db.VarChar(30)
+  aik_fa_nivel        String? @db.VarChar(2)
+  aik_fa_palm         String? @db.VarChar(1)
 
   aikon_articulo  aikon_articulo[]
   @@map("aikon_familia")
 }
 
 model aikon_marca {
-  ma_codigo       String  @db.VarChar(3) @id
-  ma_descri       String? @db.VarChar(30)
+  aik_ma_codigo       String  @db.VarChar(3) @id
+  aik_ma_descri       String? @db.VarChar(30)
 
   aikon_articulo  aikon_articulo[]
+  marca_extension marca_extension?
   @@map("aikon_marca")
+}
+model marca_extension {
+  aik_ma_codigo       String  @db.VarChar(3) @id
+  maext_url_imagen    String? @db.VarChar(400)
+
+  aikon_marca aikon_marca @relation(fields:[aik_ma_codigo], references: [aik_ma_codigo])
+  @@map("marca_extension")
+}
+
+model aikon_referencia01 {
+  aik_re1_codigo        String @db.VarChar(5) @id
+  aik_re1_descri        String @db.VarChar(30)
+
+  categoria_rubro       categoria_rubro[]
+}
+
+model aikon_referencia02 {
+  aik_re2_codigo        String @db.VarChar(5) @id
+  aik_re2_descri        String @db.VarChar(30)
+
+  categoria_rubro       categoria_rubro?
+}
+model categoria_rubro {
+  catrub_id               Int @id @default(autoincrement())
+
+  aikon_referencia01      aikon_referencia01 @relation(fields:[aik_re1_codigo], references: [aik_re1_codigo])
+  aik_re1_codigo          String @db.VarChar(5)
+
+  aik_re2_codigo          String @db.VarChar(5) @unique
+  aikon_referencia02      aikon_referencia02 @relation(fields:[aik_re2_codigo], references: [aik_re2_codigo])
 }
 
 model aikon_estado_articulo {
-  esa_codigo      String  @db.VarChar(2) @id
-  esa_descri      String? @db.VarChar(30)
+  aik_esa_codigo      String  @db.VarChar(2) @id
+  aik_esa_descri      String? @db.VarChar(30)
 
   aikon_articulo  aikon_articulo[]
   @@map("aikon_estado_articulo")
@@ -62,14 +93,14 @@ model aikon_articulo {
   aik_stock_total         Int? @db.UnsignedSmallInt
   aik_ap_precio_iva       Decimal? @db.Decimal(15,2)
 
-  aikon_familia   aikon_familia? @relation(fields:[fa_codigo], references:[fa_codigo])
-  fa_codigo       String? @db.VarChar(20)
+  aikon_familia   aikon_familia? @relation(fields:[aik_fa_codigo], references:[aik_fa_codigo])
+  aik_fa_codigo       String? @db.VarChar(20)
 
-  aikon_marca     aikon_marca? @relation(fields: [ma_codigo], references: [ma_codigo])
-  ma_codigo       String? @db.VarChar(3)
+  aikon_marca     aikon_marca? @relation(fields: [aik_ma_codigo], references: [aik_ma_codigo])
+  aik_ma_codigo       String? @db.VarChar(3)
 
-  aikon_estado_articulo   aikon_estado_articulo? @relation(fields: [esa_codigo], references: [esa_codigo])
-  esa_codigo      String? @db.VarChar(2)
+  aikon_estado_articulo   aikon_estado_articulo? @relation(fields: [aik_esa_codigo], references: [aik_esa_codigo])
+  aik_esa_codigo      String? @db.VarChar(2)
 
   articulo        articulo?
 
@@ -93,9 +124,9 @@ model articulo_precio {
   arp_utilidad_ofer                 Decimal? @db.Decimal(6, 2)
   arp_utilidad_ofer_fecha_hasta     DateTime? @db.Date
   arp_utilidad_ofer_stock_hasta     Int? @db.UnsignedSmallInt
-  arp_descuento                     Decimal @db.Decimal(6, 2)
+  arp_descuento                     Decimal? @db.Decimal(6, 2)
   arp_descuento_fecha_hasta         DateTime? @db.Date
-  arp_porcentaje_off                Decimal @db.Decimal(6, 2)
+  arp_porcentaje_off                Decimal? @db.Decimal(6, 2)
 
   articulo articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
 
