@@ -21,6 +21,7 @@ model aikon_familia {
   aik_fa_palm         String? @db.VarChar(1)
 
   aikon_articulo  aikon_articulo[]
+  rubro_familia   rubro_familia?
   @@map("aikon_familia")
 }
 
@@ -52,6 +53,7 @@ model aikon_referencia02 {
   aik_re2_descri        String @db.VarChar(30)
 
   categoria_rubro       categoria_rubro?
+  rubro_familia         rubro_familia[]
 }
 model categoria_rubro {
   catrub_id               Int @id @default(autoincrement())
@@ -62,6 +64,15 @@ model categoria_rubro {
   aik_re2_codigo          String @db.VarChar(5) @unique
   aikon_referencia02      aikon_referencia02 @relation(fields:[aik_re2_codigo], references: [aik_re2_codigo])
 }
+model rubro_familia {
+  rubfa_id                Int @id @default(autoincrement())
+
+  aik_fa_codigo           String  @db.VarChar(20) @unique
+  aikon_familia           aikon_familia @relation(fields: [aik_fa_codigo], references: [aik_fa_codigo])
+
+  aik_re2_codigo          String @db.VarChar(5)
+  aikon_referencia02      aikon_referencia02 @relation(fields: [aik_re2_codigo], references: [aik_re2_codigo])
+}
 
 model aikon_estado_articulo {
   aik_esa_codigo      String  @db.VarChar(2) @id
@@ -71,7 +82,6 @@ model aikon_estado_articulo {
   @@map("aikon_estado_articulo")
 }
 
-// agregar AIK_RE1_CODIGO, AIK_RE2_CODIGO. crear relaciones
 model aikon_articulo {
   aik_ar_codigo           String @db.VarChar(24) @id
   aik_ar_descri           String? @db.VarChar(200)
