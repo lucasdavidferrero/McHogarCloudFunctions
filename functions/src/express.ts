@@ -1,6 +1,6 @@
 import express from "express"
 import cors from "cors"
-import v1ProductRouter from './routes/v1/productRoutes'
+import v1ArticuloRouter from './routes/v1/articuloRoutes'
 
 const expressApp = express()
 
@@ -9,13 +9,8 @@ expressApp.use(cors())
 expressApp.use(express.json())
 
 // Register Routes
-expressApp.use('/api/v1/products', v1ProductRouter)
+expressApp.use('/api/v1/articulo', v1ArticuloRouter)
 
 export {
     expressApp
 }
-
-/* 
-    
-
-*/

@@ -8,5 +8,5 @@ import { expressApp } from './express.js'
 // chrome://inspect/
 // https://blog.logrocket.com/building-rest-api-firebase-cloud-functions-typescript-firestore/
 
-exports.apiV1 = onRequest(expressApp);
+exports.mchogar = onRequest(expressApp);
 

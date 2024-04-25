@@ -116,6 +116,8 @@ model aikon_articulo {
 
   historial_costo_neto    historial_costo_neto[]
 
+  articulo_precio        articulo_precio?
+
   @@map("aikon_articulo")
 }
 
@@ -125,7 +127,7 @@ model articulo {
 
   aikon_articulo         aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
 
-  articulo_precio        articulo_precio?
+  
 
   @@map("articulo")
 }
@@ -140,7 +142,7 @@ model articulo_precio {
   arp_descuento_fecha_hasta         DateTime? @db.Date
   arp_porcentaje_off                Decimal? @db.Decimal(6, 2)
 
-  articulo articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
+  aikon_articulo                    aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
 
   @@map("articulo_precio")
 }

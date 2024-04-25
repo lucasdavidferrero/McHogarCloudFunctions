@@ -1,11 +1,11 @@
 import { Router } from "express"
-import { getAllProducts, getPricingHistoryByProductId } from '../../controllers/productController'
+import { getAllArticulos, crearArticulo } from '../../controllers/articuloController'
 
 const router = Router()
 
 router
-    .get('/', getAllProducts)
-    .get('/pricing-history/:productId', getPricingHistoryByProductId)
+    .get('/', getAllArticulos)
+    .post('/', crearArticulo)
 
 export default router
 
