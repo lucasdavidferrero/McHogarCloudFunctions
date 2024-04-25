@@ -1,11 +1,40 @@
 import prisma from '../prisma'
 import { ReqBodyCrearArticulo } from '../controllers/articuloController'
+import { ArticuloResponse } from '../dto/ArticuloReqRes.type'
 
 export class ArticuloService {
     static async getAllArticulos () {
-        return prisma.aikon_articulo.findMany({
+        const aikon_articulos = await prisma.aikon_articulo.findMany({
             include: { articulo_precio: true }
-        })      
+        })
+        /* Transformar respuesta de la DB en el DTO creado. */
+        const articulosDto: ArticuloResponse[] = []
+        for (let i = 0; i < aikon_articulos.length; i++) {
+            articulosDto[i] = {
+                aik_ar_codigo: aikon_articulos[i].aik_ar_codigo
+                aik_ar_descri: aikon_articulos[i].aik_ar_descri
+                aik_ar_memo: aikon_articulos[i].aik_ar_memo
+                aik_re1_codigo?          :string
+                aik_re2_codigo?          :string
+                aik_ar_alto?             :number
+                aik_ar_ancho?            :number
+                aik_ar_profundo?         :number
+                aik_ar_color?            :string
+                aik_ar_peso?             :number
+                aik_ar_descria?          :string
+                aik_ar_fechamodif?       :string
+                aik_ar_mesesgarantia?    :number
+                aik_ar_cosnet?           :number
+                aik_ap_utilidad?         :number
+                aik_impuesto_interno?    :number
+                aik_iva_porcen?          :number
+                aik_stock_total?         :number
+                aik_ap_precio_iva?       :number
+                aik_fa_codigo?           :string
+                aik_ma_codigo?           :string
+                aik_esa_codigo?          :string
+            }
+        }
     }
 
     static async crearArticulo (articuloBody: ReqBodyCrearArticulo) {

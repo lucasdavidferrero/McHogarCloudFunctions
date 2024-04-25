@@ -23,6 +23,7 @@ export {
     crearArticulo
 }
 
+
 export interface ReqBodyCrearArticulo {
     ar_codigo: string
     ar_descri: string
