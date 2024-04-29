@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
 import { ArticuloService } from '../services/ArticuloService'
 
-const getAllArticulos = async (req: Request, res: Response) => {
-    const allArticulos = await ArticuloService.getAllArticulos()
+const getAllArticulos = async (req: Request<{}, {}, {}, { cursorId?: string }>, res: Response) => {
+    const allArticulos = await ArticuloService.getAllArticulos(req.query.cursorId)
     res.send({
         status: 'OK',
         data: allArticulos
