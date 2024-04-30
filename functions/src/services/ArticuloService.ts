@@ -6,7 +6,6 @@ import { Decimal } from '@prisma/client/runtime/library'
 export class ArticuloService {
     static async obtenerArticulosPaginado (cantidadItemsPagina: number = 10, cursorId?: string) {
         let aikon_articulos
-        console.log('Cursor ID: ', cursorId)
         if (typeof(cursorId) === 'string') {
             aikon_articulos = await prisma.aikon_articulo.findMany({
                 take: cantidadItemsPagina,
@@ -21,7 +20,7 @@ export class ArticuloService {
             })
         } else {
             aikon_articulos = await prisma.aikon_articulo.findMany({
-                take: 10,
+                take: cantidadItemsPagina,
                 orderBy: {
                     aik_ar_codigo: 'asc'
                 },
