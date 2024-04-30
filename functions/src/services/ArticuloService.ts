@@ -6,27 +6,15 @@ import { Decimal } from '@prisma/client/runtime/library'
 export class ArticuloService {
     static async obtenerArticulosPaginado (cantidadItemsPagina: number = 10, cursorId?: string) {
         let aikon_articulos
-        if (typeof(cursorId) === 'string') {
-            aikon_articulos = await prisma.aikon_articulo.findMany({
-                take: cantidadItemsPagina,
-                skip: 1,
-                cursor: {
-                    aik_ar_codigo: cursorId
-                },
-                orderBy: {
-                    aik_ar_codigo: 'asc'
-                },
-                include: { articulo_precio: true }
-            })
-        } else {
-            aikon_articulos = await prisma.aikon_articulo.findMany({
-                take: cantidadItemsPagina,
-                orderBy: {
-                    aik_ar_codigo: 'asc'
-                },
-                include: { articulo_precio: true }
-            })
-        }
+        aikon_articulos = await prisma.aikon_articulo.findMany({
+            take: cantidadItemsPagina,
+            skip: cursorId ? 1 : undefined,
+            cursor: cursorId ? { aik_ar_codigo: cursorId} : undefined,
+            orderBy: {
+                aik_ar_codigo: 'asc'
+            },
+            include: { articulo_precio: true }
+        })
         const articulosDto: ArticuloResponse[] = []
         aikon_articulos.forEach((art) => {
             articulosDto.push({

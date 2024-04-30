@@ -4,8 +4,8 @@ import { IGeneralResponseMcAPI } from "../types/dto/GeneralReqRes.type"
 import { ArticuloResponse } from "../types/dto/ArticuloReqRes.type"
 
 interface obtenerArticulosPaginadoQueryString {
-    cursorId?:  string
-    cantidadItemsPagina?:      string 
+    cursorId?:                  string
+    cantidadItemsPagina?:       string 
 }
 interface Empty {}
 
