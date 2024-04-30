@@ -1,11 +1,10 @@
 import { Request, Response } from "express"
 import { ArticuloService } from '../services/ArticuloService'
-import { IGeneralResponseMcAPI } from "../types/dto/GeneralReqRes.type"
+import { IGeneralResponseMcAPI, IQueryStringReqMcAPI } from "../types/dto/GeneralReqRes.type"
 import { ArticuloResponse } from "../types/dto/ArticuloReqRes.type"
 
-interface obtenerArticulosPaginadoQueryString {
-    cursorId?:                  string
-    cantidadItemsPagina?:       string 
+interface obtenerArticulosPaginadoQueryString extends IQueryStringReqMcAPI {
+    codMarca?: string
 }
 interface Empty {}
 
@@ -14,7 +13,7 @@ const obtenerArticulosPaginado = async (req: Request<Empty, Empty, Empty, obtene
     if (typeof(req.query.cantidadItemsPagina) === 'string' && !isNaN(parseInt(req.query.cantidadItemsPagina))) {
         cantidadItemsPagina = parseInt(req.query.cantidadItemsPagina)
     }
-    const allArticulos = await ArticuloService.obtenerArticulosPaginado(cantidadItemsPagina, req.query.cursorId)
+    const allArticulos = await ArticuloService.obtenerArticulosPaginado(cantidadItemsPagina, req.query.cursorId, req.query.codMarca)
     const response: IGeneralResponseMcAPI<ArticuloResponse[]> = {
         estado: 'satisfactorio',
         mensaje: 'Listado artículos paginado (cursor-based pagination with prisma.js)',

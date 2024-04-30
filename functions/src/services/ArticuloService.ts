@@ -4,16 +4,19 @@ import { ArticuloResponse } from '../types/dto/ArticuloReqRes.type'
 import { Decimal } from '@prisma/client/runtime/library'
 
 export class ArticuloService {
-    static async obtenerArticulosPaginado (cantidadItemsPagina: number = 10, cursorId?: string) {
+    static async obtenerArticulosPaginado (cantidadItemsPagina: number = 10, cursorId?: string, codMarca?: string) {
         let aikon_articulos
         aikon_articulos = await prisma.aikon_articulo.findMany({
             take: cantidadItemsPagina,
             skip: cursorId ? 1 : undefined,
             cursor: cursorId ? { aik_ar_codigo: cursorId} : undefined,
+            where: {
+                aik_ma_codigo: typeof(codMarca) === 'string' ? codMarca : undefined
+            },
             orderBy: {
                 aik_ar_codigo: 'asc'
             },
-            include: { articulo_precio: true }
+            include: { articulo_precio: true, articulo: true }
         })
         const articulosDto: ArticuloResponse[] = []
         aikon_articulos.forEach((art) => {
@@ -39,7 +42,21 @@ export class ArticuloService {
                 aik_ap_precio_iva:       (art.aik_ap_precio_iva instanceof Decimal) ? art.aik_ap_precio_iva.toNumber() : null,
                 aik_fa_codigo:           art.aik_fa_codigo,
                 aik_ma_codigo:           art.aik_ma_codigo,
-                aik_esa_codigo:          art.aik_esa_codigo
+                aik_esa_codigo:          art.aik_esa_codigo,
+                articulo_precio: art.articulo_precio ? {
+                    aik_ar_codigo: art.articulo_precio.aik_ar_codigo,
+                    arp_utilidad_web: art.articulo_precio.arp_utilidad_web.toNumber(),
+                    arp_utilidad_ofer: art.articulo_precio.arp_utilidad_ofer ? art.articulo_precio.arp_utilidad_ofer.toNumber() : null,
+                    arp_utilidad_ofer_fecha_hasta: art.articulo_precio.arp_utilidad_ofer_fecha_hasta ? art.articulo_precio.arp_utilidad_ofer_fecha_hasta.toDateString() : null,
+                    arp_utilidad_ofer_stock_hasta: art.articulo_precio.arp_utilidad_ofer_stock_hasta,
+                    arp_descuento: art.articulo_precio.arp_descuento ? art.articulo_precio.arp_descuento.toNumber() : null,
+                    arp_descuento_fecha_hasta: art.articulo_precio.arp_descuento_fecha_hasta ? art.articulo_precio.arp_descuento_fecha_hasta.toDateString() : null,
+                    arp_porcentaje_off: art.articulo_precio.arp_porcentaje_off ? art.articulo_precio.arp_porcentaje_off.toNumber() : null
+                } : null,
+                articulo: art.articulo ? {
+                    aik_ar_codigo: art.articulo.aik_ar_codigo,
+                    ar_url_img_principal : art.articulo.ar_url_img_principal
+                } : null
             })
         })
         return articulosDto
