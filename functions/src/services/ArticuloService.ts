@@ -1,15 +1,15 @@
 import prisma from '../prisma'
 import { ReqBodyCrearArticulo } from '../controllers/articuloController'
-import { ArticuloResponse } from '../dto/ArticuloReqRes.type'
+import { ArticuloResponse } from '../types/dto/ArticuloReqRes.type'
 import { Decimal } from '@prisma/client/runtime/library'
 
 export class ArticuloService {
-    static async getAllArticulos (cursorId?: string) {
+    static async obtenerArticulosPaginado (cantidadItemsPagina: number = 10, cursorId?: string) {
         let aikon_articulos
         console.log('Cursor ID: ', cursorId)
         if (typeof(cursorId) === 'string') {
             aikon_articulos = await prisma.aikon_articulo.findMany({
-                take: 10,
+                take: cantidadItemsPagina,
                 skip: 1,
                 cursor: {
                     aik_ar_codigo: cursorId

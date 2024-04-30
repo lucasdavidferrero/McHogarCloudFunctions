@@ -1,10 +1,10 @@
 import { Router } from "express"
-import { getAllArticulos, crearArticulo } from '../../controllers/articuloController'
+import { obtenerArticulosPaginado, crearArticulo } from '../../controllers/articuloController'
 
 const router = Router()
 
 router
-    .get('/', getAllArticulos)
+    .get('/', obtenerArticulosPaginado)
     .post('/', crearArticulo)
 
 export default router

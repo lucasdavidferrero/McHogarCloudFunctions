@@ -1,25 +1,39 @@
 import { Request, Response } from "express"
 import { ArticuloService } from '../services/ArticuloService'
+import { IGeneralResponseMcAPI } from "../types/dto/GeneralReqRes.type"
+import { ArticuloResponse } from "../types/dto/ArticuloReqRes.type"
 
-const getAllArticulos = async (req: Request<{}, {}, {}, { cursorId?: string }>, res: Response) => {
-    const allArticulos = await ArticuloService.getAllArticulos(req.query.cursorId)
-    res.send({
-        status: 'OK',
+interface obtenerArticulosPaginadoQueryString {
+    cursorId?:  string
+    cantidadItemsPagina?:      string 
+}
+interface Empty {}
+
+const obtenerArticulosPaginado = async (req: Request<Empty, Empty, Empty, obtenerArticulosPaginadoQueryString>, res: Response) => {
+    let cantidadItemsPagina: number | undefined = undefined
+    if (typeof(req.query.cantidadItemsPagina) === 'string' && !isNaN(parseInt(req.query.cantidadItemsPagina))) {
+        cantidadItemsPagina = parseInt(req.query.cantidadItemsPagina)
+    }
+    const allArticulos = await ArticuloService.obtenerArticulosPaginado(cantidadItemsPagina, req.query.cursorId)
+    const response: IGeneralResponseMcAPI<ArticuloResponse[]> = {
+        estado: 'satisfactorio',
+        mensaje: 'Listado artículos paginado (cursor-based pagination with prisma.js)',
         data: allArticulos
-    })
+    }
+    res.send(response)
 }
 
 const crearArticulo = async (req: Request<{}, {}, ReqBodyCrearArticulo>, res: Response) => {
     
     const articuloCreado = await ArticuloService.crearArticulo(req.body)
-    res.send({
+    res.status(200).send({
         status: 'OK',
         data: articuloCreado
     })
 }
 
 export {
-    getAllArticulos,
+    obtenerArticulosPaginado,
     crearArticulo
 }
 
