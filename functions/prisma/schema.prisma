@@ -45,6 +45,7 @@ model aikon_referencia01 {
   aik_re1_codigo        String @db.VarChar(5) @id
   aik_re1_descri        String @db.VarChar(30)
 
+  aikon_articulo        aikon_articulo[]
   categoria_rubro       categoria_rubro[]
 }
 
@@ -52,6 +53,7 @@ model aikon_referencia02 {
   aik_re2_codigo        String @db.VarChar(5) @id
   aik_re2_descri        String @db.VarChar(30)
 
+  aikon_articulo        aikon_articulo[]
   categoria_rubro       categoria_rubro?
   rubro_familia         rubro_familia[]
 }
@@ -86,8 +88,6 @@ model aikon_articulo {
   aik_ar_codigo           String @db.VarChar(24) @id
   aik_ar_descri           String? @db.VarChar(200)
   aik_ar_memo             String? @db.VarChar(4000)
-  aik_re1_codigo          String? @db.VarChar(5)
-  aik_re2_codigo          String? @db.VarChar(5)
   aik_ar_alto             Float?
   aik_ar_ancho            Float?
   aik_ar_profundo         Float?
@@ -103,14 +103,20 @@ model aikon_articulo {
   aik_stock_total         Int? @db.UnsignedSmallInt
   aik_ap_precio_iva       Decimal? @db.Decimal(15,2)
 
-  aikon_familia           aikon_familia? @relation(fields:[aik_fa_codigo], references:[aik_fa_codigo])
-  aik_fa_codigo           String? @db.VarChar(20)
+  aikon_familia           aikon_familia @relation(fields:[aik_fa_codigo], references:[aik_fa_codigo])
+  aik_fa_codigo           String @db.VarChar(20)
 
-  aikon_marca             aikon_marca? @relation(fields: [aik_ma_codigo], references: [aik_ma_codigo])
-  aik_ma_codigo           String? @db.VarChar(3)
+  aikon_marca             aikon_marca @relation(fields: [aik_ma_codigo], references: [aik_ma_codigo])
+  aik_ma_codigo           String @db.VarChar(3)
 
-  aikon_estado_articulo   aikon_estado_articulo? @relation(fields: [aik_esa_codigo], references: [aik_esa_codigo])
-  aik_esa_codigo          String? @db.VarChar(2)
+  aikon_referencia01      aikon_referencia01 @relation(fields: [aik_re1_codigo], references: [aik_re1_codigo])
+  aik_re1_codigo          String @db.VarChar(5)
+
+  aikon_referencia02      aikon_referencia02 @relation(fields: [aik_re2_codigo], references: [aik_re2_codigo])
+  aik_re2_codigo          String @db.VarChar(5)
+
+  aikon_estado_articulo   aikon_estado_articulo @relation(fields: [aik_esa_codigo], references: [aik_esa_codigo])
+  aik_esa_codigo          String @db.VarChar(2)
 
   articulo                articulo?
 
@@ -126,8 +132,6 @@ model articulo {
   ar_url_img_principal   String? @db.VarChar(400)
 
   aikon_articulo         aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
-
-  
 
   @@map("articulo")
 }
