@@ -4,14 +4,17 @@ import { ArticuloResponse } from '../types/dto/ArticuloReqRes.type'
 import { Decimal } from '@prisma/client/runtime/library'
 
 export class ArticuloService {
-    static async obtenerArticulosPaginado (cantidadItemsPagina: number = 10, cursorId?: string, codMarca?: string) {
+    static async obtenerArticulosPaginado (cantidadItemsPagina: number = 10, cursorId?: string, codMarca?: string, codCategoria?: string, codRubro?: string, codFamilia?: string) {
         let aikon_articulos
         aikon_articulos = await prisma.aikon_articulo.findMany({
             take: cantidadItemsPagina,
             skip: cursorId ? 1 : undefined,
             cursor: cursorId ? { aik_ar_codigo: cursorId} : undefined,
             where: {
-                aik_ma_codigo: typeof(codMarca) === 'string' ? codMarca : undefined
+                aik_ma_codigo: typeof(codMarca) === 'string' ? codMarca : undefined,
+                aik_re1_codigo: typeof(codCategoria) === 'string' && typeof(codRubro) === 'undefined' && typeof(codFamilia) === 'undefined' ? codCategoria : undefined,
+                aik_re2_codigo: typeof(codRubro) === 'string' && typeof(codFamilia) === 'undefined' ? codRubro : undefined,
+                aik_fa_codigo: typeof(codFamilia) === 'string' ? codFamilia : undefined
             },
             orderBy: {
                 aik_ar_codigo: 'asc'

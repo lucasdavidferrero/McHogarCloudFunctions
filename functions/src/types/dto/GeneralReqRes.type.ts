@@ -1,10 +1,12 @@
 export interface IGeneralResponseMcAPI<T> {
     estado: 'satisfactorio' | 'error'
     mensaje: string
-    data: T
+    data?: T
 }
 
-export interface IQueryStringReqMcAPI {
+export interface IQueryStringListadosPaginadosReqMcAPI {
     cursorId?:                  string
     cantidadItemsPagina?:       string
 }
+
+export interface Empty {}

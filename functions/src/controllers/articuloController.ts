@@ -1,19 +1,22 @@
 import { Request, Response } from "express"
 import { ArticuloService } from '../services/ArticuloService'
-import { IGeneralResponseMcAPI, IQueryStringReqMcAPI } from "../types/dto/GeneralReqRes.type"
+import { IGeneralResponseMcAPI, IQueryStringListadosPaginadosReqMcAPI, Empty } from "../types/dto/GeneralReqRes.type"
 import { ArticuloResponse } from "../types/dto/ArticuloReqRes.type"
 
-interface obtenerArticulosPaginadoQueryString extends IQueryStringReqMcAPI {
-    codMarca?: string
+interface obtenerArticulosPaginadoQueryString extends IQueryStringListadosPaginadosReqMcAPI {
+    codMarca?:      string
+    codCategoria?:  string
+    codRubro?:      string
+    codFamilia?:    string
 }
-interface Empty {}
+
 
 const obtenerArticulosPaginado = async (req: Request<Empty, Empty, Empty, obtenerArticulosPaginadoQueryString>, res: Response) => {
     let cantidadItemsPagina: number | undefined = undefined
     if (typeof(req.query.cantidadItemsPagina) === 'string' && !isNaN(parseInt(req.query.cantidadItemsPagina))) {
         cantidadItemsPagina = parseInt(req.query.cantidadItemsPagina)
     }
-    const allArticulos = await ArticuloService.obtenerArticulosPaginado(cantidadItemsPagina, req.query.cursorId, req.query.codMarca)
+    const allArticulos = await ArticuloService.obtenerArticulosPaginado(cantidadItemsPagina, req.query.cursorId, req.query.codMarca, req.query.codCategoria, req.query.codRubro, req.query.codFamilia)
     const response: IGeneralResponseMcAPI<ArticuloResponse[]> = {
         estado: 'satisfactorio',
         mensaje: 'Listado artículos paginado (cursor-based pagination with prisma.js)',
