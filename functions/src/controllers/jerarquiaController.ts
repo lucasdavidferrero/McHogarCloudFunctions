@@ -1,0 +1,1 @@
+/* Controller que retorna toda la jerarquía. Se usa mucho en la SPA de Quasar. */

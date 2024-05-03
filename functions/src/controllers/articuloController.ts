@@ -25,22 +25,12 @@ const obtenerArticulosPaginado = async (req: Request<Empty, Empty, Empty, obtene
     res.send(response)
 }
 
-const crearArticulo = async (req: Request<{}, {}, ReqBodyCrearArticulo>, res: Response) => {
-    
-    const articuloCreado = await ArticuloService.crearArticulo(req.body)
-    res.status(200).send({
-        status: 'OK',
-        data: articuloCreado
-    })
-}
-
 export {
-    obtenerArticulosPaginado,
-    crearArticulo
+    obtenerArticulosPaginado
 }
 
 
-export interface ReqBodyCrearArticulo {
+/* export interface ReqBodyCrearArticulo {
     ar_codigo: string
     ar_descri: string
     um_codigo: string
@@ -88,4 +78,4 @@ export interface ReqBodyCrearArticulo {
     esa_codigo: string
     ar_fechamodif: string | null
     ar_mesesgarantia: number
-}
+}*/
