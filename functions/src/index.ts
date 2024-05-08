@@ -1,4 +1,4 @@
-import {onRequest} from "firebase-functions/v2/https";
+import { onRequest } from "firebase-functions/v2/https";
 import { expressApp } from './express.js'
 // import * as logger from "firebase-functions/logger";
 

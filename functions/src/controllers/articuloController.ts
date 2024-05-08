@@ -10,6 +10,8 @@ interface obtenerArticulosPaginadoQueryString extends IQueryStringListadosPagina
     codFamilia?:    string
 }
 
+type RespuestaSatisfactoriaListadoArticulosCompletoPaginado = IGeneralResponseMcAPI<ArticuloResponse[]> 
+
 
 const obtenerArticulosPaginado = async (req: Request<Empty, Empty, Empty, obtenerArticulosPaginadoQueryString>, res: Response) => {
     let cantidadItemsPagina: number | undefined = undefined
@@ -17,9 +19,9 @@ const obtenerArticulosPaginado = async (req: Request<Empty, Empty, Empty, obtene
         cantidadItemsPagina = parseInt(req.query.cantidadItemsPagina)
     }
     const allArticulos = await ArticuloService.obtenerArticulosPaginado(cantidadItemsPagina, req.query.cursorId, req.query.codMarca, req.query.codCategoria, req.query.codRubro, req.query.codFamilia)
-    const response: IGeneralResponseMcAPI<ArticuloResponse[]> = {
+    const response: RespuestaSatisfactoriaListadoArticulosCompletoPaginado = {
         estado: 'satisfactorio',
-        mensaje: 'Listado artículos paginado (cursor-based pagination with prisma.js)',
+        mensaje: 'Listado artículos paginado (Paginación cursor-based de prisma-js)',
         data: allArticulos
     }
     res.send(response)
@@ -73,6 +75,8 @@ export {
     AR_ESDEVENTAS: string
     MO_CODIGO: string
     AR_FECHAALTA: string | null
+
+
     re1_codigo: string
     re2_codigo: string
     esa_codigo: string
