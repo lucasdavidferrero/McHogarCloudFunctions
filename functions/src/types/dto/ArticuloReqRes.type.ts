@@ -1,7 +1,7 @@
 export interface ArticuloResponse extends ArticuloAikonRes {
     aikon_estado_articulo: aikon_estado_articulo
     aikon_familia: aikon_familia
-    aikon_marca: aikon_marca | null
+    aikon_marca: aikon_marca // Cambiar también en Frontend
     aikon_referencia01: aikon_referencia01
     aikon_referencia02: aikon_referencia02
     articulo_precio: ArticuloPrecioRes | null

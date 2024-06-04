@@ -9,10 +9,10 @@ export class ArticuloService {
             skip: cursorId ? 1 : undefined,
             cursor: cursorId ? { aik_ar_codigo: cursorId} : undefined,
             where: {
-                aik_ma_codigo: typeof(codMarca) === 'string' ? codMarca : undefined,
+                aik_ma_codigo: (typeof(codMarca) === 'string' && codMarca.length) ? codMarca : undefined,
                 aik_re1_codigo: typeof(codCategoria) === 'string' && typeof(codRubro) === 'undefined' && typeof(codFamilia) === 'undefined' ? codCategoria : undefined,
                 aik_re2_codigo: typeof(codRubro) === 'string' && typeof(codFamilia) === 'undefined' ? codRubro : undefined,
-                aik_fa_codigo: typeof(codFamilia) === 'string' ? codFamilia : undefined
+                aik_fa_codigo: (typeof(codFamilia) === 'string' && codFamilia.length) ? codFamilia : undefined
             },
             orderBy: {
                 aik_ar_codigo: 'asc'

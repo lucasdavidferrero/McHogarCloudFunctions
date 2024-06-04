@@ -106,8 +106,8 @@ model aikon_articulo {
   aikon_familia           aikon_familia @relation(fields:[aik_fa_codigo], references:[aik_fa_codigo])
   aik_fa_codigo           String @db.VarChar(20)
 
-  aikon_marca             aikon_marca? @relation(fields: [aik_ma_codigo], references: [aik_ma_codigo])
-  aik_ma_codigo           String? @db.VarChar(3)
+  aikon_marca             aikon_marca @relation(fields: [aik_ma_codigo], references: [aik_ma_codigo])
+  aik_ma_codigo           String @db.VarChar(3)
 
   aikon_referencia01      aikon_referencia01 @relation(fields: [aik_re1_codigo], references: [aik_re1_codigo])
   aik_re1_codigo          String @db.VarChar(5)
@@ -130,7 +130,7 @@ model aikon_articulo {
 model articulo_web {
   aik_ar_codigo          String @db.VarChar(24) @id
   ar_url_img_principal   String? @db.VarChar(400)
-
+  ar_descripcion_web     String @db.VarChar(500) @default("")
   aikon_articulo         aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
 
   @@map("articulo_web")
