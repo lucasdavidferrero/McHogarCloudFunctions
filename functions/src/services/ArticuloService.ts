@@ -2,7 +2,7 @@ import prisma from '../prisma'
 import { ArticuloResponse } from '../types/dto/ArticuloReqRes.type'
 
 export class ArticuloService {
-    static async obtenerArticulosPaginado (cantidadItemsPagina: number = 10, cursorId?: string, codMarca?: string, codCategoria?: string, codRubro?: string, codFamilia?: string) {
+    static async obtenerArticulosPaginado (cantidadItemsPagina: number = 10, cursorId?: string, codMarca?: string, codCategoria?: string, codRubro?: string, codFamilia?: string, codArticulo?: string) {
         let aikon_articulos
         aikon_articulos = await prisma.aikon_articulo.findMany({
             take: cantidadItemsPagina,
@@ -12,7 +12,10 @@ export class ArticuloService {
                 aik_ma_codigo: (typeof(codMarca) === 'string' && codMarca.length) ? codMarca : undefined,
                 aik_re1_codigo: typeof(codCategoria) === 'string' && typeof(codRubro) === 'undefined' && typeof(codFamilia) === 'undefined' ? codCategoria : undefined,
                 aik_re2_codigo: typeof(codRubro) === 'string' && typeof(codFamilia) === 'undefined' ? codRubro : undefined,
-                aik_fa_codigo: (typeof(codFamilia) === 'string' && codFamilia.length) ? codFamilia : undefined
+                aik_fa_codigo: (typeof(codFamilia) === 'string' && codFamilia.length) ? codFamilia : undefined,
+                aik_ar_codigo: (typeof(codArticulo) === 'string' && codArticulo.length) ? {
+                    startsWith: codArticulo
+                } : undefined
             },
             orderBy: {
                 aik_ar_codigo: 'asc'
