@@ -1,6 +1,17 @@
 import prisma from '../prisma'
+import { Prisma } from '@prisma/client'
 import { ArticuloResponse } from '../types/dto/ArticuloReqRes.type'
 
+type articuloGrillaGetPayload = {
+    select: 
+    { 
+        aik_ar_codigo: true,
+        aik_ar_descri: true, 
+        articulo_web: true, 
+        aikon_familia: true, 
+        aikon_marca: true
+    }
+}
 export class ArticuloService {
     static async obtenerArticulosPaginado (cantidadItemsPagina: number = 10, cursorId?: string, codMarca?: string, codCategoria?: string, codRubro?: string, codFamilia?: string, codArticulo?: string) {
         let aikon_articulos
@@ -64,10 +75,39 @@ export class ArticuloService {
                 } : null,
                 articulo_web: art.articulo_web ? {
                     aik_ar_codigo: art.articulo_web.aik_ar_codigo,
-                    ar_url_img_principal : art.articulo_web.ar_url_img_principal
+                    ar_url_img_principal : art.articulo_web.ar_url_img_principal,
+                    ar_descripcion_web: art.articulo_web.ar_descripcion_web
                 } : null
             })
         })
         return articulosDto
     }
+
+    static async obtenerArticulosPaginadoGrillaModificarImagenes(cantidadItemsPagina: number = 10, cursorId?: string, codMarca?: string, codFamilia?: string, codArticulo?: string): Promise<Prisma.aikon_articuloGetPayload<articuloGrillaGetPayload>[]> {
+        let aikon_articulos
+        aikon_articulos = await prisma.aikon_articulo.findMany({
+            take: cantidadItemsPagina,
+            skip: cursorId ? 1 : undefined,
+            cursor: cursorId ? { aik_ar_codigo: cursorId} : undefined,
+            where: {
+                aik_ma_codigo: (typeof(codMarca) === 'string' && codMarca.length) ? codMarca : undefined,
+                aik_fa_codigo: (typeof(codFamilia) === 'string' && codFamilia.length) ? codFamilia : undefined,
+                aik_ar_codigo: (typeof(codArticulo) === 'string' && codArticulo.length) ? {
+                    startsWith: codArticulo
+                } : undefined
+            },
+            orderBy: {
+                aik_ar_codigo: 'asc'
+            },
+            select: { 
+                aik_ar_codigo: true,
+                aik_ar_descri: true, 
+                articulo_web: true, 
+                aikon_familia: true, 
+                aikon_marca: true
+            },
+        })
+        return aikon_articulos
+    }
+    
 }

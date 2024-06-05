@@ -7,6 +7,15 @@ export interface ArticuloResponse extends ArticuloAikonRes {
     articulo_precio: ArticuloPrecioRes | null
     articulo_web: ArticuloWebRes | null
 }
+
+export interface ArticuloGrillaImagen {
+    aik_ar_codigo:          string
+    aik_ar_descri:          string
+    articulo_web:           ArticuloWebRes
+    aikon_familia:          aikon_familia
+    aikon_marca:            aikon_marca
+}
+
 interface ArticuloAikonRes {
     aik_ar_codigo:          string
     aik_ar_descri:          string
@@ -67,4 +76,5 @@ export interface ArticuloPrecioRes {
 export interface ArticuloWebRes {
     aik_ar_codigo:          string
     ar_url_img_principal:   string | null
+    ar_descripcion_web:     string
 }

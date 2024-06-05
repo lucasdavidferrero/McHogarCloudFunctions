@@ -1,10 +1,11 @@
 import { Router } from "express"
-import { obtenerArticulosPaginado } from '../../controllers/articuloController'
+import { obtenerArticulosPaginado, obtenerArticulosPaginadoGrillaModificarImagenes } from '../../controllers/articuloController'
 
 const router = Router()
 
 router
     .get('/', obtenerArticulosPaginado)
+    .get('/grilla-imagenes/', obtenerArticulosPaginadoGrillaModificarImagenes)
 
 export default router
 
