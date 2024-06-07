@@ -1,6 +1,5 @@
 import { onRequest } from "firebase-functions/v2/https";
 import { expressApp } from './express.js'
-// import generateResizedImg from "./triggers/imgTrigger";
 import { initializeApp } from "firebase-admin/app";
 
 initializeApp();
@@ -14,4 +13,3 @@ initializeApp();
 
 exports.mchogar = onRequest(expressApp);
 // exports.generateResizedImgForProducts = generateResizedImg
-
