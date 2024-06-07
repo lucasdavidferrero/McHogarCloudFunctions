@@ -7,6 +7,9 @@
       "storage": {
         "mc-hogar-articulos": [
           "mc-hogar-articulos.appspot.com"
+        ],
+        "default": [
+          "cloudfunctions-express-templat.appsport.com"
         ]
       }
     }

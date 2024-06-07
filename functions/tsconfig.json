@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
@@ -9,11 +11,12 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
   },
   "compileOnSave": true,
   "include": [
-    "src"
+    "src","src/**/*.js"
   ],
   "ts-node": {
     "esm": true

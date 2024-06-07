@@ -18,16 +18,9 @@
       ]
     }
   ],
-  "storage": [
-    {
-      "target": "default",
-      "rules": "storage.default.rules"
-    },
-    {
-      "target": "mc-hogar-articulos",
-      "rules": "storage.articulos.rules"
-    }
-  ],
+  "storage": {
+    "rules": "storage.rules"
+  },
   "emulators": {
     "auth": {
       "port": 9099

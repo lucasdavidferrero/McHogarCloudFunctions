@@ -1,5 +1,9 @@
 import { onRequest } from "firebase-functions/v2/https";
 import { expressApp } from './express.js'
+// import generateResizedImg from "./triggers/imgTrigger";
+import { initializeApp } from "firebase-admin/app";
+
+initializeApp();
 // import * as logger from "firebase-functions/logger";
 
 // Start writing functions
@@ -9,4 +13,5 @@ import { expressApp } from './express.js'
 // https://blog.logrocket.com/building-rest-api-firebase-cloud-functions-typescript-firestore/
 
 exports.mchogar = onRequest(expressApp);
+// exports.generateResizedImgForProducts = generateResizedImg
 
