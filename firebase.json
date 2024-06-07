@@ -40,6 +40,6 @@
     "singleProjectMode": true
   },
   "extensions": {
-    "storage-resize-images": "firebase/storage-resize-images@0.2.5"
+    "storage-resize-articulos": "firebase/storage-resize-images@0.2.5"
   }
 }
