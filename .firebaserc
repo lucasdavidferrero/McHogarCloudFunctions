@@ -1,5 +1,16 @@
 {
   "projects": {
     "default": "cloudfunctions-express-templat"
-  }
+  },
+  "targets": {
+    "cloudfunctions-express-templat": {
+      "storage": {
+        "mc-hogar-articulos": [
+          "mc-hogar-articulos.appspot.com"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }
