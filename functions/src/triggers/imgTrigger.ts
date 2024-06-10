@@ -41,16 +41,21 @@ export default functions.region('southamerica-east1').storage.object().onFinaliz
 
     // Prefix '500x500_' to file name.
     const resizedFileName = `500x500_${fileName}`;
-    const resizedFilePath = path.join(path.dirname(filePath), resizedFileName);
+    const resizedFilePath = filePath + resizedFileName;
 
     // Upload the thumbnail.
-    const metadata = {contentType: 'image/webp'};
+    const metadata = { contentType: 'image/webp' };
     await bucket.file(resizedFilePath).save(resizedBuffer, {
         metadata: metadata,
     });
+    // TODO Hacer que se guarde en ek lugar adecuado. Eliminar imágen original. 
+    // TODO: Actualizar Firestore
+
     return logger.log("Resized image uploaded!");
 
 })
+
+
 /*
 export const generateResizedImg = onObjectFinalized({cpu: 2 }, (async(event:CloudEvent<StorageObjectData>) => {
     const fileBucket = event.data.bucket; // Storage bucket containing the file.
