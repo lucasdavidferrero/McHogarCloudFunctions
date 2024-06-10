@@ -4,6 +4,9 @@ import { getStorage } from "firebase-admin/storage";
 import { logger } from "firebase-functions/v2";
 import path from 'path'
 import sharp from "sharp"
+import { FieldValue } from "firebase-admin/firestore";
+import { firestore } from "../firebase";
+
 
 export const resizeImage = onObjectFinalized({
     region: 'southamerica-east1',
@@ -47,16 +50,37 @@ export const resizeImage = onObjectFinalized({
 
     // Upload the thumbnail.
     const metadata = { contentType: 'image/webp' };
-    await bucket.file(resizedFilePath).save(resizedBuffer, {
+    const resizedFile = bucket.file(resizedFilePath);
+    await resizedFile.save(resizedBuffer, {
         metadata: metadata,
     });
     logger.log("Resized image uploaded!");
 
+    // Generate download URL for the resized image
+    const resizedFileUrl = await resizedFile.getSignedUrl({
+        action: 'read',
+        expires: '03-01-2500' // Adjust expiration as needed
+    });
+    const resizedImageUrl = resizedFileUrl[0];
+    logger.log("Resized image URL generated!");
+
+    // Extract the article ID from the file path
+    const articleId = filePath.split('/')[2];
+    logger.log(`Extracted article ID: ${articleId}`);
+
+
+    // Reference to the Firestore document
+    const articleDocRef = firestore.collection('articulos').doc(articleId);
+
+    // Update the document, create if not exists
+    await articleDocRef.set({
+    carouselImages: FieldValue.arrayUnion(resizedImageUrl)
+    }, { merge: true });
+    logger.log('Firestore document updated!');
+
     // Optionally delete the original image.
     await bucket.file(filePath).delete();
     logger.log("Original image deleted!");
-
-    // TODO: Update Firestore if needed.
 
     return logger.log("Process of resizing image was run successfully!");
 }) 
