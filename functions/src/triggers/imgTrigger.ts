@@ -1,19 +1,21 @@
-/* import { CloudEvent } from "firebase-functions/v2";
-import { StorageObjectData } from "firebase-functions/v2/storage"; */
-import * as functions from "firebase-functions"
-// import { onObjectFinalized } from "firebase-functions/v2/storage";
-
+import { CloudEvent } from "firebase-functions/v2";
+import { StorageObjectData, onObjectFinalized } from "firebase-functions/v2/storage";
 import { getStorage } from "firebase-admin/storage";
 import { logger } from "firebase-functions/v2";
 import path from 'path'
 import sharp from "sharp"
-import { ObjectMetadata } from "firebase-functions/v1/storage";
 
-export default functions.region('southamerica-east1').storage.object().onFinalize(async (event: ObjectMetadata) => {
-
-    const fileBucket = event.bucket; // Storage bucket containing the file.
-    const filePath = event.name as string; // File path in the bucket.
-    const contentType = event.contentType as string; // File content type
+export const resizeImage = onObjectFinalized({
+    region: 'southamerica-east1',
+    // bucket: 'your-bucket-name', // specify your bucket name if needed
+    eventFilters: {
+        // Filter to only include images in the /articulos/img/ directory
+        name: 'articulos/img/**'
+    }
+}, async (event: CloudEvent<StorageObjectData>) => {
+    const fileBucket = event.data.bucket; // Storage bucket containing the file.
+    const filePath = event.data.name as string; // File path in the bucket.
+    const contentType = event.data.contentType as string; // File content type
 
     // Exit if this is triggered on a file that is not an image.
     if (contentType !== undefined && !contentType.startsWith("image/")) {
@@ -40,20 +42,24 @@ export default functions.region('southamerica-east1').storage.object().onFinaliz
     logger.log("Thumbnail created");
 
     // Prefix '500x500_' to file name.
-    const resizedFileName = `500x500_${fileName}`;
-    const resizedFilePath = filePath + resizedFileName;
+    const resizedFileName = `500x500_${path.basename(fileName, path.extname(fileName))}.webp`;
+    const resizedFilePath = path.join(path.dirname(filePath), resizedFileName).replace(/\\/g, '/');
 
     // Upload the thumbnail.
     const metadata = { contentType: 'image/webp' };
     await bucket.file(resizedFilePath).save(resizedBuffer, {
         metadata: metadata,
     });
-    // TODO Hacer que se guarde en ek lugar adecuado. Eliminar imágen original. 
-    // TODO: Actualizar Firestore
+    logger.log("Resized image uploaded!");
 
-    return logger.log("Resized image uploaded!");
+    // Optionally delete the original image.
+    await bucket.file(filePath).delete();
+    logger.log("Original image deleted!");
 
-})
+    // TODO: Update Firestore if needed.
+
+    return logger.log("Process of resizing image was run successfully!");
+}) 
 
 
 /*

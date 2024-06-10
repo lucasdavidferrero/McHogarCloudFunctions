@@ -1,4 +1,4 @@
-import generateResizedImg from './triggers/imgTrigger.js';
+import { resizeImage } from './triggers/imgTrigger.js';
 import { onRequest } from "firebase-functions/v2/https";
 import { expressApp } from './express.js'
 import { initializeApp } from "firebase-admin/app";
@@ -13,4 +13,4 @@ initializeApp();
 // https://blog.logrocket.com/building-rest-api-firebase-cloud-functions-typescript-firestore/
 
 exports.mchogarV1 = onRequest({ region: ['southamerica-east1'] }, expressApp);
-exports.imgresized = generateResizedImg
+exports.imgresizedV1 = resizeImage
