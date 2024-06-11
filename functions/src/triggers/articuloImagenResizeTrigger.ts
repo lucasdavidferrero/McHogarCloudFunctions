@@ -1,12 +1,12 @@
 import { CloudEvent } from "firebase-functions/v2";
 import { StorageObjectData, onObjectFinalized } from "firebase-functions/v2/storage";
-import { getStorage } from "firebase-admin/storage";
+import { getStorage, getDownloadURL } from "firebase-admin/storage";
 import { logger } from "firebase-functions/v2";
 import path from 'path'
 import sharp from "sharp"
 import { FieldValue } from "firebase-admin/firestore";
 import { firestore } from "../firebase";
-
+// https://firebase.google.com/docs/functions/manage-functions?gen=2nd
 
 export const resizeImage = onObjectFinalized({
     region: 'southamerica-east1',
@@ -14,7 +14,10 @@ export const resizeImage = onObjectFinalized({
     eventFilters: {
         // Filter to only include images in the /articulos/img/ directory
         name: 'articulos/img/**'
-    }
+    },
+    cpu: 2,
+    timeoutSeconds: 120,
+    memory: '512MiB'
 }, async (event: CloudEvent<StorageObjectData>) => {
     const fileBucket = event.data.bucket; // Storage bucket containing the file.
     const filePath = event.data.name as string; // File path in the bucket.
@@ -54,9 +57,13 @@ export const resizeImage = onObjectFinalized({
     await resizedFile.save(resizedBuffer, {
         metadata: metadata,
     });
+    // await resizedFile.makePublic()
     logger.log("Resized image uploaded!");
 
     // Generate download URL for the resized image
+    const publicURL = resizedFile.publicUrl()
+    const downloadURL = await getDownloadURL(resizedFile)
+    console.log(publicURL, downloadURL)
     const resizedFileUrl = await resizedFile.getSignedUrl({
         action: 'read',
         expires: '03-01-2500' // Adjust expiration as needed
@@ -74,7 +81,7 @@ export const resizeImage = onObjectFinalized({
 
     // Update the document, create if not exists
     await articleDocRef.set({
-    carouselImages: FieldValue.arrayUnion(resizedImageUrl)
+    imagenesCarousel: FieldValue.arrayUnion(resizedImageUrl)
     }, { merge: true });
     logger.log('Firestore document updated!');
 
