@@ -1,3 +1,4 @@
+import { ArticuloWebService } from './../services/ArticuloWebService';
 import { CloudEvent } from "firebase-functions/v2";
 import { StorageObjectData, onObjectFinalized } from "firebase-functions/v2/storage";
 import { getStorage, getDownloadURL } from "firebase-admin/storage";
@@ -57,18 +58,10 @@ export const resizeImage = onObjectFinalized({
     await resizedFile.save(resizedBuffer, {
         metadata: metadata,
     });
-    // await resizedFile.makePublic()
     logger.log("Resized image uploaded!");
 
     // Generate download URL for the resized image
-    const publicURL = resizedFile.publicUrl()
     const downloadURL = await getDownloadURL(resizedFile)
-    console.log(publicURL, downloadURL)
-    const resizedFileUrl = await resizedFile.getSignedUrl({
-        action: 'read',
-        expires: '03-01-2500' // Adjust expiration as needed
-    });
-    const resizedImageUrl = resizedFileUrl[0];
     logger.log("Resized image URL generated!");
 
     // Extract the article ID from the file path
@@ -80,9 +73,22 @@ export const resizeImage = onObjectFinalized({
     const articleDocRef = firestore.collection('articulos').doc(articleId);
 
     // Update the document, create if not exists
-    await articleDocRef.set({
-    imagenesCarousel: FieldValue.arrayUnion(resizedImageUrl)
-    }, { merge: true });
+    const IMG_PRINCIPAL_FOLDER_NAME = 'imagenPrincipal'
+    const filePathParts = filePath.split(path.sep)
+    if (filePathParts.includes(IMG_PRINCIPAL_FOLDER_NAME)) {
+        ArticuloWebService.saveUrlImagenPrincipal(articleId, downloadURL)
+        await articleDocRef.set({
+            imagenPrincipal: { URLdescarga: downloadURL, rutaArchivo: resizedFilePath }
+        }, { merge: true });
+    } else {
+        await articleDocRef.set({
+            imagenesCarousel: FieldValue.arrayUnion({
+                URLdescarga: downloadURL,
+                rutaArchivo: resizedFilePath
+            })
+        }, { merge: true });
+    }
+    
     logger.log('Firestore document updated!');
 
     // Optionally delete the original image.
