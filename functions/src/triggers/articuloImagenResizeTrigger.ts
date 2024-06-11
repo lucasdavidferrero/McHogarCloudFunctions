@@ -74,12 +74,13 @@ export const resizeImage = onObjectFinalized({
 
     // Update the document, create if not exists
     const IMG_PRINCIPAL_FOLDER_NAME = 'imagenPrincipal'
-    const filePathParts = filePath.split(path.sep)
+    const filePathParts = filePath.split('/')
     if (filePathParts.includes(IMG_PRINCIPAL_FOLDER_NAME)) {
-        ArticuloWebService.saveUrlImagenPrincipal(articleId, downloadURL)
-        await articleDocRef.set({
+        const task1 = ArticuloWebService.saveUrlImagenPrincipal(articleId, downloadURL)
+        const task2 = articleDocRef.set({
             imagenPrincipal: { URLdescarga: downloadURL, rutaArchivo: resizedFilePath }
         }, { merge: true });
+        await Promise.all([task1, task2])
     } else {
         await articleDocRef.set({
             imagenesCarousel: FieldValue.arrayUnion({
