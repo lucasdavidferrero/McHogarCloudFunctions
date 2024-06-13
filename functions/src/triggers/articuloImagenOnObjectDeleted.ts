@@ -1,11 +1,19 @@
-import { CloudEvent } from "firebase-functions/v2";
+import { CloudEvent, logger } from "firebase-functions/v2";
 import { onObjectDeleted, StorageObjectData } from "firebase-functions/v2/storage";
-import { logger } from "firebase-functions/v2";
 import { PREFIJO_IMAGEN_OPTIMIZADA, IMAGEN_PRINCIPAL_NOMBRE_CARPETA } from "../types/TriggerFunctions.type";
 import path from 'path'
 import { ArticuloWebService } from './../services/ArticuloWebService';
 import { firestore } from "../firebase";
-import { FieldValue } from 'firebase-admin/firestore';
+import { FieldValue, DocumentSnapshot } from 'firebase-admin/firestore';
+
+interface IArticuloDocData {
+    imagenesCarousel?: IArticuloImagen[]
+    imagenPrincipal?: IArticuloImagen
+  }
+  interface IArticuloImagen {
+    rutaArchivo: string
+    URLdescarga: string
+  }
 
 export const articuloImagenOnObjectDeleted = onObjectDeleted(
     {
@@ -44,10 +52,15 @@ export const articuloImagenOnObjectDeleted = onObjectDeleted(
             logger.log("Información de Imágen Principal eliminada correctamente.")
        } else {
             // Limpiar información imagen carousel.
-            const urlDescargaArticulo = (await ArticuloWebService.obtenerArticuloWebPorCodigoArticulo(codigoArticulo))?.ar_url_img_principal
-            await articuloDocRef.update({
-                imagenesCarousel: FieldValue.arrayRemove( { rutaArchivo: filePath, URLdescarga: urlDescargaArticulo } )
-            })
+            // Obtener document, eliminar entry del array, actualizar document.
+            const docSnap: DocumentSnapshot<IArticuloDocData> = await articuloDocRef.get()
+            if (docSnap.exists) {
+                const imagenesCarousel = docSnap.data()?.imagenesCarousel
+                const indexImagenEliminar = imagenesCarousel?.findIndex((img) => img.rutaArchivo === filePath)
+                if (indexImagenEliminar !== -1) {
+                    // TODO CONTINUAR ELIMIADNO...
+                }
+            }
             logger.log("Información de Imágen Carousel eliminada correctamente.")
        }
 
