@@ -85,7 +85,7 @@ export const resizeImage = onObjectFinalized({
         await articleDocRef.set({
             imagenesCarousel: FieldValue.arrayUnion({
                 URLdescarga: downloadURL,
-                rutaArchivo: resizedFilePath
+                rutaArchivo: resizedFilePath   
             })
         }, { merge: true });
     }
