@@ -54,11 +54,14 @@ export const articuloImagenOnObjectDeleted = onObjectDeleted(
             // Limpiar información imagen carousel.
             // Obtener document, eliminar entry del array, actualizar document.
             const docSnap: DocumentSnapshot<IArticuloDocData> = await articuloDocRef.get()
-            if (docSnap.exists) {
-                const imagenesCarousel = docSnap.data()?.imagenesCarousel
-                const indexImagenEliminar = imagenesCarousel?.findIndex((img) => img.rutaArchivo === filePath)
+            const documentData = docSnap.data()
+            if (docSnap.exists && documentData) {
+                const imagenesCarousel = Array.isArray(documentData.imagenesCarousel) ? documentData.imagenesCarousel : [] 
+                const indexImagenEliminar = imagenesCarousel.findIndex((img) => img.rutaArchivo === filePath)
                 if (indexImagenEliminar !== -1) {
-                    // TODO CONTINUAR ELIMIADNO...
+                    await articuloDocRef.update({
+                        imagenesCarousel: imagenesCarousel.splice(indexImagenEliminar, 1)
+                    })
                 }
             }
             logger.log("Información de Imágen Carousel eliminada correctamente.")
