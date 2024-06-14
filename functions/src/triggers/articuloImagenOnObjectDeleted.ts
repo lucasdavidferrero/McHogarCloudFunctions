@@ -56,11 +56,12 @@ export const articuloImagenOnObjectDeleted = onObjectDeleted(
             const docSnap: DocumentSnapshot<IArticuloDocData> = await articuloDocRef.get()
             const documentData = docSnap.data()
             if (docSnap.exists && documentData) {
-                const imagenesCarousel = Array.isArray(documentData.imagenesCarousel) ? documentData.imagenesCarousel : [] 
-                const indexImagenEliminar = imagenesCarousel.findIndex((img) => img.rutaArchivo === filePath)
+                const imagenesCarouselFromDocData = Array.isArray(documentData.imagenesCarousel) ? documentData.imagenesCarousel : [] 
+                const indexImagenEliminar = imagenesCarouselFromDocData.findIndex((img) => img.rutaArchivo === filePath)
                 if (indexImagenEliminar !== -1) {
+                    imagenesCarouselFromDocData.splice(indexImagenEliminar, 1)
                     await articuloDocRef.update({
-                        imagenesCarousel: imagenesCarousel.splice(indexImagenEliminar, 1)
+                        imagenesCarousel: imagenesCarouselFromDocData
                     })
                 }
             }
