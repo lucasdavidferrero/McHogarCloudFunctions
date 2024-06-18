@@ -1,19 +1,10 @@
 import { CloudEvent, logger } from "firebase-functions/v2";
 import { onObjectDeleted, StorageObjectData } from "firebase-functions/v2/storage";
-import { PREFIJO_IMAGEN_OPTIMIZADA, IMAGEN_PRINCIPAL_NOMBRE_CARPETA } from "../types/TriggerFunctions.type";
 import path from 'path'
 import { ArticuloWebService } from './../services/ArticuloWebService';
 import { firestore } from "../firebase";
 import { FieldValue, DocumentSnapshot } from 'firebase-admin/firestore';
-
-interface IArticuloDocData {
-    imagenesCarousel?: IArticuloImagen[]
-    imagenPrincipal?: IArticuloImagen
-  }
-  interface IArticuloImagen {
-    rutaArchivo: string
-    URLdescarga: string
-  }
+import { IArticuloDocData, PREFIJO_IMAGEN_OPTIMIZADA, IMAGEN_PRINCIPAL_NOMBRE_CARPETA } from "@mc-hogar/lib-core";
 
 export const articuloImagenOnObjectDeleted = onObjectDeleted(
     {
@@ -24,12 +15,7 @@ export const articuloImagenOnObjectDeleted = onObjectDeleted(
         }
     },
     async (event: CloudEvent<StorageObjectData>) => {
-        const time = event.time
-        const type = event.type
-        const object = event.data
         const filePath = event.data.name
-        console.log(`${time}; ${type}; ${filePath}`)
-        console.log(object)
 
         // Terminar proceso si la imágen que se eliminó, no es la optimizada.
         const fileName = path.basename(filePath);
@@ -67,7 +53,6 @@ export const articuloImagenOnObjectDeleted = onObjectDeleted(
             }
             logger.log("Información de Imágen Carousel eliminada correctamente.")
        }
-
        logger.log("Proceso de limpieza de información de imágen eliminada ejecutado correctamente.");
     }
 )
