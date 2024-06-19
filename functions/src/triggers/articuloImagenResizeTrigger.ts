@@ -31,7 +31,7 @@ export const resizeImage = onObjectFinalized({
         const contentType = event.data.contentType as string; // File content type
 
         // Check if the object created is a folder
-        if (contentType === 'application/x-www-form-urlencoded') {
+        if (contentType === 'application/octet-stream') {
             return logger.log("Object created is a folder. Skipping processing.");
         }
 
