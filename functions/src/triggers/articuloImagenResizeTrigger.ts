@@ -30,9 +30,15 @@ export const resizeImage = onObjectFinalized({
         const filePath = event.data.name as string; // File path in the bucket.
         const contentType = event.data.contentType as string; // File content type
 
+        // Check if the object created is a folder
+        if (contentType === 'application/x-www-form-urlencoded') {
+            return logger.log("Object created is a folder. Skipping processing.");
+        }
+
         // Exit if this is triggered on a file that is not an image.
-        if (contentType !== undefined && !contentType.startsWith("image/")) {
-            return logger.log("This is not an image.");
+        if (!contentType.startsWith("image/")) {
+            await getStorage().bucket(fileBucket).file(filePath).delete()
+            return logger.log("Deleted non-image file:", filePath);
         }
         // Exit if the image is already resized.
         const fileName = path.basename(filePath);
@@ -58,7 +64,7 @@ export const resizeImage = onObjectFinalized({
         const resizedFileName = `${GestorImagenesArticulos.PREFIJO_IMAGEN_OPTIMIZADA}${path.basename(fileName, path.extname(fileName))}.webp`;
         const resizedFilePath = path.join(path.dirname(filePath), resizedFileName).replace(/\\/g, '/');
 
-        // Upload the thumbnail.
+        // Upload resized and optimazed image.
         const metadata = { contentType: 'image/webp' };
         const resizedFile = bucket.file(resizedFilePath);
         await resizedFile.save(resizedBuffer, {
