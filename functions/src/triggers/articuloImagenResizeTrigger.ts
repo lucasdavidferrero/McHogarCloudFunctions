@@ -7,6 +7,7 @@ import path from 'path'
 import sharp from "sharp"
 import { FieldValue } from "firebase-admin/firestore";
 import { firestore } from "../firebase";
+import { GestorImagenesArticulos } from '@mc-hogar/lib-core';
 // https://firebase.google.com/docs/functions/manage-functions?gen=2nd
 
 export const resizeImage = onObjectFinalized({
@@ -14,7 +15,7 @@ export const resizeImage = onObjectFinalized({
     // bucket: 'your-bucket-name', // specify your bucket name if needed
     eventFilters: {
         // Filter to only include images in the /articulos/img/ directory
-        name: 'articulos/img/**'
+        name: GestorImagenesArticulos.RUTA_IMAGENES_ARTICULOS
     },
     cpu: 2,
     timeoutSeconds: 120,
@@ -28,9 +29,9 @@ export const resizeImage = onObjectFinalized({
     if (contentType !== undefined && !contentType.startsWith("image/")) {
         return logger.log("This is not an image.");
     }
-    // Exit if the image is already a thumbnail.
+    // Exit if the image is already resized.
     const fileName = path.basename(filePath);
-    if (fileName.startsWith("500x500_")) {
+    if (fileName.startsWith(GestorImagenesArticulos.PREFIJO_IMAGEN_OPTIMIZADA)) {
         return logger.log("Already resized.");
     }
 
@@ -46,10 +47,10 @@ export const resizeImage = onObjectFinalized({
         height: 500,
         withoutEnlargement: true,
     }).toFormat('webp', { quality: 70 }).toBuffer()
-    logger.log("Thumbnail created");
+    logger.log("Resized image created");
 
     // Prefix '500x500_' to file name.
-    const resizedFileName = `500x500_${path.basename(fileName, path.extname(fileName))}.webp`;
+    const resizedFileName = `${GestorImagenesArticulos.PREFIJO_IMAGEN_OPTIMIZADA}${path.basename(fileName, path.extname(fileName))}.webp`;
     const resizedFilePath = path.join(path.dirname(filePath), resizedFileName).replace(/\\/g, '/');
 
     // Upload the thumbnail.
@@ -68,14 +69,12 @@ export const resizeImage = onObjectFinalized({
     const articleId = filePath.split('/')[2];
     logger.log(`Extracted article ID: ${articleId}`);
 
-
     // Reference to the Firestore document
     const articleDocRef = firestore.collection('articulos').doc(articleId);
 
     // Update the document, create if not exists
-    const IMG_PRINCIPAL_FOLDER_NAME = 'imagenPrincipal'
     const filePathParts = filePath.split('/')
-    if (filePathParts.includes(IMG_PRINCIPAL_FOLDER_NAME)) {
+    if (filePathParts.includes(GestorImagenesArticulos.NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO)) {
         const task1 = ArticuloWebService.saveUrlImagenPrincipal(articleId, downloadURL)
         const task2 = articleDocRef.set({
             imagenPrincipal: { URLdescarga: downloadURL, rutaArchivo: resizedFilePath }
