@@ -12,6 +12,8 @@ import { LogErrorFirestoreService } from '../services/Firestore/LogErrorService'
 import { ErrorTypeDocumentNames } from '../services/Firestore/log-error-service.types'
 // https://firebase.google.com/docs/functions/manage-functions?gen=2nd
 
+let counter = 0;
+
 export const resizeImage = onObjectFinalized({
     region: 'southamerica-east1',
     // bucket: 'your-bucket-name', // specify your bucket name if needed
@@ -105,6 +107,11 @@ export const resizeImage = onObjectFinalized({
         // Optionally delete the original image.
         await bucket.file(filePath).delete();
         logger.log("Original image deleted!");
+
+        if (counter <= 0) {
+            counter +=1
+            throw new Error('Error de prueba...')
+        }
 
         return logger.log("Process of resizing image was run successfully!");
     } catch (error: any) {
