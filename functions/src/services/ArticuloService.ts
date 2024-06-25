@@ -83,12 +83,20 @@ export class ArticuloService {
         return articulosDto
     }
 
-    static async obtenerArticulosPaginadoGrillaModificarImagenes(cantidadItemsPagina: number = 10, cursorId?: string, codMarca?: string, codFamilia?: string, codArticulo?: string): Promise<Prisma.aikon_articuloGetPayload<articuloGrillaGetPayload>[]> {
-        let aikon_articulos
-        aikon_articulos = await prisma.aikon_articulo.findMany({
+    static async obtenerArticulosPaginadoGrillaModificarImagenes(cantidadItemsPagina: number = 10, cursorId?: string, codMarca?: string, codFamilia?: string, codArticulo?: string): Promise<{ articulos: Prisma.aikon_articuloGetPayload<articuloGrillaGetPayload>[], totalItems: number, nextCursor: string | null }> {
+        // Calcular el total de items que cumplen con los filtros
+        const totalItems = await prisma.aikon_articulo.count({
+            where: {
+                aik_ma_codigo: codMarca ? codMarca : undefined,
+                aik_fa_codigo: codFamilia ? codFamilia : undefined,
+                aik_ar_codigo: codArticulo ? { startsWith: codArticulo } : undefined
+            }
+        });
+        let articulos
+        articulos = await prisma.aikon_articulo.findMany({
             take: cantidadItemsPagina,
             skip: cursorId ? 1 : undefined,
-            cursor: cursorId ? { aik_ar_codigo: cursorId} : undefined,
+            cursor: cursorId ? { aik_ar_codigo: cursorId } : undefined,
             where: {
                 aik_ma_codigo: (typeof(codMarca) === 'string' && codMarca.length) ? codMarca : undefined,
                 aik_fa_codigo: (typeof(codFamilia) === 'string' && codFamilia.length) ? codFamilia : undefined,
@@ -107,7 +115,10 @@ export class ArticuloService {
                 aikon_marca: true
             },
         })
-        return aikon_articulos
+
+        // Calcular el nextCursor
+        const nextCursor = articulos.length === cantidadItemsPagina ? articulos[articulos.length - 1].aik_ar_codigo : null;
+        return { articulos, totalItems, nextCursor };
     }
     
 }

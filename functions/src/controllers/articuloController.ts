@@ -33,11 +33,13 @@ const obtenerArticulosPaginadoGrillaModificarImagenes = async (req: Request<Empt
     if (typeof(req.query.cantidadItemsPagina) === 'string' && !isNaN(parseInt(req.query.cantidadItemsPagina))) {
         cantidadItemsPagina = parseInt(req.query.cantidadItemsPagina)
     }
-    const allArticulos = await ArticuloService.obtenerArticulosPaginadoGrillaModificarImagenes(cantidadItemsPagina, req.query.cursorId, req.query.codMarca, req.query.codFamilia, req.query.codArticulo)
+    const { articulos, totalItems, nextCursor } = await ArticuloService.obtenerArticulosPaginadoGrillaModificarImagenes(cantidadItemsPagina, req.query.cursorId, req.query.codMarca, req.query.codFamilia, req.query.codArticulo)
     const response = {
         estado: 'satisfactorio',
         mensaje: 'Listado artículos grilla modificar imagenes paginado',
-        data: allArticulos
+        totalItems,
+        nextCursor,
+        data: articulos
     }
     res.send(response)
 }
