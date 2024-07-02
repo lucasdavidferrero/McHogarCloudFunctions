@@ -7,7 +7,7 @@ import path from 'path'
 import sharp from "sharp"
 import { FieldValue } from "firebase-admin/firestore";
 import { firestore } from "../firebase";
-import { GestorImagenesArticulos } from '@mc-hogar/lib-core';
+import { GestorArticuloImagen } from '@mc-hogar/lib-core';
 import { LogErrorFirestoreService } from '../services/Firestore/LogErrorService';
 import { ErrorTypeDocumentNames } from '../services/Firestore/log-error-service.types'
 // https://firebase.google.com/docs/functions/manage-functions?gen=2nd
@@ -17,7 +17,7 @@ export const resizeImage = onObjectFinalized({
     // bucket: 'your-bucket-name', // specify your bucket name if needed
     eventFilters: {
         // Filter to only include images in the /articulos/img/ directory
-        name: GestorImagenesArticulos.RUTA_IMAGENES_ARTICULOS
+        name: GestorArticuloImagen.RUTA_IMAGENES_ARTICULOS
     },
     labels: { GestorImagenesArticulo: ErrorTypeDocumentNames.ProcesoRedimencionarOptimizarImagenArticulo },
     cpu: 2,
@@ -42,7 +42,7 @@ export const resizeImage = onObjectFinalized({
         }
         // Exit if the image is already resized.
         const fileName = path.basename(filePath);
-        if (fileName.startsWith(GestorImagenesArticulos.PREFIJO_IMAGEN_OPTIMIZADA)) {
+        if (fileName.startsWith(GestorArticuloImagen.PREFIJO_IMAGEN_OPTIMIZADA)) {
             return logger.log("Already resized.");
         }
 
@@ -61,7 +61,7 @@ export const resizeImage = onObjectFinalized({
         logger.log("Resized image created");
 
         // Prefix '500x500_' to file name.
-        const resizedFileName = `${GestorImagenesArticulos.PREFIJO_IMAGEN_OPTIMIZADA}${path.basename(fileName, path.extname(fileName))}.webp`;
+        const resizedFileName = `${GestorArticuloImagen.PREFIJO_IMAGEN_OPTIMIZADA}${path.basename(fileName, path.extname(fileName))}.webp`;
         const resizedFilePath = path.join(path.dirname(filePath), resizedFileName).replace(/\\/g, '/');
 
         // Upload resized and optimazed image.
@@ -85,7 +85,7 @@ export const resizeImage = onObjectFinalized({
 
         // Update the document, create if not exists
         const filePathParts = filePath.split('/')
-        if (filePathParts.includes(GestorImagenesArticulos.NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO)) {
+        if (filePathParts.includes(GestorArticuloImagen.NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO)) {
             const task1 = ArticuloWebService.saveUrlImagenPrincipal(articleId, downloadURL)
             const task2 = articleDocRef.set({
                 imagenPrincipal: { URLdescarga: downloadURL, rutaArchivo: resizedFilePath }
