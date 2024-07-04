@@ -9,6 +9,7 @@ import { GestorArticuloImagen } from "@mc-hogar/lib-core";
 export const articuloImagenOnObjectDeleted = onObjectDeleted(
     {
         region: 'southamerica-east1',
+        bucket: 'mc-hogar-articulos', // specify your bucket name if needed
         eventFilters: {
             // Filtro para solo incluir imagenes en este directorio.
             name: GestorArticuloImagen.RUTA_IMAGENES_ARTICULOS

@@ -14,7 +14,7 @@ import { ErrorTypeDocumentNames } from '../services/Firestore/log-error-service.
 
 export const resizeImage = onObjectFinalized({
     region: 'southamerica-east1',
-    // bucket: 'your-bucket-name', // specify your bucket name if needed
+    bucket: 'mc-hogar-articulos' , // specify your bucket name if needed
     eventFilters: {
         // Filter to only include images in the /articulos/img/ directory
         name: GestorArticuloImagen.RUTA_IMAGENES_ARTICULOS
