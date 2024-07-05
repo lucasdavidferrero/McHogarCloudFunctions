@@ -7,9 +7,10 @@ import path from 'path'
 import sharp from "sharp"
 import { FieldValue } from "firebase-admin/firestore";
 import { firestore } from "../firebase";
-import { GestorArticuloImagen } from '@mc-hogar/lib-core';
 import { LogErrorFirestoreService } from '../services/Firestore/LogErrorService';
 import { ErrorTypeDocumentNames } from '../services/Firestore/log-error-service.types'
+import { NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO, PREFIJO_IMAGEN_OPTIMIZADA } from '@mc-hogar/gestion-articulos';
+
 // https://firebase.google.com/docs/functions/manage-functions?gen=2nd
 
 export const resizeImage = onObjectFinalized({
@@ -42,7 +43,7 @@ export const resizeImage = onObjectFinalized({
         }
         // Exit if the image is already resized.
         const fileName = path.basename(filePath);
-        if (fileName.startsWith(GestorArticuloImagen.PREFIJO_IMAGEN_OPTIMIZADA)) {
+        if (fileName.startsWith(PREFIJO_IMAGEN_OPTIMIZADA)) {
             return logger.log("Already resized.");
         }
 
@@ -61,7 +62,7 @@ export const resizeImage = onObjectFinalized({
         logger.log("Resized image created");
 
         // Prefix '500x500_' to file name.
-        const resizedFileName = `${GestorArticuloImagen.PREFIJO_IMAGEN_OPTIMIZADA}${path.basename(fileName, path.extname(fileName))}.webp`;
+        const resizedFileName = `${PREFIJO_IMAGEN_OPTIMIZADA}${path.basename(fileName, path.extname(fileName))}.webp`;
         const resizedFilePath = path.join(path.dirname(filePath), resizedFileName).replace(/\\/g, '/');
 
         // Upload resized and optimazed image.
@@ -85,7 +86,7 @@ export const resizeImage = onObjectFinalized({
 
         // Update the document, create if not exists
         const filePathParts = filePath.split('/')
-        if (filePathParts.includes(GestorArticuloImagen.NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO)) {
+        if (filePathParts.includes(NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO)) {
             const task1 = ArticuloWebService.saveUrlImagenPrincipal(articleId, downloadURL)
             const task2 = articleDocRef.set({
                 imagenPrincipal: { URLdescarga: downloadURL, rutaArchivo: resizedFilePath }

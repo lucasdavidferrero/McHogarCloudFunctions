@@ -16,6 +16,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@mc-hogar/gestion-articulos": "^1.1.0",
     "@mc-hogar/lib-core": "^1.2.0",
     "@prisma/client": "^5.9.1",
     "cors": "^2.8.5",

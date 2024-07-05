@@ -4,7 +4,7 @@ import path from 'path'
 import { ArticuloWebService } from './../services/ArticuloWebService';
 import { firestore } from "../firebase";
 import { FieldValue, DocumentSnapshot } from 'firebase-admin/firestore';
-import { GestorArticuloImagen } from "@mc-hogar/lib-core";
+import { RUTA_IMAGENES_ARTICULOS, PREFIJO_IMAGEN_OPTIMIZADA, NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO, IArticuloDocData } from '@mc-hogar/gestion-articulos'
 
 export const articuloImagenOnObjectDeleted = onObjectDeleted(
     {
@@ -12,7 +12,7 @@ export const articuloImagenOnObjectDeleted = onObjectDeleted(
         bucket: 'mc-hogar-articulos', // specify your bucket name if needed
         eventFilters: {
             // Filtro para solo incluir imagenes en este directorio.
-            name: GestorArticuloImagen.RUTA_IMAGENES_ARTICULOS
+            name: RUTA_IMAGENES_ARTICULOS
         }
     },
     async (event: CloudEvent<StorageObjectData>) => {
@@ -20,7 +20,7 @@ export const articuloImagenOnObjectDeleted = onObjectDeleted(
 
         // Terminar proceso si la imágen que se eliminó, no es la optimizada.
         const fileName = path.basename(filePath)
-        if (!fileName.startsWith(GestorArticuloImagen.PREFIJO_IMAGEN_OPTIMIZADA)) {
+        if (!fileName.startsWith(PREFIJO_IMAGEN_OPTIMIZADA)) {
             return logger.log("Imagen eliminada no esta optimizada. Terminar Trigger")
         }
 
@@ -29,7 +29,7 @@ export const articuloImagenOnObjectDeleted = onObjectDeleted(
 
         const filePathParts = filePath.split('/')
         const articuloDocRef = firestore.collection('articulos').doc(codigoArticulo)
-        if (filePathParts.includes(GestorArticuloImagen.NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO)) {
+        if (filePathParts.includes(NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO)) {
             // Limpiar información imagen principal.
             const task1 = ArticuloWebService.eliminarUrlImagenPrincipal(codigoArticulo)
             const task2 = articuloDocRef.update({
@@ -40,7 +40,7 @@ export const articuloImagenOnObjectDeleted = onObjectDeleted(
        } else {
             // Limpiar información imagen carousel.
             // Obtener document, eliminar entry del array, actualizar document.
-            const docSnap: DocumentSnapshot<GestorArticuloImagen.IArticuloDocData> = await articuloDocRef.get()
+            const docSnap: DocumentSnapshot<IArticuloDocData> = await articuloDocRef.get()
             const documentData = docSnap.data()
             if (docSnap.exists && documentData) {
                 const imagenesCarouselFromDocData = Array.isArray(documentData.imagenesCarousel) ? documentData.imagenesCarousel : [] 
