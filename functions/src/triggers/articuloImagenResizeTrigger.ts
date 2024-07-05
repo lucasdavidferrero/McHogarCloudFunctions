@@ -9,7 +9,7 @@ import { FieldValue } from "firebase-admin/firestore";
 import { firestore } from "../firebase";
 import { LogErrorFirestoreService } from '../services/Firestore/LogErrorService';
 import { ErrorTypeDocumentNames } from '../services/Firestore/log-error-service.types'
-import { NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO, PREFIJO_IMAGEN_OPTIMIZADA } from '@mc-hogar/gestion-articulos';
+import { NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO, PREFIJO_IMAGEN_OPTIMIZADA, RUTA_IMAGENES_ARTICULOS } from '@mc-hogar/gestion-articulos';
 
 // https://firebase.google.com/docs/functions/manage-functions?gen=2nd
 
@@ -18,7 +18,7 @@ export const resizeImage = onObjectFinalized({
     bucket: 'mc-hogar-articulos' , // specify your bucket name if needed
     eventFilters: {
         // Filter to only include images in the /articulos/img/ directory
-        name: GestorArticuloImagen.RUTA_IMAGENES_ARTICULOS
+        name: RUTA_IMAGENES_ARTICULOS
     },
     labels: { GestorImagenesArticulo: ErrorTypeDocumentNames.ProcesoRedimencionarOptimizarImagenArticulo },
     cpu: 2,
