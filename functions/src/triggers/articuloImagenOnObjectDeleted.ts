@@ -1,7 +1,7 @@
 import { CloudEvent, logger } from "firebase-functions/v2";
 import { onObjectDeleted, StorageObjectData } from "firebase-functions/v2/storage";
 import path from 'path';
-import { ArticuloWebService } from './../services/ArticuloWebService';
+import { ArticuloWebService } from '../QuasarApp/services/ArticuloWebService';
 import { firestore } from "../firebase";
 import { FieldValue, DocumentSnapshot } from 'firebase-admin/firestore';
 import { RUTA_IMAGENES_ARTICULOS, PREFIJO_IMAGEN_OPTIMIZADA, NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO, IArticuloDocData } from '@mc-hogar/gestion-articulos';

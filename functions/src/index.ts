@@ -1,9 +1,14 @@
 import { resizeImage } from './triggers/articuloImagenResizeTrigger.js';
-import { articuloImagenOnObjectDeleted } from './triggers/articuloImagenOnObjectDeleted.js'
+import { articuloImagenOnObjectDeleted } from './triggers/articuloImagenOnObjectDeleted.js';
 import { onRequest } from "firebase-functions/v2/https";
-import { expressApp } from './express.js'
+import { expressAppQuasar } from './expressQuasar.js'
+import { expressAppNuxt } from './expressNuxt.js';
+import { REGION_SOUTHAMERICA } from '@mc-hogar/app';
 
+// API CALLS
+exports.mchogarQuasar = onRequest({ region: [REGION_SOUTHAMERICA] }, expressAppQuasar)
+exports.mchogarNuxt = onRequest({ region: [REGION_SOUTHAMERICA] }, expressAppNuxt)
 
-exports.mchogarV1 = onRequest({ region: ['southamerica-east1'] }, expressApp);
+// TRIGGERS
 exports.imgresizedV1 = resizeImage
 exports.articuloImagenOnObjectDeletedTrigger = articuloImagenOnObjectDeleted

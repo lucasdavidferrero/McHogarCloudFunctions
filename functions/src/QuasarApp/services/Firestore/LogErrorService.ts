@@ -1,6 +1,6 @@
 import { FieldValue } from 'firebase-admin/firestore';
 import { LogErrorOptions, ErrorTypeDocumentNames } from './log-error-service.types';
-import { firestore } from "../../firebase";
+import { firestore } from "../../../firebase";
 import { logger } from "firebase-functions/v2";
 
 export class LogErrorFirestoreService {

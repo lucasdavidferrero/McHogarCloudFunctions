@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { obtenerArticulosPaginado, obtenerArticulosPaginadoGrillaModificarImagenes } from '../../controllers/articuloController'
+import { obtenerArticulosPaginado, obtenerArticulosPaginadoGrillaModificarImagenes } from '../controllers/articuloController'
 
 const router = Router()
 

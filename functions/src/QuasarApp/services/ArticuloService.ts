@@ -1,4 +1,4 @@
-import prisma from '../prisma'
+import prisma from '../../prisma'
 import { Prisma } from '@prisma/client'
 import { ArticuloResponse } from '../types/dto/ArticuloReqRes.type'
 

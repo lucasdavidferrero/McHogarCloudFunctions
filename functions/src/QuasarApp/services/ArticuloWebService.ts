@@ -1,4 +1,4 @@
-import prisma from '../prisma'
+import prisma from '../../prisma'
 export class ArticuloWebService {
     static async obtenerArticuloWebPorCodigoArticulo (aikArCodigo: string) {
      const articuloWeb = await prisma.articulo_web.findUnique({

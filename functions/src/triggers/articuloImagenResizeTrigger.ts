@@ -1,4 +1,4 @@
-import { ArticuloWebService } from './../services/ArticuloWebService';
+import { ArticuloWebService } from '../QuasarApp/services/ArticuloWebService';
 import { CloudEvent } from "firebase-functions/v2";
 import { StorageObjectData, onObjectFinalized } from "firebase-functions/v2/storage";
 import { getStorage, getDownloadURL } from "firebase-admin/storage";
@@ -7,8 +7,8 @@ import path from 'path'
 import sharp from "sharp"
 import { FieldValue } from "firebase-admin/firestore";
 import { firestore } from "../firebase";
-import { LogErrorFirestoreService } from '../services/Firestore/LogErrorService';
-import { ErrorTypeDocumentNames } from '../services/Firestore/log-error-service.types'
+import { LogErrorFirestoreService } from '../QuasarApp/services/Firestore/LogErrorService';
+import { ErrorTypeDocumentNames } from '../QuasarApp/services/Firestore/log-error-service.types'
 import { NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO, PREFIJO_IMAGEN_OPTIMIZADA, RUTA_IMAGENES_ARTICULOS } from '@mc-hogar/gestion-articulos';
 import { REGION_SOUTHAMERICA, STORAGE_BUCKET_NAMES } from '@mc-hogar/app'
 import { v4 as uuidv4 }  from 'uuid'
