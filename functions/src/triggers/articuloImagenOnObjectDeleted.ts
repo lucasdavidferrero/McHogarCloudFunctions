@@ -5,11 +5,12 @@ import { ArticuloWebService } from './../services/ArticuloWebService';
 import { firestore } from "../firebase";
 import { FieldValue, DocumentSnapshot } from 'firebase-admin/firestore';
 import { RUTA_IMAGENES_ARTICULOS, PREFIJO_IMAGEN_OPTIMIZADA, NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO, IArticuloDocData } from '@mc-hogar/gestion-articulos'
+import { REGION_SOUTHAMERICA, STORAGE_BUCKET_NAMES } from '@mc-hogar/app'
 
 export const articuloImagenOnObjectDeleted = onObjectDeleted(
     {
-        region: 'southamerica-east1',
-        bucket: 'mc-hogar-articulos', // specify your bucket name if needed
+        region: REGION_SOUTHAMERICA,
+        bucket: STORAGE_BUCKET_NAMES.GESTION_ARTICULO_IMAGEN, // specify your bucket name if needed
         eventFilters: {
             // Filtro para solo incluir imagenes en este directorio.
             name: RUTA_IMAGENES_ARTICULOS
