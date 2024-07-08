@@ -11,6 +11,7 @@ import { LogErrorFirestoreService } from '../services/Firestore/LogErrorService'
 import { ErrorTypeDocumentNames } from '../services/Firestore/log-error-service.types'
 import { NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO, PREFIJO_IMAGEN_OPTIMIZADA, RUTA_IMAGENES_ARTICULOS } from '@mc-hogar/gestion-articulos';
 import { REGION_SOUTHAMERICA, STORAGE_BUCKET_NAMES } from '@mc-hogar/app'
+import { v4 as uuidv4 }  from 'uuid'
 
 // https://firebase.google.com/docs/functions/manage-functions?gen=2nd
 
@@ -62,8 +63,9 @@ export const resizeImage = onObjectFinalized({
         }).toFormat('webp', { quality: 70 }).toBuffer()
         logger.log("Resized image created");
 
-        // Prefix '500x500_' to file name.
-        const resizedFileName = `${PREFIJO_IMAGEN_OPTIMIZADA}${path.basename(fileName, path.extname(fileName))}.webp`;
+        // Prefix '500x500_' to file name. Suffix an UUID
+        const uniqueSuffix = '_' + uuidv4()
+        const resizedFileName = `${PREFIJO_IMAGEN_OPTIMIZADA}${path.basename(fileName, path.extname(fileName))}${uniqueSuffix}.webp`;
         const resizedFilePath = path.join(path.dirname(filePath), resizedFileName).replace(/\\/g, '/');
 
         // Upload resized and optimazed image.
