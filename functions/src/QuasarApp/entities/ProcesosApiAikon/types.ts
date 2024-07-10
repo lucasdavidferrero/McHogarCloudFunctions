@@ -31,7 +31,7 @@ export interface AikonApiTokenInfo {
 }
 
 export interface ISesionTrabajo {
-    idToken: string
+    idSesion: string
     token: string
     fechaTokenGeneradoUnixTimestamp: number | null
     cuentaUrl: string

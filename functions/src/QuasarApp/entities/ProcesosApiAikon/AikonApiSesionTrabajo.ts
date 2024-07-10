@@ -2,15 +2,15 @@ import { AikonApiService } from "../../services/ProcesosApiAikon/AikonApiService
 import { ISesionTrabajo } from "./types";
 import { DateUtils } from "../../../utils/DateUtils";
 export class AikonApiSesionTrabajo implements ISesionTrabajo {
-    private _idToken = ''
+    private _idSesion = ''
     private _token = ''
     private _fechaTokenGeneradoUnixTimestamp: number | null = 0
     private _cuentaUrl = ''
     private _sesionIniciada = false
     constructor() {}
 
-    get idToken () {
-        return this._idToken
+    get idSesion () {
+        return this._idSesion
     }
     get token () {
         return this._token
@@ -28,7 +28,7 @@ export class AikonApiSesionTrabajo implements ISesionTrabajo {
     async iniciarSesionTrabajo(): Promise<void> {
         this._cuentaUrl = await AikonApiService.obtenerCuentaUrl()
         const tokenInfo = await AikonApiService.obtenerToken(this._cuentaUrl)
-        this._idToken = tokenInfo.ID
+        this._idSesion = tokenInfo.ID
         this._token = tokenInfo.Codigo
         this._fechaTokenGeneradoUnixTimestamp = DateUtils.convertDateStringAikonApiToUnixTimestamp(tokenInfo.Fecha)
         this._sesionIniciada = true

@@ -1,9 +1,11 @@
 import { AikonApiSesionTrabajo } from "../../entities/ProcesosApiAikon/AikonApiSesionTrabajo"
 export class ProcesoBase {
-    protected _sesionTrabajo: AikonApiSesionTrabajo
+    protected _sesionTrabajo: AikonApiSesionTrabajo | null = null
 
     constructor() {
-        this._sesionTrabajo = new AikonApiSesionTrabajo()
-        this._sesionTrabajo.iniciarSesionTrabajo()
+        (async () => {
+            this._sesionTrabajo = new AikonApiSesionTrabajo()
+            await this._sesionTrabajo.iniciarSesionTrabajo()
+        })()
     }
 }
