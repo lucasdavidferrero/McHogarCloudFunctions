@@ -5,7 +5,7 @@ export class AikonApiSesionTrabajo implements ISesionTrabajo {
     private _idSesion = ''
     private _token = ''
     private _fechaTokenGeneradoUnixTimestamp: number | null = 0
-    private _cuentaUrl = ''
+    private _cuentaUrl = ' https://aikon247.net/webapi/api/IS3/ObtenerToken'
     private _sesionIniciada = false
     constructor() {}
 
@@ -26,7 +26,7 @@ export class AikonApiSesionTrabajo implements ISesionTrabajo {
     }
 
     async iniciarSesionTrabajo(): Promise<void> {
-        this._cuentaUrl = await AikonApiService.obtenerCuentaUrl()
+        // this._cuentaUrl = await AikonApiService.obtenerCuentaUrl()
         const tokenInfo = await AikonApiService.obtenerToken(this._cuentaUrl)
         this._idSesion = tokenInfo.ID
         this._token = tokenInfo.Codigo

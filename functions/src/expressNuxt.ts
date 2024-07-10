@@ -1,6 +1,6 @@
 import express from "express"
 import cors from "cors"
-import { logData } from './utils/ejemploProcesoDiarioCompleto'
+import { ProcesoDiarioParaSincronizarArticulos } from "./QuasarApp/services/ProcesosApiAikon/ProcesoDiarioParaSincronizarArticulos"
 
 const expressAppNuxt = express()
 
@@ -9,8 +9,9 @@ expressAppNuxt.use(cors())
 expressAppNuxt.use(express.json())
 
 // Register Routes
-expressAppNuxt.use('/apiNuxt/v1/articulo', (req, res) => {
-    logData()
+expressAppNuxt.use('/apiNuxt/v1/articulo', async (req, res) => {
+    const procesoDiario = new ProcesoDiarioParaSincronizarArticulos()
+    await procesoDiario.iniciar()
     res.send({ nuxt: true })
 })
 
