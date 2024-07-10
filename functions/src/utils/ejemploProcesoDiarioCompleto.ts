@@ -1,6 +1,6 @@
-import datosEjemplo from './datosEjemplo.json' assert { type: 'json' }
+import { ejemploArray } from "./datosEjemploAPI";
 
-function convertDateString(dateString: string) {
+export function convertDateString(dateString: string) {
     if (!dateString) {
       return null;
     }
@@ -13,7 +13,7 @@ function convertDateString(dateString: string) {
     return null;
 }
 
-const updatedData = datosEjemplo.map((dato) => ({
+const updatedData = ejemploArray.map((dato) => ({
     ...dato,
     AR_FECHAMODIF: convertDateString(dato.AR_FECHAMODIF)
 }))

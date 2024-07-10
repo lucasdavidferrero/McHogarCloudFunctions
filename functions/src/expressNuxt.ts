@@ -10,7 +10,7 @@ expressAppNuxt.use(express.json())
 
 // Register Routes
 expressAppNuxt.use('/apiNuxt/v1/articulo', (req, res) => {
-    logData
+    logData()
     res.send({ nuxt: true })
 })
 
