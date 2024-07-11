@@ -98,6 +98,15 @@ export interface DtTablaArticuloData {
     AR_MESESGARANTIA: number
 }
 
+export interface DtTablaPrecioData {
+    lp_codigo: string
+    ar_codigo: string
+    ap_precio: number
+    Utilidad: number
+    ap_precio_iva: number
+    impuestoInterno: number
+}
+
 /* 
 		{
 			"ar_codigo": "00040141",
