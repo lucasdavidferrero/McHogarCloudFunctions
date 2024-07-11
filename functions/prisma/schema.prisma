@@ -94,14 +94,16 @@ model aikon_articulo {
   aik_ar_color            String @db.VarChar(20)
   aik_ar_peso             Float
   aik_ar_descria          String @db.VarChar(200)
-  aik_ar_fechamodif       DateTime?
   aik_ar_mesesgarantia    Float
   aik_ar_cosnet           Decimal @db.Decimal(15,2)
   aik_ap_utilidad         Decimal @db.Decimal(6, 2)
-  aik_impuesto_interno    Decimal @db.Decimal(6, 2)
+  aik_ap_impuesto_interno Decimal @db.Decimal(6, 2)
   aik_iva_porcen          Decimal @db.Decimal(6, 2)
   aik_stock_total         Int @db.UnsignedSmallInt
   aik_ap_precio_iva       Decimal @db.Decimal(15,2)
+  aik_ar_fechamodif       BigInt? @db.UnsignedBigInt // Unix Timestamp (number of milliseconds since the Unix epoch (January 1, 1970)
+  aik_ar_fecha_alta       BigInt? @db.UnsignedBigInt // Unix Timestamp (number of milliseconds since the Unix epoch (January 1, 1970)
+  
 
   aikon_familia           aikon_familia @relation(fields:[aik_fa_codigo], references:[aik_fa_codigo])
   aik_fa_codigo           String @db.VarChar(20)
@@ -128,10 +130,11 @@ model aikon_articulo {
 }
 
 model articulo_web {
-  aik_ar_codigo          String @db.VarChar(24) @id
-  ar_url_img_principal   String? @db.VarChar(400)
-  ar_descripcion_web     String @db.VarChar(500) @default("")
-  aikon_articulo         aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
+  aik_ar_codigo                           String @db.VarChar(24) @id
+  ar_url_img_principal                    String? @db.VarChar(400)
+  ar_descripcion_web                      String @db.VarChar(500) @default("")
+  ar_esa_codigo_ultima_fecha_modificado   BigInt? @db.UnsignedBigInt
+  aikon_articulo                          aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
 
   @@map("articulo_web")
 }
