@@ -1,8 +1,9 @@
 import { ProcesoBase } from "./ProcesoBase";
 import axios, { AxiosResponse } from 'axios'
-import { DtTablaArticulo, DtTablaPrecio } from "../../entities/ProcesosApiAikon/types";
+import { DtTablaArticulo, DtTablaPrecio, DtTablaPrecioDataEscencialSincronizacion, DtTablaArticuloDataEscencialSincronizacion, DtTablaArticuloPrecioEsencialSincronizacion  } from "../../entities/ProcesosApiAikon/types";
 import { Prisma } from "@prisma/client";
 import prisma from '../../../prisma'
+import { DateUtils } from "../../../utils/DateUtils";
 
 const LP_CODIGO_PRECIO_VENTA_PUBLICO = '01'
 
@@ -29,10 +30,48 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
             const dtTablaArticuloDataAikonApi = result[1].data.data
             const dtTablaPreciosDataAikonApi = result[2].data.data.filter( precio => precio.lp_codigo === LP_CODIGO_PRECIO_VENTA_PUBLICO )
 
+            const dtTablaArticuloDatosEscencialSincronizacion: DtTablaArticuloDataEscencialSincronizacion[] = dtTablaArticuloDataAikonApi.map(({ar_codigo, ar_descri, ar_memo, ar_alto, ar_ancho, ar_profundo, ar_color, ar_peso, ar_descria, AR_MESESGARANTIA, ar_cosnet, AR_IVAPORCEN, st_stock, AR_FECHAMODIF, AR_FECHAALTA, fa_codigo, MA_CODIGO, RE1_CODIGO, RE2_CODIGO, ESA_CODIGO}) => {
+                const fechaAltaConvertido = DateUtils.convertDateStringAikonApiToUnixTimestamp(String(AR_FECHAMODIF))
+                const fechaModificadoConvertido = DateUtils.convertDateStringAikonApiToUnixTimestamp(String(AR_FECHAALTA))
+                return {
+                    ar_codigo,
+                    ar_descri,
+                    ar_memo,
+                    ar_alto,
+                    ar_ancho,
+                    ar_profundo,
+                    ar_color,
+                    ar_peso,
+                    ar_descria,
+                    AR_MESESGARANTIA,
+                    ar_cosnet,
+                    AR_IVAPORCEN,
+                    st_stock,
+                    AR_FECHAMODIF: fechaAltaConvertido ,
+                    AR_FECHAALTA: fechaModificadoConvertido,
+                    fa_codigo,
+                    MA_CODIGO,
+                    RE1_CODIGO,
+                    RE2_CODIGO,
+                    ESA_CODIGO
+                }
+            })
+            const dtTablaPrecioDatosEscencialSincronizacion: DtTablaPrecioDataEscencialSincronizacion[] = dtTablaPreciosDataAikonApi.map(({ar_codigo, Utilidad, ap_precio_iva, impuestoInterno }) => {
+                return {
+                    ar_codigo,
+                    Utilidad,
+                    ap_precio_iva,
+                    impuestoInterno
+                }
+            })
+            const dtTablaMixed: DtTablaArticuloPrecioEsencialSincronizacion[] = [] // mixear ambos arrays.
+            dtTablaArticuloDatosEscencialSincronizacion.forEach((articulo) => {
+
+                //dtTablaMixed.push({...articulo})
+            })
+            
+
             // Quedarse con los campos necesarios para hacer la sincronización.
-            console.log(aikonArticulosMcHogar, dtTablaArticuloDataAikonApi, dtTablaPreciosDataAikonApi)
-            
-            
             // Convertir los valores en los campos necesarios.
             // Realizar comparación con la info de la base de datos. Existen 3 caminos: No se hace nada, se hace un UPDATE, se hace un CREATE.
         }

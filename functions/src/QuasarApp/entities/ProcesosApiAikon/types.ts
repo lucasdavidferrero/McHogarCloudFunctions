@@ -89,12 +89,12 @@ export interface DtTablaArticuloData {
     AR_ESDECOMPRAS: string
     AR_ESDEVENTAS: string
     MO_CODIGO: string
-    AR_FECHAALTA: string
+    AR_FECHAALTA: string | null
     RE1_CODIGO: string
     RE2_CODIGO: string
     ESA_CODIGO: string
     MA_CODIGO: string
-    AR_FECHAMODIF: string
+    AR_FECHAMODIF: string | null
     AR_MESESGARANTIA: number
 }
 export interface DtTablaArticuloDataEscencialSincronizacion {
@@ -111,8 +111,8 @@ export interface DtTablaArticuloDataEscencialSincronizacion {
     ar_cosnet: number
     AR_IVAPORCEN: number
     st_stock: number
-    AR_FECHAMODIF: string
-    AR_FECHAALTA: string
+    AR_FECHAMODIF: number | null
+    AR_FECHAALTA: number | null
     fa_codigo: string
     MA_CODIGO: string
     RE1_CODIGO: string
@@ -130,10 +130,12 @@ export interface DtTablaPrecioData {
     impuestoInterno: number
 }
 export interface DtTablaPrecioDataEscencialSincronizacion {
+    ar_codigo: string
     Utilidad: number
     ap_precio_iva: number
     impuestoInterno: number
 }
+export type DtTablaArticuloPrecioEsencialSincronizacion = DtTablaArticuloDataEscencialSincronizacion & DtTablaPrecioDataEscencialSincronizacion 
 
 /* 
 		{
