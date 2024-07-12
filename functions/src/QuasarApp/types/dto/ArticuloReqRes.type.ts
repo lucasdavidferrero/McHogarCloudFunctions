@@ -28,11 +28,11 @@ interface ArticuloAikonRes {
     aik_ar_color:           string
     aik_ar_peso:            number
     aik_ar_descria:         string
-    aik_ar_fechamodif:      string | null
+    aik_ar_fechamodif:      bigint | null
     aik_ar_mesesgarantia:   number
     aik_ar_cosnet:          number
     aik_ap_utilidad:        number
-    aik_impuesto_interno:   number
+    aik_ap_impuesto_interno:   number
     aik_iva_porcen:         number
     aik_stock_total:        number
     aik_ap_precio_iva:      number

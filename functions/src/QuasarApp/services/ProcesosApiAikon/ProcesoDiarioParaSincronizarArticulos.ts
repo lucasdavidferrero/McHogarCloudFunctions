@@ -1,6 +1,10 @@
 import { ProcesoBase } from "./ProcesoBase";
 import axios, { AxiosResponse } from 'axios'
-import { DtTablaArticulo, DtTablaPrecioData } from "../../entities/ProcesosApiAikon/types";
+import { DtTablaArticulo, DtTablaPrecio } from "../../entities/ProcesosApiAikon/types";
+import { Prisma } from "@prisma/client";
+import prisma from '../../../prisma'
+
+const LP_CODIGO_PRECIO_VENTA_PUBLICO = '01'
 
 /**
  * Proceso que será responsable de obtener información de los artículos y precios provenientes del sistema Aikon (a través de su API). Obtener
@@ -17,12 +21,46 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
         // [x] Obtener información en DtTabla.
         if (this.sesionTrabajo) {
             const responseDtTablaArticulo: Promise<AxiosResponse<DtTablaArticulo>> = axios.post('https://aikon247.net/webapi/api/IS3/DtTabla', { cuenta: '230', token: this.sesionTrabajo.token, tabla: 'articulo' })
-            const responseDtTablaPrecios: Promise<AxiosResponse<DtTablaPrecioData>> = axios.post('https://aikon247.net/webapi/api/IS3/DtTabla', { cuenta: '230', token: this.sesionTrabajo.token, tabla: 'precios' })
-            const result = await Promise.all([responseDtTablaArticulo, responseDtTablaPrecios])
-            console.log(result)
-            // Quedarse so lo con los campos necesarios para hacer la sincronización.
+            const responseDtTablaPrecios: Promise<AxiosResponse<DtTablaPrecio>> = axios.post('https://aikon247.net/webapi/api/IS3/DtTabla', { cuenta: '230', token: this.sesionTrabajo.token, tabla: 'precios' })
+            const allArticulosRecords = prisma.aikon_articulo.findMany()
+            const result = await Promise.all([allArticulosRecords, responseDtTablaArticulo, responseDtTablaPrecios])
+
+            const aikonArticulosMcHogar: AikonArticuloPrismaSchema[] = result[0]
+            const dtTablaArticuloDataAikonApi = result[1].data.data
+            const dtTablaPreciosDataAikonApi = result[2].data.data.filter( precio => precio.lp_codigo === LP_CODIGO_PRECIO_VENTA_PUBLICO )
+
+            // Quedarse con los campos necesarios para hacer la sincronización.
+            console.log(aikonArticulosMcHogar, dtTablaArticuloDataAikonApi, dtTablaPreciosDataAikonApi)
+            
+            
             // Convertir los valores en los campos necesarios.
             // Realizar comparación con la info de la base de datos. Existen 3 caminos: No se hace nada, se hace un UPDATE, se hace un CREATE.
         }
     }
+}
+
+interface AikonArticuloPrismaSchema {
+    aik_ar_codigo: string
+    aik_ar_descri: string
+    aik_ar_memo: string
+    aik_ar_alto: number
+    aik_ar_ancho: number
+    aik_ar_profundo: number
+    aik_ar_color: string
+    aik_ar_peso: number
+    aik_ar_descria: string
+    aik_ar_mesesgarantia: number
+    aik_ar_cosnet: Prisma.Decimal
+    aik_ap_utilidad: Prisma.Decimal // lista precio
+    aik_ap_impuesto_interno: Prisma.Decimal // lista precio
+    aik_iva_porcen: Prisma.Decimal
+    aik_stock_total: number
+    aik_ap_precio_iva: Prisma.Decimal // lista precio
+    aik_ar_fechamodif: bigint | null
+    aik_ar_fecha_alta: bigint | null
+    aik_fa_codigo: string
+    aik_ma_codigo: string
+    aik_re1_codigo: string
+    aik_re2_codigo: string
+    aik_esa_codigo: string
 }

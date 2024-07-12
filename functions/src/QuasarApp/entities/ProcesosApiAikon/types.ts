@@ -97,11 +97,39 @@ export interface DtTablaArticuloData {
     AR_FECHAMODIF: string
     AR_MESESGARANTIA: number
 }
+export interface DtTablaArticuloDataEscencialSincronizacion {
+    ar_codigo: string
+    ar_descri: string
+    ar_memo: string
+    ar_alto: number
+    ar_ancho: number
+    ar_profundo: number
+    ar_color: string
+    ar_peso: number
+    ar_descria: string
+    AR_MESESGARANTIA: number
+    ar_cosnet: number
+    AR_IVAPORCEN: number
+    st_stock: number
+    AR_FECHAMODIF: string
+    AR_FECHAALTA: string
+    fa_codigo: string
+    MA_CODIGO: string
+    RE1_CODIGO: string
+    RE2_CODIGO: string
+    ESA_CODIGO: string  
+}
 
+export type DtTablaPrecio = DtTabla<DtTablaPrecioData>
 export interface DtTablaPrecioData {
     lp_codigo: string
     ar_codigo: string
     ap_precio: number
+    Utilidad: number
+    ap_precio_iva: number
+    impuestoInterno: number
+}
+export interface DtTablaPrecioDataEscencialSincronizacion {
     Utilidad: number
     ap_precio_iva: number
     impuestoInterno: number
