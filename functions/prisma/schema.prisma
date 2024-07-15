@@ -86,6 +86,7 @@ model aikon_estado_articulo {
 
 model aikon_articulo {
   aik_ar_codigo           String  @db.VarChar(24) @id
+  aik_ar_publicarweb      String @db.VarChar(1) @default("")
   aik_ar_descri           String @db.VarChar(200)
   aik_ar_memo             String @db.VarChar(4000)
   aik_ar_alto             Float
@@ -130,11 +131,12 @@ model aikon_articulo {
 }
 
 model articulo_web {
-  aik_ar_codigo                           String @db.VarChar(24) @id
-  ar_url_img_principal                    String? @db.VarChar(400)
-  ar_descripcion_web                      String @db.VarChar(500) @default("")
-  ar_esa_codigo_ultima_fecha_modificado   BigInt? @db.UnsignedBigInt
-  aikon_articulo                          aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
+  aik_ar_codigo                             String @db.VarChar(24) @id
+  ar_url_img_principal                      String? @db.VarChar(400)
+  ar_descripcion_web                        String @db.VarChar(500) @default("")
+  ar_esa_codigo_ultima_fecha_modificado     BigInt? @db.UnsignedBigInt
+  ar_publicarweb_ultima_fecha_modificado    BigInt? @db.UnsignedBigInt
+  aikon_articulo                            aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
 
   @@map("articulo_web")
 }
