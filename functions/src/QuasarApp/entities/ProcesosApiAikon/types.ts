@@ -32,7 +32,7 @@ export interface AikonApiTokenInfo {
 
 export interface ISesionTrabajo {
     idSesion: string
-    token: string
+    token: string | null
     fechaTokenGeneradoUnixTimestamp: number | null
     cuentaUrl: string
     sesionIniciada: boolean

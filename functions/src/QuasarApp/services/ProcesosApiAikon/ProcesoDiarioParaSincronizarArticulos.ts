@@ -122,9 +122,9 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
             // Si el artículo esta en API pero no en MySQL -> CREATE.
             // Si el artículo no esta en API pero sí en MySQL -> UPDATE [ESA_CODIGO y AR_PUBLICARWEB ultima_fecha_modificacion_esa_codigo, ultima_fecha_modificación_ar_publicarweb].[ARTICULO_NO_HABILITADO]
             // Si el artículo esta en la API y esta en MySQL -> UPDATE (únicamente para los artículos que tienen fecha modificación distintas).
-            const prismaCreate = []
-            const prismaUpdatesNoHabilitados = []
-            const prismaUpdatesHabilitados = []
+            const prismaCreate: Promise<any>[] = []
+            const prismaUpdatesNoHabilitados: Promise<any>[] = []
+            const prismaUpdatesHabilitados: Promise<any>[] = []
             listadoArticulosConPreciosConvertidoFromAPI.forEach(articuloAikonApi => {
                 // Los artículos que están en la API pero no en MySQL -> CREATE.
                 const indexArticuloPrecio = aikonArticulosMcHogar.findIndex(articuloPrecio => {
@@ -211,8 +211,12 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
             })
 
             // Ejecutar UPDATE y CREATE.
-            
+            const resultCreations = await Promise.all(prismaCreate)
+            const resultUpdateHabilitados = await Promise.all(prismaUpdatesHabilitados)
+            const resultUpdateNoHabilitados = await Promise.all(prismaUpdatesNoHabilitados)
 
+            console.log(resultCreations, resultUpdateHabilitados, resultUpdateNoHabilitados)
+            console.log('Proceso de sync finalizado correctamente...')
         }
     }
 }
