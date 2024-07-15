@@ -64,16 +64,34 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
                     impuestoInterno
                 }
             })
-            const dtTablaMixed: DtTablaArticuloPrecioEsencialSincronizacion[] = [] // mixear ambos arrays.
-            dtTablaArticuloDatosEscencialSincronizacion.forEach((articulo) => {
 
-                //dtTablaMixed.push({...articulo})
+            const preciosIndex: { [key: string]: DtTablaPrecioDataEscencialSincronizacion } = {};
+                dtTablaPrecioDatosEscencialSincronizacion.forEach(precio => {
+                preciosIndex[precio.ar_codigo] = precio;
+            });
+
+            const listadoArticulosConPrecios: DtTablaArticuloPrecioEsencialSincronizacion[] = dtTablaArticuloDatosEscencialSincronizacion.map(articulo => {
+                const precio = preciosIndex[articulo.ar_codigo]
+                return {
+                    ...articulo,
+                    ...precio
+                }
             })
-            
+            // Convertir los valores en los campos necesarios.[skip for now]
 
-            // Quedarse con los campos necesarios para hacer la sincronización.
-            // Convertir los valores en los campos necesarios.
-            // Realizar comparación con la info de la base de datos. Existen 3 caminos: No se hace nada, se hace un UPDATE, se hace un CREATE.
+            // Realizar comparación con la info de la base de datos. Existen 3 caminos: No se hace nada, se hace un UPDATE, se hace un CREATE. Se usa fecha actualización
+
+            // Si el artículo esta en API pero no en MySQL -> CREATE.
+            // Si el artículo no esta en API pero sí en MySQL -> UPDATE [ESA_CODIGO y AR_PUBLICARWEB ultima_fecha_modificacion_esa_codigo, ultima_fecha_modificación_ar_publicarweb].[ARTICULO_NO_HABILITADO]
+            // Si el artículo esta en la API y esta en MySQL -> UPDATE (únicamente para los artículos que tienen fecha modificación distintas).
+
+            // Convertir estructura de artículo a la de prisma. Ejecutar UPDATE y CREATE.
+
+
+            if (aikonArticulosMcHogar) {
+
+            }    
+
         }
     }
 }
