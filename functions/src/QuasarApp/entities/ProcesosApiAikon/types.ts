@@ -137,6 +137,14 @@ export interface DtTablaPrecioDataEscencialSincronizacion {
 }
 export type DtTablaArticuloPrecioEsencialSincronizacion = DtTablaArticuloDataEscencialSincronizacion & DtTablaPrecioDataEscencialSincronizacion 
 
+export interface DtTablaDataArticuloNoHabilitado {
+    ESA_CODIGO: string,
+    AR_PUBLICARWEB: 'S' | 'N'
+    AR_CODIGO: string
+    AR_DESCRI: string
+}
+export type DtTablaArticuloNoHabilitado = DtTabla<DtTablaDataArticuloNoHabilitado>
+
 /* 
 		{
 			"ar_codigo": "00040141",
