@@ -1,7 +1,7 @@
 import { ProcesoBase } from "./ProcesoBase";
 import axios, { AxiosResponse } from 'axios'
 import { DtTablaArticulo, DtTablaPrecio, DtTablaPrecioDataEscencialSincronizacion, DtTablaArticuloDataEscencialSincronizacion, DtTablaArticuloPrecioEsencialSincronizacion, DtTablaArticuloNoHabilitado, DtTablaDataArticuloNoHabilitado  } from "../../entities/ProcesosApiAikon/types";
-import { Prisma } from "@prisma/client";
+import { aikon_articulo, Prisma, PrismaClient, PrismaPromise } from "@prisma/client";
 import prisma from '../../../prisma'
 import { DateUtils } from "../../../utils/DateUtils";
 
@@ -122,19 +122,18 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
             // Si el artículo esta en API pero no en MySQL -> CREATE.
             // Si el artículo no esta en API pero sí en MySQL -> UPDATE [ESA_CODIGO y AR_PUBLICARWEB ultima_fecha_modificacion_esa_codigo, ultima_fecha_modificación_ar_publicarweb].[ARTICULO_NO_HABILITADO]
             // Si el artículo esta en la API y esta en MySQL -> UPDATE (únicamente para los artículos que tienen fecha modificación distintas).
-            const prismaCreate: Promise<any>[] = []
-            const prismaUpdatesNoHabilitados: Promise<any>[] = []
-            const prismaUpdatesHabilitados: Promise<any>[] = []
+            const prismaCreate: Prisma.PrismaPromise<aikon_articulo>[] = []
+            const prismaUpdatesNoHabilitados: Prisma.PrismaPromise<aikon_articulo>[] = []
+            const prismaUpdatesHabilitados: Prisma.PrismaPromise<aikon_articulo>[] = []
 
-            await prisma.$transaction( async(tx) => {
-                listadoArticulosConPreciosConvertidoFromAPI.forEach(articuloAikonApi => {
-                    // Los artículos que están en la API pero no en MySQL -> CREATE.
-                    const indexArticuloPrecio = aikonArticulosMcHogar.findIndex(articuloPrecio => {
-                        return articuloPrecio.aik_ar_codigo === articuloAikonApi.aik_ar_codigo // [hacerlo con índices. es más rápido]
-                    })
-                    if (indexArticuloPrecio === -1) {
-                        const prismaCreateArticulo = tx.aikon_articulo.create({
-                            data: {
+            listadoArticulosConPreciosConvertidoFromAPI.forEach(articuloAikonApi => {
+                // Los artículos que están en la API pero no en MySQL -> CREATE.
+                const indexArticuloPrecio = aikonArticulosMcHogar.findIndex(articuloPrecio => {
+                    return articuloPrecio.aik_ar_codigo === articuloAikonApi.aik_ar_codigo // [hacerlo con índices. es más rápido]
+                })
+                if (indexArticuloPrecio === -1) {
+                    const prismaCreateArticulo = prisma.aikon_articulo.create({
+                        data: {
                                 aik_ar_codigo: articuloAikonApi.aik_ar_codigo,
                                 aik_ar_publicarweb: 'S',
                                 aik_ar_descri: articuloAikonApi.aik_ar_descri,
@@ -161,16 +160,16 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
                                 aik_esa_codigo: articuloAikonApi.aik_esa_codigo,
                             }
                         })
-                        prismaCreate.push(prismaCreateArticulo)
-                    }
-                })
+                    prismaCreate.push(prismaCreateArticulo)
+                }
+            })
     
                 aikonArticulosMcHogar.forEach(articuloMcHogar => {
                     const articuloApiAikon = listadoArticulosConPreciosConvertidoFromAPIIndex[articuloMcHogar.aik_ar_codigo]
                     const articuloNoHabilitadoApiAikon = dtTablaArticulosNoHabilitadosAikonApiIndex[articuloMcHogar.aik_ar_codigo]
                     if(!articuloApiAikon) {
                         // Artículo se encuentra en DB pero no en la API Aikon.
-                        const updateArticuloNoHabilitado = tx.aikon_articulo.update({
+                        const updateArticuloNoHabilitado = prisma.aikon_articulo.update({
                             where: { aik_ar_codigo: articuloMcHogar.aik_ar_codigo },
                             data: { aik_esa_codigo: articuloNoHabilitadoApiAikon.ESA_CODIGO, aik_ar_publicarweb: articuloNoHabilitadoApiAikon.AR_PUBLICARWEB }
                         })
@@ -179,7 +178,7 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
                         // Artículo se encuentra en API y en la DB Mysql.
                         if (articuloApiAikon.aik_ar_fechamodif !== null && BigInt(articuloApiAikon.aik_ar_fechamodif) !== articuloMcHogar.aik_ar_fechamodif) {
                             // Sincronizar artículos únicamente si las fechas modificadas son distintas. Se convierte a BigInt la fecha de la API para que en la comparación sea compatible los tipos de datos.
-                            const updateArticuloHabilitado = tx.aikon_articulo.update({
+                            const updateArticuloHabilitado = prisma.aikon_articulo.update({
                                 where: { aik_ar_codigo: articuloMcHogar.aik_ar_codigo },
                                 data: {
                                     aik_ar_publicarweb: 'S',
@@ -212,13 +211,15 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
                     }
     
                 })
+            
+                const operacionesConcatenadas = prismaCreate.concat(prismaUpdatesHabilitados).concat(prismaUpdatesNoHabilitados)
+                await prisma.$transaction(operacionesConcatenadas)
 
-                const resultCreations = await Promise.all(prismaCreate)
-                const resultUpdateHabilitados = await Promise.all(prismaUpdatesHabilitados)
-                const resultUpdateNoHabilitados = await Promise.all(prismaUpdatesNoHabilitados)
-                console.log(resultCreations, resultUpdateHabilitados, resultUpdateNoHabilitados)
+                // const resultCreations = await Promise.all(prismaCreate)
+                // const resultUpdateHabilitados = await Promise.all(prismaUpdatesHabilitados)
+                // const resultUpdateNoHabilitados = await Promise.all(prismaUpdatesNoHabilitados)
+                // console.log(resultCreations, resultUpdateHabilitados, resultUpdateNoHabilitados)
                 console.log('Proceso de sync finalizado correctamente...')
-            })
         }
     }
 }
