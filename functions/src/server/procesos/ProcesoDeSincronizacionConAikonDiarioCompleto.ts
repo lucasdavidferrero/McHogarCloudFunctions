@@ -11,9 +11,19 @@ import { SyncArticuloPrecioService } from '../servicios/SyncArticuloPrecioServic
     [ x ] Almacenar información de la ejecución satisfactoria del proceso. (Tiempo de ejecución, Estado: Finalizado, Error: false, FechaHoraFin)
     [ x ] En caso de error. Almacenar error. Actualizar información de ejecución de proceso. (Estado: Finalizado, Error: true, FechaHoraFin). Crear una fila en MySQL o almacenar error en Firestore.
 */
-export async function procesoDiarioCompletoParaSincronizarArticulosTransaccion() {
+async function procesoDiarioCompletoParaSincronizarArticulosTransaccion() {
     /* TODO Obtener Token... */
     const token = '12345678910'
     await SyncArticuloPrecioService.prepararSincronizacion(token);
 }
 
+export async function procesoDiarioCompletoParaSincronizarArticulos() {
+    try {
+        // Info de inicio de ejecución del proceso.
+        procesoDiarioCompletoParaSincronizarArticulosTransaccion()
+    } catch (e) {
+        console.error(e)
+    } finally {
+        // Info de fin de ejecución del proceso.
+    }
+}
