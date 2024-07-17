@@ -1,11 +1,11 @@
 import { ProcesoBase } from "./ProcesoBase";
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios';
 import { DtTablaArticulo, DtTablaPrecio, DtTablaPrecioDataEscencialSincronizacion, DtTablaArticuloDataEscencialSincronizacion, DtTablaArticuloPrecioEsencialSincronizacion, DtTablaArticuloNoHabilitado, DtTablaDataArticuloNoHabilitado  } from "../../entities/ProcesosApiAikon/types";
-import { aikon_articulo, Prisma, PrismaClient, PrismaPromise } from "@prisma/client";
-import prisma from '../../../prisma'
+import { aikon_articulo, Prisma } from "@prisma/client";
+import prisma from '../../../prisma';
 import { DateUtils } from "../../../utils/DateUtils";
 
-const LP_CODIGO_PRECIO_VENTA_PUBLICO = '01'
+const LP_CODIGO_PRECIO_VENTA_PUBLICO = '01';
 
 /**
  * Proceso que será responsable de obtener información de los artículos y precios provenientes del sistema Aikon (a través de su API). Obtener
@@ -58,6 +58,7 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
                     ESA_CODIGO
                 }
             })
+
             const dtTablaPrecioDatosEscencialSincronizacion: DtTablaPrecioDataEscencialSincronizacion[] = dtTablaPreciosDataAikonApi.map(({ar_codigo, Utilidad, ap_precio_iva, impuestoInterno }) => {
                 return {
                     ar_codigo,
@@ -129,7 +130,7 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
             listadoArticulosConPreciosConvertidoFromAPI.forEach(articuloAikonApi => {
                 // Los artículos que están en la API pero no en MySQL -> CREATE.
                 const indexArticuloPrecio = aikonArticulosMcHogar.findIndex(articuloPrecio => {
-                    return articuloPrecio.aik_ar_codigo === articuloAikonApi.aik_ar_codigo // [hacerlo con índices. es más rápido]
+                    return articuloPrecio.aik_ar_codigo === articuloAikonApi.aik_ar_codigo // [TODO hacerlo con índices. es más rápido]
                 })
                 if (indexArticuloPrecio === -1) {
                     const prismaCreateArticulo = prisma.aikon_articulo.create({
@@ -213,12 +214,9 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
                 })
             
                 const operacionesConcatenadas = prismaCreate.concat(prismaUpdatesHabilitados).concat(prismaUpdatesNoHabilitados)
-                await prisma.$transaction(operacionesConcatenadas)
+                const transactionResult = await prisma.$transaction(operacionesConcatenadas)
+                console.log(transactionResult)
 
-                // const resultCreations = await Promise.all(prismaCreate)
-                // const resultUpdateHabilitados = await Promise.all(prismaUpdatesHabilitados)
-                // const resultUpdateNoHabilitados = await Promise.all(prismaUpdatesNoHabilitados)
-                // console.log(resultCreations, resultUpdateHabilitados, resultUpdateNoHabilitados)
                 console.log('Proceso de sync finalizado correctamente...')
         }
     }

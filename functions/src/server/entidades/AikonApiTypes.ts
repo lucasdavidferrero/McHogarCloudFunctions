@@ -1,3 +1,5 @@
+export const AIKON_API_BASE_URL = 'https://aikon247.net/webapi/api/IS3'
+
 export interface AikonApiCuentaUrlRequest {
     Cuenta: string
     CuentaPwd: string
@@ -144,3 +146,9 @@ export interface DtTablaDataArticuloNoHabilitado {
     AR_DESCRI: string
 }
 export type DtTablaArticuloNoHabilitado = DtTabla<DtTablaDataArticuloNoHabilitado>
+
+export enum DtTablaNombre {
+    Articulos = "articulo",
+    ArticulosNoHabilitados = "ARTICULO_NO_HABILITADO",
+    Precios = "precios"
+}
