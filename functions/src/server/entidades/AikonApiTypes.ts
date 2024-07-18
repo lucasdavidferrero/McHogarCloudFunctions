@@ -1,4 +1,11 @@
 export const AIKON_API_BASE_URL = 'https://aikon247.net/webapi/api/IS3'
+export const AIKON_API_NRO_CUENTA = '230'
+
+export const AIKON_API_ENDPOINT = {
+    OBTENER_TOKEN: AIKON_API_BASE_URL + '/ObtenerToken',
+    DT_TABLA: AIKON_API_BASE_URL + '/DtTabla'
+}
+Object.freeze(AIKON_API_ENDPOINT)
 
 export interface AikonApiCuentaUrlRequest {
     Cuenta: string

@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { DtTablaArticulo, DtTablaPrecio, DtTablaArticuloNoHabilitado, DtTablaNombre, AIKON_API_BASE_URL } from '../entidades/AikonApiTypes';
+import { DtTablaArticulo, DtTablaPrecio, DtTablaArticuloNoHabilitado, DtTablaNombre, AIKON_API_ENDPOINT, AIKON_API_NRO_CUENTA } from '../entidades/AikonApiTypes';
 
 export class AikonApiDtTablaService {
-    private static API_URL = AIKON_API_BASE_URL + '/DtTabla';
-    private static NRO_CUENTA = '230'
+    private static API_URL = AIKON_API_ENDPOINT.DT_TABLA
+    private static NRO_CUENTA = AIKON_API_NRO_CUENTA
 
     static async fetchArticulos(token: string): Promise<DtTablaArticulo> {
         const response = await axios.post<DtTablaArticulo>(this.API_URL, 

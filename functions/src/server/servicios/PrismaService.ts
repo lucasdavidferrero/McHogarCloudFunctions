@@ -15,7 +15,7 @@ export class PrismaService {
         return prisma.aikon_articulo.update({ where: { aik_ar_codigo: codigo }, data });
     }
 
-    static async transaction(operations: Prisma.PrismaPromise<aikon_articulo>[]) {
+    static async transaction(operations: Prisma.PrismaPromise<any>[]) {
         return prisma.$transaction(operations);
     }
 }

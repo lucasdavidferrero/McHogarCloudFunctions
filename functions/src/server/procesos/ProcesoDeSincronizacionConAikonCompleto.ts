@@ -7,21 +7,22 @@ import { SyncArticuloPrecioService } from '../servicios/SyncArticuloPrecioServic
     [ x ] Almacenar información de comienzo de ejecución del proceso completo. (idProceso, FechaHoraInicio, Nombre del proceso, Estado de ejecución, Disparador(Sistema, UsuarioId))
     [ x ] Obtener el Token desde aquí.
     [ x ] Preparar toda la información a sincronizar: Marcas, Categorías, Rubros, Familias y ArtículosPrecios respectivamente.
-    [ x ] Ejecutar todas las sincronizaciones en una transacción de Prisma.
+    [ x ] Ejecutar todas las sincronizaciones en una transacción de Prisma (MySQL Transaction).
     [ x ] Almacenar información de la ejecución satisfactoria del proceso. (Tiempo de ejecución, Estado: Finalizado, Error: false, FechaHoraFin)
     [ x ] En caso de error. Almacenar error. Actualizar información de ejecución de proceso. (Estado: Finalizado, Error: true, FechaHoraFin). Crear una fila en MySQL o almacenar error en Firestore.
 */
-async function procesoDiarioCompletoParaSincronizarArticulosTransaccion() {
+async function procesoDeSincronizacionConAikonCompletoTransaccion() {
     /* TODO Obtener Token... */
     const token = '12345678910'
     await SyncArticuloPrecioService.prepararSincronizacion(token);
 }
 
-export async function procesoDiarioCompletoParaSincronizarArticulos() {
+export async function procesoDeSincronizacionConAikonCompleto() {
     try {
         // Info de inicio de ejecución del proceso.
-        procesoDiarioCompletoParaSincronizarArticulosTransaccion()
+        await procesoDeSincronizacionConAikonCompletoTransaccion()
     } catch (e) {
+        // Info de Error en el proceso.
         console.error(e)
     } finally {
         // Info de fin de ejecución del proceso.

@@ -74,6 +74,6 @@ export class SyncArticuloPrecioService {
             }
         });
 
-        await PrismaService.transaction(prismaBatchOperations);
+        await PrismaService.transaction(prismaBatchOperations as Prisma.PrismaPromise<any>[]);
     }
 }
