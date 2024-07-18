@@ -22,7 +22,7 @@ export class AikonApiObtenerTokenService {
         const returnObj: fetchTokenReturnValue = {
             id: String(response.data.token.ID),
             tokenId: response.data.token.Codigo,
-            fechaUnixObtencionToken: Number(DateUtils.convertDateStringAikonApiToUnixTimestamp(response.data.token.Fecha))
+            fechaUnixObtencionToken: DateUtils.convertDateStringAikonApiToUnixTimestamp(response.data.token.Fecha)
         }
         return returnObj
     }
@@ -46,5 +46,5 @@ interface AikonApiObtenerTokenResponse {
 interface fetchTokenReturnValue {
     id: string
     tokenId: string
-    fechaUnixObtencionToken: number
+    fechaUnixObtencionToken: number | null
 }

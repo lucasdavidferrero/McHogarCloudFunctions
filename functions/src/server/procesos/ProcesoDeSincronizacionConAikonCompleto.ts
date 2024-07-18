@@ -1,4 +1,5 @@
 import { SyncArticuloPrecioService } from '../servicios/SyncArticuloPrecioService';
+import { AikonApiObtenerTokenService } from '../servicios/AikonApiObtenerTokenService';
 
 /* 
     == Esta función agrupa todas las sincronizaciones que deben hacerse ==
@@ -12,9 +13,10 @@ import { SyncArticuloPrecioService } from '../servicios/SyncArticuloPrecioServic
     [ x ] En caso de error. Almacenar error. Actualizar información de ejecución de proceso. (Estado: Finalizado, Error: true, FechaHoraFin). Crear una fila en MySQL o almacenar error en Firestore.
 */
 async function procesoDeSincronizacionConAikonCompletoTransaccion() {
-    /* TODO Obtener Token... */
-    const token = '12345678910'
-    await SyncArticuloPrecioService.prepararSincronizacion(token);
+    const { tokenId, fechaUnixObtencionToken, id } = await AikonApiObtenerTokenService.fetchToken()
+    const articuloPrecioPromises = await SyncArticuloPrecioService.prepararSincronizacion(tokenId);
+
+    console.log(fechaUnixObtencionToken, id)
 }
 
 export async function procesoDeSincronizacionConAikonCompleto() {
