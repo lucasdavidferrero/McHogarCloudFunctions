@@ -1,5 +1,6 @@
 import { SyncArticuloPrecioService } from '../servicios/SyncArticuloPrecioService';
 import { AikonApiObtenerTokenService } from '../servicios/AikonApiObtenerTokenService';
+import { PrismaService } from '../servicios/PrismaService';
 
 /* 
     == Esta función agrupa todas las sincronizaciones que deben hacerse ==
@@ -12,13 +13,6 @@ import { AikonApiObtenerTokenService } from '../servicios/AikonApiObtenerTokenSe
     [ x ] Almacenar información de la ejecución satisfactoria del proceso. (Tiempo de ejecución, Estado: Finalizado, Error: false, FechaHoraFin)
     [ x ] En caso de error. Almacenar error. Actualizar información de ejecución de proceso. (Estado: Finalizado, Error: true, FechaHoraFin). Crear una fila en MySQL o almacenar error en Firestore.
 */
-async function procesoDeSincronizacionConAikonCompletoTransaccion() {
-    const { tokenId, fechaUnixObtencionToken, id } = await AikonApiObtenerTokenService.fetchToken()
-    const articuloPrecioPromises = await SyncArticuloPrecioService.prepararSincronizacion(tokenId);
-
-    console.log(fechaUnixObtencionToken, id)
-}
-
 export async function procesoDeSincronizacionConAikonCompleto() {
     try {
         // Info de inicio de ejecución del proceso.
@@ -29,4 +23,16 @@ export async function procesoDeSincronizacionConAikonCompleto() {
     } finally {
         // Info de fin de ejecución del proceso.
     }
+}
+
+async function procesoDeSincronizacionConAikonCompletoTransaccion() {
+    const { tokenId, fechaUnixObtencionToken, id } = await AikonApiObtenerTokenService.fetchToken()
+
+    // Sync de Artículos
+    const articuloPrecioBatchOperations = await SyncArticuloPrecioService.prepararSincronizacion(tokenId);
+
+    // Transacción que ejecuta todos los CREATE y UPDATE necesarios de cada tabla.      
+    await PrismaService.executeTransactionFromBatchOperations(articuloPrecioBatchOperations)
+
+    console.log(fechaUnixObtencionToken, id)
 }

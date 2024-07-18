@@ -132,7 +132,7 @@ export class ProcesoDiarioCompletoParaSincronizarArticulos extends ProcesoBase {
             listadoArticulosConPreciosConvertidoFromAPI.forEach(articuloAikonApi => {
                 // Los artículos que están en la API pero no en MySQL -> CREATE.
                 const indexArticuloPrecio = aikonArticulosMcHogar.findIndex(articuloPrecio => {
-                    return articuloPrecio.aik_ar_codigo === articuloAikonApi.aik_ar_codigo // [TODO hacerlo con índices. es más rápido]
+                    return articuloPrecio.aik_ar_codigo === articuloAikonApi.aik_ar_codigo
                 })
                 if (indexArticuloPrecio === -1) {
                     const createData: Prisma.aikon_articuloUncheckedCreateInput = {

@@ -11,11 +11,11 @@ export class PrismaService {
         return prisma.aikon_articulo.create({ data });
     }
 
-    static updateAikonArticulo(codigo: string, data: Prisma.aikon_articuloUpdateInput): Promise<aikon_articulo> {
+    static updateAikonArticulo(codigo: string, data: Prisma.aikon_articuloUpdateInput): PrismaPromise<aikon_articulo> {
         return prisma.aikon_articulo.update({ where: { aik_ar_codigo: codigo }, data });
     }
 
-    static async transaction(operations: Prisma.PrismaPromise<any>[]) {
+    static async executeTransactionFromBatchOperations(operations: Prisma.PrismaPromise<any>[]) {
         return prisma.$transaction(operations);
     }
 }
