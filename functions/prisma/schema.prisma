@@ -123,7 +123,9 @@ model aikon_articulo {
 
   articulo_web            articulo_web?
 
-  historial_costo_neto    historial_costo_neto[]
+  aikon_articulo_historial_costo_neto               aikon_articulo_historial_costo_neto[]
+  aikon_articulo_historial_utilidad                 aikon_articulo_historial_utilidad[]
+  aikon_articulo_historial_stock_total              aikon_articulo_historial_stock_total[]
 
   articulo_precio        articulo_precio?
 
@@ -134,8 +136,8 @@ model articulo_web {
   aik_ar_codigo                             String @db.VarChar(24) @id
   ar_url_img_principal                      String? @db.VarChar(400)
   ar_descripcion_web                        String @db.VarChar(500) @default("")
-  ar_esa_codigo_ultima_fecha_modificado     BigInt? @db.UnsignedBigInt
-  ar_publicarweb_ultima_fecha_modificado    BigInt? @db.UnsignedBigInt
+  // ar_esa_codigo_ultima_fecha_modificado     BigInt? @db.UnsignedBigInt
+  // ar_publicarweb_ultima_fecha_modificado    BigInt? @db.UnsignedBigInt
   aikon_articulo                            aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
 
   @@map("articulo_web")
@@ -156,12 +158,30 @@ model articulo_precio {
   @@map("articulo_precio")
 }
 
-model historial_costo_neto {
-  hscn_id                 Int @id @default(autoincrement())
+model aikon_articulo_historial_costo_neto {
+  id                      Int @id @default(autoincrement())
   aik_ar_codigo           String @db.VarChar(24)
   aik_ar_cosnet           Decimal @db.Decimal(15,2)
   hscn_fecha_hora_desde   DateTime @db.DateTime(2) @default(now())
   hscn_fecha_hora_hasta   DateTime? @db.DateTime(2)
+
+  aikon_articulo          aikon_articulo @relation(fields: [aik_ar_codigo], references: [aik_ar_codigo])
+}
+model aikon_articulo_historial_utilidad {
+  id                        Int @id @default(autoincrement())
+  aik_ar_codigo             String @db.VarChar(24)
+  aik_ap_utilidad           Decimal @db.Decimal(6, 2)
+  hsut_fecha_hora_desde     DateTime @db.DateTime(2) @default(now())
+  hsut_fecha_hora_hasta     DateTime? @db.DateTime(2)
+
+  aikon_articulo          aikon_articulo @relation(fields: [aik_ar_codigo], references: [aik_ar_codigo])
+}
+model aikon_articulo_historial_stock_total {
+  id                        Int @id @default(autoincrement())
+  aik_ar_codigo             String @db.VarChar(24)
+  aik_stock_total           Int @db.UnsignedSmallInt
+  hst_fecha_hora_desde   DateTime @db.DateTime(2) @default(now())
+  hst_fecha_hora_hasta   DateTime? @db.DateTime(2)
 
   aikon_articulo          aikon_articulo @relation(fields: [aik_ar_codigo], references: [aik_ar_codigo])
 }
