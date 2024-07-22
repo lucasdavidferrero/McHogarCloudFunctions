@@ -136,8 +136,8 @@ model articulo_web {
   aik_ar_codigo                             String @db.VarChar(24) @id
   ar_url_img_principal                      String? @db.VarChar(400)
   ar_descripcion_web                        String @db.VarChar(500) @default("")
-  // ar_esa_codigo_ultima_fecha_modificado     BigInt? @db.UnsignedBigInt
-  // ar_publicarweb_ultima_fecha_modificado    BigInt? @db.UnsignedBigInt
+  ar_esa_codigo_ultima_fecha_modificado     DateTime? @db.DateTime(2)
+  ar_publicarweb_ultima_fecha_modificado    DateTime? @db.DateTime(2)
   aikon_articulo                            aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
 
   @@map("articulo_web")
@@ -180,8 +180,8 @@ model aikon_articulo_historial_stock_total {
   id                        Int @id @default(autoincrement())
   aik_ar_codigo             String @db.VarChar(24)
   aik_stock_total           Int @db.UnsignedSmallInt
-  hst_fecha_hora_desde   DateTime @db.DateTime(2) @default(now())
-  hst_fecha_hora_hasta   DateTime? @db.DateTime(2)
+  hst_fecha_hora_desde      DateTime @db.DateTime(2) @default(now())
+  hst_fecha_hora_hasta      DateTime? @db.DateTime(2)
 
   aikon_articulo          aikon_articulo @relation(fields: [aik_ar_codigo], references: [aik_ar_codigo])
 }

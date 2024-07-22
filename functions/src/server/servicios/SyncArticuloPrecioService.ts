@@ -141,7 +141,7 @@ export class SyncArticuloPrecioService {
             const articuloApiAikon = listadoArticulosConPreciosConvertidoFromAPIIndex[articuloMcHogar.aik_ar_codigo]
             const articuloNoHabilitadoApiAikon = dtTablaArticulosNoHabilitadosAikonApiIndex[articuloMcHogar.aik_ar_codigo]
             if(!articuloApiAikon) {
-                // Artículo se encuentra en DB pero no en la API Aikon.
+                // Artículo se encuentra en DB pero no en la API Aikon DtTabla=articulo.
                 const updateNoHabilitadoData = { aik_esa_codigo: articuloNoHabilitadoApiAikon.ESA_CODIGO, aik_ar_publicarweb: articuloNoHabilitadoApiAikon.AR_PUBLICARWEB }
                 const updateArticuloNoHabilitado = PrismaService.updateAikonArticulo(articuloMcHogar.aik_ar_codigo, updateNoHabilitadoData)
                 prismaUpdatesNoHabilitados.push(updateArticuloNoHabilitado)

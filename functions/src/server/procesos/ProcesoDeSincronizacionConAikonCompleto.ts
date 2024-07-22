@@ -15,6 +15,9 @@ import { PrismaService } from '../servicios/PrismaService';
 */
 export async function procesoDeSincronizacionConAikonCompleto() {
     try {
+        // Backup de la DB
+        await PrismaService.generateBackupForProcesoDeSincronizacionConAikonCompleto()
+
         // Info de inicio de ejecución del proceso.
         await procesoDeSincronizacionConAikonCompletoTransaccion()
     } catch (e) {

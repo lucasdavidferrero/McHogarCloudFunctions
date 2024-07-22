@@ -4,6 +4,7 @@ import { onRequest } from "firebase-functions/v2/https";
 import { expressAppQuasar } from './expressQuasar.js'
 import { expressAppNuxt } from './expressNuxt.js';
 import { REGION_SOUTHAMERICA } from '@mc-hogar/app';
+import './polyfills.js'
 
 // API CALLS
 exports.mchogarQuasar = onRequest({ region: [REGION_SOUTHAMERICA] }, expressAppQuasar)
