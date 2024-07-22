@@ -66,9 +66,14 @@ export class PrismaService {
             articulo_web,
             articulo_precio
         }
+        console.log(backupData)
         /*  Save backupData to Cloud Storage in a special bucket designed for storing database backupfiles.
             We could split the file system of the storage in something like:
-            
+
+            BackupsGeneradosProcesoCompletoSincronizacion -> [año-mes] -> [dia-hora.json]
+            BackupsGeneradosProcesoPrecioStockSincronizacion.
+
+            Además, sería buena idea cada 2 - 3 meses, limpiar los archivos backups.
          */
         // fs.writeFileSync('./backup.json', JSON.stringify(backupData, null, 2));
         console.log('Backup completed successfully.');
