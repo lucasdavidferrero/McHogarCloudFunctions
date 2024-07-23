@@ -158,7 +158,9 @@ export enum DtTablaNombre {
     Articulos = "articulo",
     ArticulosNoHabilitados = "ARTICULO_NO_HABILITADO",
     Precios = "precios",
-    Marcas = "marca"
+    Marcas = "marca",
+    Referencia01 = 'REFERENCIA01',
+    Referencia02 = 'REFERENCIA02'
 }
 
 export interface DtTablaMarcaData {
@@ -167,3 +169,15 @@ export interface DtTablaMarcaData {
     Usado: string
 }
 export type DtTablaMarca = DtTabla<DtTablaMarcaData>
+
+export interface DtTablaReferencia01Data {
+    Codigo: string
+    Descripcion: string
+}
+export type DtTablaReferencia01 = DtTabla<DtTablaReferencia01Data>
+
+export interface DtTablaReferencia02Data {
+    Codigo: string
+    Descripcion: string
+}
+export type DtTablaReferencia02 = DtTabla<DtTablaReferencia02Data>

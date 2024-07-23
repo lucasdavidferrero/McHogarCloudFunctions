@@ -1,7 +1,9 @@
-import { SyncArticuloPrecioService } from '../servicios/SyncArticuloPrecioService';
 import { AikonApiObtenerTokenService } from '../servicios/AikonApiObtenerTokenService';
 import { PrismaService } from '../servicios/PrismaService';
 import { SyncMarca } from '../servicios/SyncMarca';
+import { SyncArticuloPrecioService } from '../servicios/SyncArticuloPrecioService';
+import { SyncReferencia01 } from '../servicios/SyncReferencia01';
+import { SyncReferencia02 } from '../servicios/SyncReferencia02';
 
 /* 
     == Esta función agrupa todas las sincronizaciones que deben hacerse ==
@@ -36,16 +38,22 @@ async function procesoDeSincronizacionConAikonCompletoTransaccion() {
     // Sync de Marca
     const marcaUpsertBatchOperations = await SyncMarca.prepararSincronizacion(tokenId)
 
-    // Sync de Categoría (Ref01) [TODO]
-    // Sync de Rubro (Ref02) [TODO]
+    // Sync de Categoría (Ref01)
+    const referencia01UpsertBatchOperations = await SyncReferencia01.prepararSincronizacion(tokenId)
+
+    // Sync de Rubro (Ref02)
+    const referencia02UpsertBatchOperations = await SyncReferencia02.prepararSincronizacion(tokenId)
+
     // Sync Familia [TODO]
     
     // Sync de Artículos
     const articuloPrecioBatchOperations = await SyncArticuloPrecioService.prepararSincronizacion(tokenId);
 
-    const batchOperations = new Array().concat(marcaUpsertBatchOperations, articuloPrecioBatchOperations)
-    // Transacción que ejecuta todos los CREATE y UPDATE necesarios de cada tabla.      
-    await PrismaService.executeTransactionFromBatchOperations(batchOperations)
+    // Transacciones que ejecuta todos los CREATE y UPDATE necesarios para cada tabla.
+    await PrismaService.executeTransactionFromBatchOperations(marcaUpsertBatchOperations)
+    await PrismaService.executeTransactionFromBatchOperations(referencia01UpsertBatchOperations)
+    await PrismaService.executeTransactionFromBatchOperations(referencia02UpsertBatchOperations)
+    await PrismaService.executeTransactionFromBatchOperations(articuloPrecioBatchOperations)
 
     console.log(fechaUnixObtencionToken, id)
 }
