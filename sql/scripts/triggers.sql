@@ -5,6 +5,7 @@
 /* Triggers for Mc Hogar */
 DROP TRIGGER IF EXISTS `prisma-api`.`aikon_articulo_AFTER_INSERT`;
 DROP TRIGGER IF EXISTS `prisma-api`.`aikon_articulo_AFTER_UPDATE`;
+DROP TRIGGER IF EXISTS `prisma-api`.`aikon_marca_AFTER_INSERT`;
 
 /* Artículos */
 DELIMITER $$
