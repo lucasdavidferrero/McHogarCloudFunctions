@@ -1,5 +1,5 @@
 import { PrismaClient, aikon_articulo, Prisma, PrismaPromise } from "@prisma/client";
-import fs from 'fs'
+import { CloudStorageService } from '../servicios/CloudStorageService'
 
 const prisma = new PrismaClient();
 
@@ -56,7 +56,7 @@ export class PrismaService {
             articulo_web,
             articulo_precio
         }
-        console.log(backupData)
+        await CloudStorageService.guardarJsonBackupCompleto(backupData)
         /*  Save backupData to Cloud Storage in a special bucket designed for storing database backupfiles.
             We could split the file system of the storage in something like:
 
