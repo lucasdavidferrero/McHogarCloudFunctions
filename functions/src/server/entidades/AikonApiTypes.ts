@@ -157,5 +157,13 @@ export type DtTablaArticuloNoHabilitado = DtTabla<DtTablaDataArticuloNoHabilitad
 export enum DtTablaNombre {
     Articulos = "articulo",
     ArticulosNoHabilitados = "ARTICULO_NO_HABILITADO",
-    Precios = "precios"
+    Precios = "precios",
+    Marcas = "marca"
 }
+
+export interface DtTablaMarcaData {
+    Codigo: string
+    Nombre: string
+    Usado: string
+}
+export type DtTablaMarca = DtTabla<DtTablaMarcaData>

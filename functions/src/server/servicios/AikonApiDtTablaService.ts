@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DtTablaArticulo, DtTablaPrecio, DtTablaArticuloNoHabilitado, DtTablaNombre, AIKON_API_ENDPOINT, AIKON_API_NRO_CUENTA } from '../entidades/AikonApiTypes';
+import { DtTablaArticulo, DtTablaPrecio, DtTablaArticuloNoHabilitado, DtTablaNombre, DtTablaMarca, AIKON_API_ENDPOINT, AIKON_API_NRO_CUENTA } from '../entidades/AikonApiTypes';
 
 export class AikonApiDtTablaService {
     private static API_URL = AIKON_API_ENDPOINT.DT_TABLA
@@ -34,5 +34,14 @@ export class AikonApiDtTablaService {
             }
         );
         return response.data;
+    }
+
+    static async fetchMarcas (token: string): Promise<DtTablaMarca> {
+        const response = await axios.post<DtTablaMarca>(this.API_URL, {
+            cuenta: this.NRO_CUENTA,
+            token,
+            tabla: DtTablaNombre.Marcas
+        })
+        return response.data
     }
 }
