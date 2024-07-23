@@ -26,7 +26,7 @@ model aikon_familia {
 }
 
 model aikon_marca {
-  aik_ma_codigo       String  @db.VarChar(3) @id
+  aik_ma_codigo       String  @db.VarChar(4) @id
   aik_ma_descri       String  @db.VarChar(30)
 
   aikon_articulo  aikon_articulo[]
@@ -34,7 +34,7 @@ model aikon_marca {
   @@map("aikon_marca")
 }
 model marca_extension {
-  aik_ma_codigo       String  @db.VarChar(3) @id
+  aik_ma_codigo       String  @db.VarChar(4) @id
   maext_url_imagen    String? @db.VarChar(400)
 
   aikon_marca aikon_marca @relation(fields:[aik_ma_codigo], references: [aik_ma_codigo])
@@ -110,7 +110,7 @@ model aikon_articulo {
   aik_fa_codigo           String @db.VarChar(20)
 
   aikon_marca             aikon_marca @relation(fields: [aik_ma_codigo], references: [aik_ma_codigo])
-  aik_ma_codigo           String @db.VarChar(3)
+  aik_ma_codigo           String @db.VarChar(4)
 
   aikon_referencia01      aikon_referencia01 @relation(fields: [aik_re1_codigo], references: [aik_re1_codigo])
   aik_re1_codigo          String @db.VarChar(5)
