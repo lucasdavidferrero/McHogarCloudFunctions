@@ -4,6 +4,7 @@ import { SyncMarca } from '../servicios/SyncMarca';
 import { SyncArticuloPrecioService } from '../servicios/SyncArticuloPrecioService';
 import { SyncReferencia01 } from '../servicios/SyncReferencia01';
 import { SyncReferencia02 } from '../servicios/SyncReferencia02';
+import { SyncFamilia } from '../servicios/SyncFamilia';
 
 /* 
     == Esta función agrupa todas las sincronizaciones que deben hacerse ==
@@ -44,15 +45,17 @@ async function procesoDeSincronizacionConAikonCompletoTransaccion() {
     // Sync de Rubro (Ref02)
     const referencia02UpsertBatchOperations = await SyncReferencia02.prepararSincronizacion(tokenId)
 
-    // Sync Familia [TODO]
+    // Sync Familia
+    const familiaUpsertBatchOperations = await SyncFamilia.prepararSincronizacion(tokenId)
     
     // Sync de Artículos
     const articuloPrecioBatchOperations = await SyncArticuloPrecioService.prepararSincronizacion(tokenId);
 
-    // Transacciones que ejecuta todos los CREATE y UPDATE necesarios para cada tabla.
+    // Transacciones que ejecutan todos los CREATE y UPDATE necesarios para cada tabla.
     await PrismaService.executeTransactionFromBatchOperations(marcaUpsertBatchOperations)
     await PrismaService.executeTransactionFromBatchOperations(referencia01UpsertBatchOperations)
     await PrismaService.executeTransactionFromBatchOperations(referencia02UpsertBatchOperations)
+    await PrismaService.executeTransactionFromBatchOperations(familiaUpsertBatchOperations)
     await PrismaService.executeTransactionFromBatchOperations(articuloPrecioBatchOperations)
 
     console.log(fechaUnixObtencionToken, id)

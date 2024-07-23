@@ -160,7 +160,8 @@ export enum DtTablaNombre {
     Precios = "precios",
     Marcas = "marca",
     Referencia01 = 'REFERENCIA01',
-    Referencia02 = 'REFERENCIA02'
+    Referencia02 = 'REFERENCIA02',
+    Familia = 'familia'
 }
 
 export interface DtTablaMarcaData {
@@ -181,3 +182,11 @@ export interface DtTablaReferencia02Data {
     Descripcion: string
 }
 export type DtTablaReferencia02 = DtTabla<DtTablaReferencia02Data>
+
+export interface DtTablaFamiliaData {
+    FA_CODIGO: string
+    FA_NOMBRE: string
+    FA_NIVEL: string
+    FA_PALM: string
+}
+export type DtTablaFamilia = DtTabla<DtTablaFamiliaData>
