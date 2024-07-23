@@ -21,16 +21,6 @@ export class PrismaService {
     }
 
     static async generateBackupForProcesoDeSincronizacionConAikonCompleto () {
-        /*const aikon_familia = prisma.aikon_familia.findMany()
-        const aikon_categoria = prisma.aikon_referencia01.findMany()
-        const aikon_rubro = prisma.aikon_referencia02.findMany()
-        const aikon_marca = prisma.aikon_marca.findMany()
-        const aikon_articulo = prisma.aikon_articulo.findMany()
-        const aikon_historial_costo_neto = prisma.aikon_articulo_historial_costo_neto.findMany()
-        const aikon_historial_stock_total = prisma.aikon_articulo_historial_stock_total.findMany()
-        const aikon_historial_utilidad = prisma.aikon_articulo_historial_utilidad.findMany()
-        const articulo_web = prisma.articulo_web.findMany()
-        const articulo_precio = prisma.articulo_precio.findMany() */
         const [
             aikon_familia,
             aikon_categoria,
