@@ -202,7 +202,7 @@ model proceso_info {
   id_usuario               Int? // TODO hacer relacion cuando creemos el módulo de Usuarios y Grupos
   tiempo_ejecucion         Int?
   error                    Boolean @default(false)
-  mensaje_error            String? @db.VarChar(20000)
+  mensaje_error            String? @db.VarChar(10000)
 
   id_tipo_proceso_info     Int
   tipo_proceso_info        tipo_proceso_info @relation(fields: [id_tipo_proceso_info], references: [id])
@@ -215,7 +215,7 @@ model proceso_info_detalle {
   estado_ejecucion         String @db.VarChar(100) // "Procesando" || "Finalizado"
   tiempo_ejecucion         Int?
   error                    Boolean @default(false)
-  mensaje_error            String? @db.VarChar(20000)
+  mensaje_error            String? @db.VarChar(10000)
 
   id_proceso_info          Int
   proceso_info             proceso_info @relation(fields: [id_proceso_info], references: [id])

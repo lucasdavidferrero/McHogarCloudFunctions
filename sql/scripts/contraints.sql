@@ -1,4 +1,39 @@
-/* Los CHECK Constraint reflejan reglas de negocio. */
+/* Store Procedure para utilizar a la hora de eliminar check constraints. */
+DROP PROCEDURE IF EXISTS DropCheckConstraintIfExists;
+DELIMITER //
+CREATE PROCEDURE DropCheckConstraintIfExists(
+    IN tableName VARCHAR(64),
+    IN constraintName VARCHAR(64)
+)
+BEGIN
+    DECLARE constraintExists INT;
+
+    -- Check if the constraint exists
+    SELECT COUNT(*)
+    INTO constraintExists
+    FROM information_schema.TABLE_CONSTRAINTS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = tableName
+      AND CONSTRAINT_NAME = constraintName;
+
+    -- If the constraint exists, drop it
+    IF constraintExists > 0 THEN
+        SET @dropStmt = CONCAT('ALTER TABLE ', tableName, ' DROP CONSTRAINT ', constraintName);
+        PREPARE stmt FROM @dropStmt;
+        EXECUTE stmt;
+        DEALLOCATE PREPARE stmt;
+    END IF;
+END //
+DELIMITER ;
+
+/* Eliminamos check constraint (si existen) */
+CALL DropCheckConstraintIfExists('articulo_precio', 'arp_utilidad_web_chk');
+CALL DropCheckConstraintIfExists('articulo_precio', 'arp_utilidad_ofer_chk');
+CALL DropCheckConstraintIfExists('articulo_precio', 'arp_utilidad_ofer_fecha_hasta_chk');
+CALL DropCheckConstraintIfExists('articulo_precio', 'arp_utilidad_ofer_stock_hasta_chk');
+CALL DropCheckConstraintIfExists('articulo_precio', 'arp_descuento_chk');
+
+/* Creamos los CHECK CONSTRAINT. Estas reflejan reglas de negocio. */
 ALTER TABLE articulo_precio
 ADD CONSTRAINT arp_utilidad_web_chk 
 	CHECK (arp_utilidad_web >= 0),
@@ -10,61 +45,3 @@ ADD CONSTRAINT arp_utilidad_ofer_stock_hasta_chk
 	CHECK((arp_utilidad_ofer_stock_hasta IS NOT NULL AND arp_utilidad_ofer IS NOT NULL) OR arp_utilidad_ofer_stock_hasta IS NULL),
 ADD CONSTRAINT arp_descuento_chk 
 	CHECK(arp_descuento > 0);
-
-ALTER TABLE articulo_precio
-DROP CONSTRAINT arp_utilidad_web_chk,
-DROP CONSTRAINT arp_utilidad_ofer_chk,
-DROP CONSTRAINT arp_utilidad_ofer_fecha_hasta_chk,
-DROP CONSTRAINT arp_utilidad_ofer_stock_hasta_chk,
-DROP CONSTRAINT arp_descuento_chk;
-
-/* Triggers */
-
-
-/* Pruebas */
-INSERT INTO articulo_precio(aik_ar_codigo, arp_utilidad_web, arp_utilidad_ofer_stock_hasta)
-VALUES ('00170025', 65.5, null);
-/* ,arp_utilidad_ofer, arp_utilidad_ofer_fecha_hasta  */
-SELECT * FROM articulo_precio;
-DELETE FROM articulo_precio WHERE aik_ar_codigo = '00170025';
-
-UPDATE articulo_precio
-SET arp_utilidad_ofer = 30.52, arp_utilidad_ofer_fecha_hasta = '2024-04-21'
-WHERE aik_ar_codigo = '00170025';
-
-SELECT * FROM aikon_articulo order by aik_ar_codigo asc;
-
-SELECT * FROM aikon_marca;
-
-SELECT * FROM aikon_articulo AS ART WHERE ART.aik_ar_codigo = '00010001';
-
-SELECT * FROM aikon_articulo WHERE aik_ar_codigo = '00010041';
-SELECT * FROM articulo_precio WHERE aik_ar_codigo = '00010041';
-SELECT * FROM articulo_web WHERE aik_ar_codigo = '00010041';
-
-
-DELETE FROM articulo_precio WHERE aik_ar_codigo = '00010041';
-DELETE FROM articulo_web WHERE aik_ar_codigo = '00010041';
-DELETE FROM aikon_articulo WHERE aik_ar_codigo = '00010041';
-
-SELECT * FROM aikon_articulo WHERE aik_ar_codigo = '00010041';
-SELECT * FROM articulo_web WHERE aik_ar_codigo = '00010041';
-SELECT * FROM aikon_articulo ORDER BY aik_ar_fecha_alta DESC;
-
-SELECT * FROM aikon_articulo_historial_costo_neto;
-SELECT * FROM aikon_articulo_historial_stock_total;
-SELECT * FROM aikon_articulo_historial_utilidad;
-
-SELECT * FROM aikon_articulo;
-
-INSERT INTO aikon_marca (aik_ma_codigo, aik_ma_descri) 
-VALUES('671', 'FUNDICION SOL MAYO'), ('672', 'CAMBELL'), ('673', 'AUGUSTE'), ('674', 'E-NIGHTS');
-
-SELECT * FROM aikon_referencia01 WHERE aik_re1_codigo = '00007';
-
-SELECT * FROM aikon_referencia01; # 12
-SELECT * FROM aikon_referencia02;
-
-SELECT * FROM aikon_referencia01;
-
-SELECT * FROM aikon_articulo as AA WHERE AA.aik_ma_codigo = '126';

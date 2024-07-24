@@ -16,8 +16,8 @@ BEGIN
 	INSERT INTO articulo_precio(aik_ar_codigo, arp_utilidad_web)
     VALUES(NEW.aik_ar_codigo, NEW.aik_ap_utilidad);
     
-    INSERT INTO articulo_web(aik_ar_codigo, ar_descripcion_web)
-    VALUES(NEW.aik_ar_codigo, NEW.aik_ar_descri);
+    -- INSERT INTO articulo_web(aik_ar_codigo, ar_descripcion_web)
+    -- VALUES(NEW.aik_ar_codigo, NEW.aik_ar_descri);
     
     -- Primer row en cada tabla de historiales.
     INSERT INTO aikon_articulo_historial_costo_neto(aik_ar_codigo, aik_ar_cosnet)
