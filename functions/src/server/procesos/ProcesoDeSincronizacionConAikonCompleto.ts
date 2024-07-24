@@ -5,7 +5,11 @@ import { SyncArticuloPrecioService } from '../servicios/SyncArticuloPrecioServic
 import { SyncReferencia01 } from '../servicios/SyncReferencia01';
 import { SyncReferencia02 } from '../servicios/SyncReferencia02';
 import { SyncFamilia } from '../servicios/SyncFamilia';
+import { ProcesoInfoTipo } from '../entidades/ProcesoInfoTipo';
+import { ProcesoInfo } from '../entidades/ProcesoInfo';
+import { ProcesoInfoDetalle } from '../entidades/ProcesoInfoDetalle';
 
+const tipoProceso = new ProcesoInfoTipo(1, 'ProcesoSincronizacionConAikonCompleto')
 /* 
     == Esta función agrupa todas las sincronizaciones que deben hacerse ==
     Estos son los requerimientos principales:
@@ -19,10 +23,25 @@ import { SyncFamilia } from '../servicios/SyncFamilia';
 */
 export async function procesoDeSincronizacionConAikonCompleto() {
     try {
-        // Backup de la DB
-        await PrismaService.generateBackupForProcesoDeSincronizacionConAikonCompleto()
-
         // Info de inicio de ejecución del proceso. [TODO]
+        const procesoInfo = new ProcesoInfo(-1, tipoProceso.id, new Date())
+        await procesoInfo.iniciar()
+
+        // Backup de la DB
+        try {
+            const procesoInfoDetalleBackupDb = new ProcesoInfoDetalle(-1, procesoInfo.id, 'BackupDatabase')
+            await procesoInfoDetalleBackupDb.iniciar()
+            const startTime = performance.now()
+            await PrismaService.generateBackupForProcesoDeSincronizacionConAikonCompleto()
+            const endTime = performance.now()
+            const tiempoEjecucionMs = endTime - startTime
+            procesoInfoDetalleBackupDb.estado_ejecucion = 'Finalizado'
+            procesoInfoDetalleBackupDb.tiempo_ejecucion = tiempoEjecucionMs
+            procesoInfoDetalleBackupDb.finalizar()
+        } catch (e) {
+            // capturar error
+        }
+        
 
         // Ejecución de los Sync
         await procesoDeSincronizacionConAikonCompletoTransaccion()

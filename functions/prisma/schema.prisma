@@ -121,6 +121,8 @@ model aikon_articulo {
   aikon_estado_articulo   aikon_estado_articulo @relation(fields: [aik_esa_codigo], references: [aik_esa_codigo])
   aik_esa_codigo          String @db.VarChar(2)
 
+  // id_ultimo_proceso_sincronizacion_completa  Int? Pensarlo...
+  
   articulo_web            articulo_web?
 
   aikon_articulo_historial_costo_neto               aikon_articulo_historial_costo_neto[]

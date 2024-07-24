@@ -1,5 +1,7 @@
 import { PrismaClient, aikon_articulo, Prisma, PrismaPromise } from "@prisma/client";
 import { CloudStorageService } from '../servicios/CloudStorageService'
+import { ProcesoInfo } from "../entidades/ProcesoInfo";
+import { ProcesoInfoDetalle } from "../entidades/ProcesoInfoDetalle";
 
 const prisma = new PrismaClient();
 
@@ -67,5 +69,27 @@ export class PrismaService {
          */
         // fs.writeFileSync('./backup.json', JSON.stringify(backupData, null, 2));
         console.log('Backup completed successfully.');
+    }
+
+    static async crearProcesoInfo(procesoInfo: ProcesoInfo): Promise<number> {
+        const createdProceso = await prisma.proceso_info.create({
+            data: {
+                fecha_hora_inicio: procesoInfo.fecha_hora_inicio,
+                estado_ejecucion: procesoInfo.estado_ejecucion,
+                id_tipo_proceso_info: procesoInfo.id_tipo_proceso
+            }
+        })
+        return createdProceso.id
+    }
+
+    static async crearProcesoInfoDetalle (procesoInfoDetalle: ProcesoInfoDetalle): Promise<number> {
+        const createdProcesoInfoDetalle = await prisma.proceso_info_detalle.create({
+            data: {
+                nombre_paso: procesoInfoDetalle.nombre_paso,
+                estado_ejecucion: procesoInfoDetalle.estado_ejecucion,
+                id_proceso_info: procesoInfoDetalle.id_proceso_info
+            }
+        })
+        return createdProcesoInfoDetalle.id
     }
 }
