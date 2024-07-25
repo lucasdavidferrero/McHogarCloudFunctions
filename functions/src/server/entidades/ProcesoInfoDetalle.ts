@@ -24,8 +24,9 @@ export class ProcesoInfoDetalle {
         this._id = newId
     }
 
-    async finalizar() {
-
+    async finalizar(tiempoEjecucionMs: number) {
+        this._estado_ejecucion = 'Finalizado'
+        this._tiempo_ejecucion = tiempoEjecucionMs
     }
 
     // Getters
@@ -49,6 +50,9 @@ export class ProcesoInfoDetalle {
     }
     public get mensaje_error(): string | null {
         return this._mensaje_error
+    }
+    fueIniciado () {
+        return this._id !== -1
     }
 
     // Setters

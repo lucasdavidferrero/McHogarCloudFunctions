@@ -1,4 +1,4 @@
-import { AikonApiObtenerTokenService } from '../servicios/AikonApiObtenerTokenService';
+import { AikonApiObtenerTokenService, fetchTokenReturnValue } from '../servicios/AikonApiObtenerTokenService';
 import { PrismaService } from '../servicios/PrismaService';
 import { SyncMarca } from '../servicios/SyncMarca';
 import { SyncArticuloPrecioService } from '../servicios/SyncArticuloPrecioService';
@@ -23,37 +23,83 @@ const tipoProceso = new ProcesoInfoTipo(1, 'ProcesoSincronizacionConAikonComplet
 */
 export async function procesoDeSincronizacionConAikonCompleto() {
     try {
-        // Info de inicio de ejecución del proceso. [TODO]
+        // Inicialización del proceso info.
         const procesoInfo = new ProcesoInfo(-1, tipoProceso.id, new Date())
         await procesoInfo.iniciar()
 
         // Backup de la DB
-        try {
-            const procesoInfoDetalleBackupDb = new ProcesoInfoDetalle(-1, procesoInfo.id, 'BackupDatabase')
-            await procesoInfoDetalleBackupDb.iniciar()
-            const startTime = performance.now()
-            await PrismaService.generateBackupForProcesoDeSincronizacionConAikonCompleto()
-            const endTime = performance.now()
-            const tiempoEjecucionMs = endTime - startTime
-            procesoInfoDetalleBackupDb.estado_ejecucion = 'Finalizado'
-            procesoInfoDetalleBackupDb.tiempo_ejecucion = tiempoEjecucionMs
-            procesoInfoDetalleBackupDb.finalizar()
-        } catch (e) {
-            // capturar error
-        }
-        
+        envolverPasoConProcesoDetalle(procesoInfo.id, 'BackupDatabase', async () => {
+            return await PrismaService.generateBackupForProcesoDeSincronizacionConAikonCompleto()
+        })
 
-        // Ejecución de los Sync
-        await procesoDeSincronizacionConAikonCompletoTransaccion()
+        // Obtener Token
+        const { tokenId, fechaUnixObtencionToken, id } = await envolverPasoConProcesoDetalle<fetchTokenReturnValue>(procesoInfo.id, 'ObtenerToken', async () => {
+            return AikonApiObtenerTokenService.fetchToken()
+        })
+
+        // ## Preparaciones de las entidades a sincronizar ##
+        // Preparar Sync de Marca
+        const marcaUpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, 'PrepararSincronizacionMarcas', async () => {
+            return SyncMarca.prepararSincronizacion(tokenId)
+        })
+
+        // Preparar Sync de Referencia01 (Categorías)
+        const referencia01UpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, 'PrepararSincronizacionCategorías', async () => {
+            return SyncReferencia01.prepararSincronizacion(tokenId)
+        })
+
+        // Preparar Sync de Referencia02 (Rubros)
+        const referencia02UpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, 'PrepararSincronizacionRubros', async () => {
+            return SyncReferencia02.prepararSincronizacion(tokenId)
+        })
+
+        // Preparar Sync Familias
+        const familiaUpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, 'PrepararSincronizacionFamilias', async () => {
+            return SyncFamilia.prepararSincronizacion(tokenId)
+        })
+
+        // Preparar Sync Articulos.
+        const articuloPrecioBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, 'PrepararSincronizacionArtículos', async () => {
+            return SyncArticuloPrecioService.prepararSincronizacion(tokenId);
+        })
+        
+        // ## Transacciones que se encargan de ejecutar los CREATE y UPDATE correspondientes en cada tabla ##
+        // Ejecutar Transacción Marcas
+        await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionMarcas', async () => {
+            return PrismaService.executeTransactionFromBatchOperations(marcaUpsertBatchOperations)
+        })
+
+        // Ejecutar Transacción Referencia01
+        await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionCategorías', async () => {
+            return PrismaService.executeTransactionFromBatchOperations(referencia01UpsertBatchOperations)
+        })
+
+        // Ejecutar Transacción Referencia02
+        await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionRubros', async () => {
+            return PrismaService.executeTransactionFromBatchOperations(referencia02UpsertBatchOperations)
+        })
+
+        // Ejecutar Transacción Familias
+        await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionRubros', async () => {
+            return PrismaService.executeTransactionFromBatchOperations(familiaUpsertBatchOperations)
+        })
+
+        // Ejecutar Transacción Artículos
+        await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionArtículos', async () => {
+            return PrismaService.executeTransactionFromBatchOperations(articuloPrecioBatchOperations)
+        })
+        
+        procesoInfo.finalizar()
+
+
+
+        console.log(fechaUnixObtencionToken, id)
     } catch (e) {
-        // Info de Error en el proceso.[TODO]
         console.error(e)
-    } finally {
-        // Info de fin de ejecución del proceso.[TODO]
     }
 }
 
-async function procesoDeSincronizacionConAikonCompletoTransaccion() {
+/*async function procesoDeSincronizacionConAikonCompletoTransaccion() {
     const { tokenId, fechaUnixObtencionToken, id } = await AikonApiObtenerTokenService.fetchToken()
     // Sync de Marca
     const marcaUpsertBatchOperations = await SyncMarca.prepararSincronizacion(tokenId)
@@ -78,4 +124,25 @@ async function procesoDeSincronizacionConAikonCompletoTransaccion() {
     await PrismaService.executeTransactionFromBatchOperations(articuloPrecioBatchOperations)
 
     console.log(fechaUnixObtencionToken, id)
+}*/
+
+async function envolverPasoConProcesoDetalle<T>(procesoInfoId: number, nombrePaso: string, cbEjecucionPaso: () => Promise<T>) {
+    const procesoInfoDetalleBackupDb = new ProcesoInfoDetalle(-1, procesoInfoId, nombrePaso)
+    try {
+        await procesoInfoDetalleBackupDb.iniciar()
+        const startTime = performance.now()
+        const resultCallbackExecution = await cbEjecucionPaso()
+        const endTime = performance.now()
+        const tiempoEjecucionMs = endTime - startTime
+        procesoInfoDetalleBackupDb.finalizar(tiempoEjecucionMs)
+        return resultCallbackExecution
+    } catch (e: any) {
+        if (procesoInfoDetalleBackupDb.fueIniciado()) {
+            procesoInfoDetalleBackupDb.error = true
+            procesoInfoDetalleBackupDb.mensaje_error = e.message || e
+            procesoInfoDetalleBackupDb.finalizar(0)
+        }
+        throw e
+    }
+    
 }

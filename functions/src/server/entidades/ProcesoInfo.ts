@@ -28,7 +28,7 @@ export class ProcesoInfo {
     }
 
     async finalizar() {
-
+        
     }
 
     // Getters

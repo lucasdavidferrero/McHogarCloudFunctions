@@ -43,7 +43,7 @@ interface AikonApiObtenerTokenResponse {
         Fecha: string
     }
 }
-interface fetchTokenReturnValue {
+export interface fetchTokenReturnValue {
     id: string
     tokenId: string
     fechaUnixObtencionToken: number | null
