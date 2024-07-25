@@ -2,19 +2,19 @@ import { PrismaService } from "../servicios/PrismaService"
 export class ProcesoInfo {
     private _id: number
     private _id_tipo_proceso: number
-    private _fecha_hora_inicio: Date
-    private _fecha_hora_fin: Date | null
+    private _fecha_hora_inicio: number
+    private _fecha_hora_fin: number
     private _estado_ejecucion: 'Procesando' | 'Finalizado'
     private _id_usuario: number | null
     private _tiempo_ejecucion: number | null
     private _error: boolean
     private _mensaje_error: string | null
     
-    constructor(id: number, idTipoProceso: number, fechaHoraInicio: Date) {
+    constructor(id: number, idTipoProceso: number) {
         this._id = id
         this._id_tipo_proceso = idTipoProceso
-        this._fecha_hora_inicio = fechaHoraInicio
-        this._fecha_hora_fin = null
+        this._fecha_hora_inicio = 0
+        this._fecha_hora_fin = 0
         this._estado_ejecucion = 'Procesando'
         this._id_usuario = null
         this._tiempo_ejecucion = null
@@ -23,12 +23,13 @@ export class ProcesoInfo {
     }
 
     async iniciar() {
+        this._fecha_hora_inicio = Date.now()
         const newId = await PrismaService.crearProcesoInfo(this)
         this._id = newId
     }
 
     async finalizar(tiempoEjecucionMs: number) {
-        this._fecha_hora_fin = new Date()
+        this._fecha_hora_fin = Date.now()
         this._estado_ejecucion = 'Finalizado'
         this._tiempo_ejecucion = tiempoEjecucionMs
         return PrismaService.finalizarProcesoInfo(this)
@@ -47,7 +48,7 @@ export class ProcesoInfo {
     public get fecha_hora_inicio() {
         return this._fecha_hora_inicio
     }
-    public get fecha_hora_fin(): Date | null {
+    public get fecha_hora_fin() {
         return this._fecha_hora_fin
     }
     public get estado_ejecucion() {
@@ -67,19 +68,16 @@ export class ProcesoInfo {
     }
 
     // Setters
-    public set fecha_hora_fin(datetime: Date) {
-        this._fecha_hora_fin = datetime
-    }
     public set estado_ejecucion(nuevoEstado: 'Procesando' | 'Finalizado') {
         this._estado_ejecucion = nuevoEstado
     }
-    public set tiempo_ejecucion(tiempoEnMs: number) {
+    public set tiempo_ejecucion(tiempoEnMs: number | null) {
         this._tiempo_ejecucion = tiempoEnMs
     }
-    public set error(nuevoError: true) {
+    public set error(nuevoError: boolean) {
         this._error = nuevoError
     }
-    public set mensaje_error(mensaje: string) {
+    public set mensaje_error(mensaje: string | null) {
         this._mensaje_error = mensaje
     }
 

@@ -61,13 +61,13 @@ export class ProcesoInfoDetalle {
     public set estado_ejecucion(nuevoEstado: 'Procesando' | 'Finalizado') {
         this._estado_ejecucion = nuevoEstado
     }
-    public set tiempo_ejecucion(tiempoEnMs: number) {
+    public set tiempo_ejecucion(tiempoEnMs: number | null) {
         this._tiempo_ejecucion = tiempoEnMs
     }
-    public set error(nuevoError: true) {
+    public set error(nuevoError: boolean) {
         this._error = nuevoError
     }
-    public set mensaje_error(mensaje: string) {
+    public set mensaje_error(mensaje: string | null) {
         this._mensaje_error = mensaje
     }
 }

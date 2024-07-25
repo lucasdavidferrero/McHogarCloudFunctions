@@ -198,8 +198,8 @@ model tipo_proceso_info {
 }
 model proceso_info {
   id                       Int @id @default(autoincrement())
-  fecha_hora_inicio        DateTime @db.DateTime(2) @default(now())
-  fecha_hora_fin           DateTime? @db.DateTime(2)
+  fecha_hora_inicio        BigInt @db.UnsignedBigInt
+  fecha_hora_fin           BigInt? @db.UnsignedBigInt
   estado_ejecucion         String @db.VarChar(100) // "Procesando" || "Finalizado"
   id_usuario               Int? // TODO hacer relacion cuando creemos el módulo de Usuarios y Grupos
   tiempo_ejecucion         Int?
