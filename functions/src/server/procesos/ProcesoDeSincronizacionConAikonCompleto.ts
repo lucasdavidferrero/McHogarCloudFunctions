@@ -94,9 +94,7 @@ export async function procesoDeSincronizacionConAikonCompleto() {
         const tiempoEjecucionMs = endTime - startTime
         await procesoInfo.finalizar(tiempoEjecucionMs)
 
-
-
-        console.log(fechaUnixObtencionToken, id)
+        console.log('FechaUnixToken y ID', fechaUnixObtencionToken, id)
     } catch (e: any) {
         if (e instanceof Error) {
             if(procesoInfo.fueIniciado()) {
@@ -107,6 +105,28 @@ export async function procesoDeSincronizacionConAikonCompleto() {
             // TODO -> Usar Logger de Firebase para logear Error completo...
         }
         
+    }
+}
+
+async function envolverPasoConProcesoDetalle<T>(procesoInfoId: number, nombrePaso: string, cbEjecucionPaso: () => Promise<T>) {
+    const procesoInfoDetalleBackupDb = new ProcesoInfoDetalle(-1, procesoInfoId, nombrePaso)
+    try {
+        await procesoInfoDetalleBackupDb.iniciar()
+        const startTime = performance.now()
+        const resultCallbackExecution = await cbEjecucionPaso()
+        const endTime = performance.now()
+        const tiempoEjecucionMs = endTime - startTime
+        procesoInfoDetalleBackupDb.finalizar(tiempoEjecucionMs)
+        return resultCallbackExecution
+    } catch (e: any) {
+        if (e instanceof Error) {
+            if (procesoInfoDetalleBackupDb.fueIniciado()) {
+                procesoInfoDetalleBackupDb.error = true
+                procesoInfoDetalleBackupDb.mensaje_error = e.message
+                await procesoInfoDetalleBackupDb.finalizar(0)
+            }
+        }
+        throw e
     }
 }
 
@@ -137,24 +157,3 @@ export async function procesoDeSincronizacionConAikonCompleto() {
     console.log(fechaUnixObtencionToken, id)
 } */
 
-async function envolverPasoConProcesoDetalle<T>(procesoInfoId: number, nombrePaso: string, cbEjecucionPaso: () => Promise<T>) {
-    const procesoInfoDetalleBackupDb = new ProcesoInfoDetalle(-1, procesoInfoId, nombrePaso)
-    try {
-        await procesoInfoDetalleBackupDb.iniciar()
-        const startTime = performance.now()
-        const resultCallbackExecution = await cbEjecucionPaso()
-        const endTime = performance.now()
-        const tiempoEjecucionMs = endTime - startTime
-        procesoInfoDetalleBackupDb.finalizar(tiempoEjecucionMs)
-        return resultCallbackExecution
-    } catch (e: any) {
-        if (e instanceof Error) {
-            if (procesoInfoDetalleBackupDb.fueIniciado()) {
-                procesoInfoDetalleBackupDb.error = true
-                procesoInfoDetalleBackupDb.mensaje_error = e.message
-                await procesoInfoDetalleBackupDb.finalizar(0)
-            }
-        }
-        throw e
-    }
-}

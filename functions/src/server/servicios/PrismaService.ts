@@ -102,4 +102,19 @@ export class PrismaService {
         })
         return createdProcesoInfoDetalle.id
     }
+
+    static async finalizarProcesoInfoDetalle (procesoInfoDetalle: ProcesoInfoDetalle) {
+        const updatedProcesoInfoDetalle = await prisma.proceso_info_detalle.update({
+            where: {
+                id: procesoInfoDetalle.id
+            },
+            data: {
+                tiempo_ejecucion: procesoInfoDetalle.tiempo_ejecucion,
+                estado_ejecucion: procesoInfoDetalle.estado_ejecucion,
+                error: procesoInfoDetalle.error,
+                mensaje_error: procesoInfoDetalle.mensaje_error
+            }
+        })
+        return updatedProcesoInfoDetalle
+    }
 }

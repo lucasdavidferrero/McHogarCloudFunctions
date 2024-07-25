@@ -27,8 +27,9 @@ export class ProcesoInfoDetalle {
     async finalizar(tiempoEjecucionMs: number) {
         this._estado_ejecucion = 'Finalizado'
         this._tiempo_ejecucion = tiempoEjecucionMs
+        return PrismaService.finalizarProcesoInfoDetalle(this)
     }
-    
+
     fueIniciado () {
         return this._id !== -1
     }
