@@ -22,10 +22,11 @@ const tipoProceso = new ProcesoInfoTipo(1, 'ProcesoSincronizacionConAikonComplet
     [ x ] En caso de error. Almacenar error. Actualizar información de ejecución de proceso. (Estado: Finalizado, Error: true, FechaHoraFin). Crear una fila en MySQL o almacenar error en Firestore.
 */
 export async function procesoDeSincronizacionConAikonCompleto() {
+    const procesoInfo = new ProcesoInfo(-1, tipoProceso.id, new Date())
     try {
         // Inicialización del proceso info.
-        const procesoInfo = new ProcesoInfo(-1, tipoProceso.id, new Date())
         await procesoInfo.iniciar()
+        const startTime = performance.now()
 
         // Backup de la DB
         envolverPasoConProcesoDetalle(procesoInfo.id, 'BackupDatabase', async () => {
@@ -88,18 +89,28 @@ export async function procesoDeSincronizacionConAikonCompleto() {
         await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionArtículos', async () => {
             return PrismaService.executeTransactionFromBatchOperations(articuloPrecioBatchOperations)
         })
-        
-        procesoInfo.finalizar()
+
+        const endTime = performance.now()
+        const tiempoEjecucionMs = endTime - startTime
+        await procesoInfo.finalizar(tiempoEjecucionMs)
 
 
 
         console.log(fechaUnixObtencionToken, id)
-    } catch (e) {
-        console.error(e)
+    } catch (e: any) {
+        if (e instanceof Error) {
+            if(procesoInfo.fueIniciado()) {
+                procesoInfo.error = true
+                procesoInfo.mensaje_error = e.message
+                await procesoInfo.finalizar(0)
+            }
+            // TODO -> Usar Logger de Firebase para logear Error completo...
+        }
+        
     }
 }
 
-/*async function procesoDeSincronizacionConAikonCompletoTransaccion() {
+/* async function procesoDeSincronizacionConAikonCompletoTransaccion() {
     const { tokenId, fechaUnixObtencionToken, id } = await AikonApiObtenerTokenService.fetchToken()
     // Sync de Marca
     const marcaUpsertBatchOperations = await SyncMarca.prepararSincronizacion(tokenId)
@@ -124,7 +135,7 @@ export async function procesoDeSincronizacionConAikonCompleto() {
     await PrismaService.executeTransactionFromBatchOperations(articuloPrecioBatchOperations)
 
     console.log(fechaUnixObtencionToken, id)
-}*/
+} */
 
 async function envolverPasoConProcesoDetalle<T>(procesoInfoId: number, nombrePaso: string, cbEjecucionPaso: () => Promise<T>) {
     const procesoInfoDetalleBackupDb = new ProcesoInfoDetalle(-1, procesoInfoId, nombrePaso)
@@ -137,12 +148,13 @@ async function envolverPasoConProcesoDetalle<T>(procesoInfoId: number, nombrePas
         procesoInfoDetalleBackupDb.finalizar(tiempoEjecucionMs)
         return resultCallbackExecution
     } catch (e: any) {
-        if (procesoInfoDetalleBackupDb.fueIniciado()) {
-            procesoInfoDetalleBackupDb.error = true
-            procesoInfoDetalleBackupDb.mensaje_error = e.message || e
-            procesoInfoDetalleBackupDb.finalizar(0)
+        if (e instanceof Error) {
+            if (procesoInfoDetalleBackupDb.fueIniciado()) {
+                procesoInfoDetalleBackupDb.error = true
+                procesoInfoDetalleBackupDb.mensaje_error = e.message
+                await procesoInfoDetalleBackupDb.finalizar(0)
+            }
         }
         throw e
     }
-    
 }

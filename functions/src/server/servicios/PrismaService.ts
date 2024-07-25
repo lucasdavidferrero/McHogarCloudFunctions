@@ -58,17 +58,12 @@ export class PrismaService {
             articulo_web,
             articulo_precio
         }
-        await CloudStorageService.guardarJsonBackupCompleto(backupData)
         /*  Save backupData to Cloud Storage in a special bucket designed for storing database backupfiles.
-            We could split the file system of the storage in something like:
-
             BackupsGeneradosProcesoCompletoSincronizacion -> [año-mes] -> [dia-hora.json]
             BackupsGeneradosProcesoPrecioStockSincronizacion.
-
             Además, sería buena idea cada 2 - 3 meses, limpiar los archivos backups.
          */
-        // fs.writeFileSync('./backup.json', JSON.stringify(backupData, null, 2));
-        console.log('Backup completed successfully.');
+        await CloudStorageService.guardarJsonBackupCompleto(backupData)
     }
 
     static async crearProcesoInfo(procesoInfo: ProcesoInfo): Promise<number> {
@@ -80,6 +75,21 @@ export class PrismaService {
             }
         })
         return createdProceso.id
+    }
+    static async finalizarProcesoInfo(procesoInfo: ProcesoInfo) {
+        const updatedProceso = await prisma.proceso_info.update({
+            where: {
+                id: procesoInfo.id
+            },
+            data: {
+                fecha_hora_fin: procesoInfo.fecha_hora_fin,
+                estado_ejecucion: procesoInfo.estado_ejecucion,
+                tiempo_ejecucion: procesoInfo.tiempo_ejecucion,
+                error: procesoInfo.error,
+                mensaje_error: procesoInfo.mensaje_error
+            }
+        })
+        return updatedProceso
     }
 
     static async crearProcesoInfoDetalle (procesoInfoDetalle: ProcesoInfoDetalle): Promise<number> {

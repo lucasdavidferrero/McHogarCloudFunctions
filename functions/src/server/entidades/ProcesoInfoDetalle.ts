@@ -28,6 +28,10 @@ export class ProcesoInfoDetalle {
         this._estado_ejecucion = 'Finalizado'
         this._tiempo_ejecucion = tiempoEjecucionMs
     }
+    
+    fueIniciado () {
+        return this._id !== -1
+    }
 
     // Getters
     public get id() {
@@ -50,9 +54,6 @@ export class ProcesoInfoDetalle {
     }
     public get mensaje_error(): string | null {
         return this._mensaje_error
-    }
-    fueIniciado () {
-        return this._id !== -1
     }
 
     // Setters
