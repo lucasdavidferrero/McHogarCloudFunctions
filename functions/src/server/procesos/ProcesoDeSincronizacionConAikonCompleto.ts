@@ -23,13 +23,16 @@ const tipoProceso = new ProcesoInfoTipo(1, 'ProcesoSincronizacionConAikonComplet
 */
 export async function procesoDeSincronizacionConAikonCompleto() {
     const procesoInfo = new ProcesoInfo(-1, tipoProceso.id)
+    let step_name = 'IniciarProcesoInfo'
     try {
         // Inicialización del proceso info.
         await procesoInfo.iniciar()
         const startTime = performance.now()
 
+        
         // Obtener Token. Hacer Retry (6 veces) cuando da Error. Este paso, por alguna razón externa, suele retornar errores de servidor.
-        const { tokenId, fechaUnixObtencionToken, id } = await envolverPasoConProcesoDetalle<fetchTokenReturnValue>(procesoInfo.id, 'ObtenerToken', async () => {
+        step_name = 'ObtenerToken'
+        const { tokenId, fechaUnixObtencionToken, id } = await envolverPasoConProcesoDetalle<fetchTokenReturnValue>(procesoInfo.id, step_name, async () => {
             const intentos = 5
             for(let i = 0; i < intentos; i++) {
                 try {
@@ -42,64 +45,76 @@ export async function procesoDeSincronizacionConAikonCompleto() {
         })
 
         // Backup de la DB
-        envolverPasoConProcesoDetalle(procesoInfo.id, 'BackupDatabase', async () => {
+        step_name = 'BackupDatabase'
+        envolverPasoConProcesoDetalle(procesoInfo.id, step_name, async () => {
             return await PrismaService.generateBackupForProcesoDeSincronizacionConAikonCompleto()
         })
 
         // ## Preparaciones de las entidades a sincronizar ##
         // Preparar Sync de Marca
-        const marcaUpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, 'PrepararSincronizacionMarcas', async () => {
+        step_name = 'PrepararSincronizacionMarcas'
+        const marcaUpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, step_name, async () => {
             return SyncMarca.prepararSincronizacion(tokenId)
         })
 
         // Preparar Sync de Referencia01 (Categorías)
-        const referencia01UpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, 'PrepararSincronizacionCategorías', async () => {
+        step_name = 'PrepararSincronizacionCategorías'
+        const referencia01UpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, step_name, async () => {
             return SyncReferencia01.prepararSincronizacion(tokenId)
         })
 
         // Preparar Sync de Referencia02 (Rubros)
-        const referencia02UpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, 'PrepararSincronizacionRubros', async () => {
+        step_name = 'PrepararSincronizacionRubros'
+        const referencia02UpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, step_name, async () => {
             return SyncReferencia02.prepararSincronizacion(tokenId)
         })
 
         // Preparar Sync Familias
-        const familiaUpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, 'PrepararSincronizacionFamilias', async () => {
+        step_name = 'PrepararSincronizacionFamilias'
+        const familiaUpsertBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, step_name, async () => {
             return SyncFamilia.prepararSincronizacion(tokenId)
         })
 
         // Preparar Sync Articulos.
-        const articuloPrecioBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, 'PrepararSincronizacionArtículos', async () => {
+        step_name = 'PrepararSincronizacionArtículos'
+        const articuloPrecioBatchOperations = await envolverPasoConProcesoDetalle(procesoInfo.id, step_name, async () => {
             return SyncArticuloPrecioService.prepararSincronizacion(tokenId);
         })
         
         // ## Transacciones que se encargan de ejecutar los CREATE y UPDATE correspondientes en cada tabla ##
         // Ejecutar Transacción Marcas
-        await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionMarcas', async () => {
+        step_name = 'EjecutarSincronizacionMarcas'
+        await envolverPasoConProcesoDetalle(procesoInfo.id, step_name, async () => {
             return PrismaService.executeTransactionFromBatchOperations(marcaUpsertBatchOperations)
         })
 
         // Ejecutar Transacción Referencia01
-        await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionCategorías', async () => {
+        step_name = 'EjecutarSincronizacionCategorías'
+        await envolverPasoConProcesoDetalle(procesoInfo.id, step_name, async () => {
             return PrismaService.executeTransactionFromBatchOperations(referencia01UpsertBatchOperations)
         })
 
         // Ejecutar Transacción Referencia02
-        await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionRubros', async () => {
+        step_name = 'EjecutarSincronizacionRubros'
+        await envolverPasoConProcesoDetalle(procesoInfo.id, step_name, async () => {
             return PrismaService.executeTransactionFromBatchOperations(referencia02UpsertBatchOperations)
         })
 
         // Ejecutar Transacción Familias
-        await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionRubros', async () => {
+        step_name = 'EjecutarSincronizacionFamilias'
+        await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionFamilias', async () => {
             return PrismaService.executeTransactionFromBatchOperations(familiaUpsertBatchOperations)
         })
 
         // Ejecutar Transacción Artículos
-        await envolverPasoConProcesoDetalle(procesoInfo.id, 'EjecutarSincronizacionArtículos', async () => {
+        step_name = 'EjecutarSincronizacionArtículos'
+        await envolverPasoConProcesoDetalle(procesoInfo.id, step_name, async () => {
             return PrismaService.executeTransactionFromBatchOperations(articuloPrecioBatchOperations)
         })
 
         const endTime = performance.now()
         const tiempoEjecucionMs = endTime - startTime
+        step_name = 'FinalizarProcesoInfo'
         await procesoInfo.finalizar(tiempoEjecucionMs)
 
         console.log('FechaUnixToken y ID', fechaUnixObtencionToken, id)
@@ -110,9 +125,13 @@ export async function procesoDeSincronizacionConAikonCompleto() {
                 procesoInfo.mensaje_error = e.message
                 await procesoInfo.finalizar(0)
             }
-            // TODO -> Usar Logger de Firebase para logear Error completo...
         }
-        
+        console.error({
+            message: e.message,
+            functionName: 'procesoDeSincronizacionConAikonCompleto',
+            step: step_name,
+            timestamp: Date.now()
+        });
     }
 }
 
