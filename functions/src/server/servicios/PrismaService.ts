@@ -26,13 +26,15 @@ export class PrismaService {
         // TODO -> Agregar backup de proceso_info
         const [
             aikon_familia,
-            aikon_categoria,
-            aikon_rubro,
+            aikon_referencia01,
+            aikon_referencia02,
             aikon_marca,
+            marca_extension,
             aikon_articulo,
-            aikon_historial_costo_neto,
-            aikon_historial_stock_total,
-            aikon_historial_utilidad,
+            aikon_articulo_historial_costo_neto,
+            aikon_articulo_historial_stock_total,
+            aikon_articulo_historial_utilidad,
+            articulo_precio_historial_arp_utilidad_web,
             articulo_web,
             articulo_precio
         ] = await Promise.all([
@@ -40,24 +42,29 @@ export class PrismaService {
             prisma.aikon_referencia01.findMany(),
             prisma.aikon_referencia02.findMany(),
             prisma.aikon_marca.findMany(),
+            prisma.marca_extension.findMany(),
             prisma.aikon_articulo.findMany(),
             prisma.aikon_articulo_historial_costo_neto.findMany(),
             prisma.aikon_articulo_historial_stock_total.findMany(),
             prisma.aikon_articulo_historial_utilidad.findMany(),
+            prisma.articulo_precio_historial_arp_utilidad_web.findMany(),
             prisma.articulo_web.findMany(),
-            prisma.articulo_precio.findMany()
+            prisma.articulo_precio.findMany(),
+            
         ])
         const backupData = {
             aikon_familia,
-            aikon_categoria,
-            aikon_rubro,
+            aikon_referencia01,
+            aikon_referencia02,
             aikon_marca,
+            marca_extension,
             aikon_articulo,
-            aikon_historial_costo_neto,
-            aikon_historial_stock_total,
-            aikon_historial_utilidad,
+            aikon_articulo_historial_costo_neto,
+            aikon_articulo_historial_stock_total,
+            aikon_articulo_historial_utilidad,
+            articulo_precio_historial_arp_utilidad_web,
             articulo_web,
-            articulo_precio
+            articulo_precio,
         }
         /*  Save backupData to Cloud Storage in a special bucket designed for storing database backupfiles.
             BackupsGeneradosProcesoCompletoSincronizacion -> [año-mes] -> [dia-hora.json]
