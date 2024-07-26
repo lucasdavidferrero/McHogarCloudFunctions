@@ -95,12 +95,12 @@ model articulo_precio {
   arp_porcentaje_off                Decimal? @db.Decimal(6, 2)
 
   aikon_articulo                    aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
-  articulo_precio_arp_utilidad_web  articulo_precio_arp_utilidad_web[]
+  articulo_precio_historial_arp_utilidad_web  articulo_precio_historial_arp_utilidad_web[]
 
   @@map("articulo_precio")
 }
 
-model articulo_precio_arp_utilidad_web {
+model articulo_precio_historial_arp_utilidad_web {
   id                      Int @id @default(autoincrement())
   aik_ar_codigo           String @db.VarChar(24)
   arp_utilidad_web        Decimal @db.Decimal(6, 2)

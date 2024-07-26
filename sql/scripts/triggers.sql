@@ -39,8 +39,8 @@ BEGIN
 	IF(OLD.aik_ar_cosnet != NEW.aik_ar_cosnet) THEN
 		-- Le pongo fechaFin al último row (el que no tiene fecha_hora_hasta)
 		UPDATE aikon_articulo_historial_costo_neto 
-        SET hscn_fecha_hora_hasta = NOW() 
-        WHERE hscn_fecha_hora_hasta IS NULL;
+        SET fecha_hora_hasta = NOW() 
+        WHERE fecha_hora_hasta IS NULL;
         
 		INSERT INTO aikon_articulo_historial_costo_neto(aik_ar_codigo, aik_ar_cosnet)
 		VALUES(NEW.aik_ar_codigo, NEW.aik_ar_cosnet);
@@ -49,8 +49,8 @@ BEGIN
     IF(OLD.aik_stock_total != NEW.aik_stock_total) THEN
 		-- Le pongo fechaFin al último row (el que no tiene fecha_hora_hasta)
 		UPDATE aikon_articulo_historial_stock_total 
-        SET hst_fecha_hora_hasta = NOW() 
-        WHERE hst_fecha_hora_hasta IS NULL;
+        SET fecha_hora_hasta = NOW() 
+        WHERE fecha_hora_hasta IS NULL;
         
 		INSERT INTO aikon_articulo_historial_stock_total(aik_ar_codigo, aik_stock_total)
 		VALUES(NEW.aik_ar_codigo, NEW.aik_stock_total);
@@ -59,8 +59,8 @@ BEGIN
     IF(OLD.aik_ap_utilidad != NEW.aik_ap_utilidad) THEN
 		-- Le pongo fechaFin al último row (el que no tiene fecha_hora_hasta)
 		UPDATE aikon_articulo_historial_utilidad 
-        SET hsut_fecha_hora_hasta = NOW() 
-        WHERE hsut_fecha_hora_hasta IS NULL;
+        SET fecha_hora_hasta = NOW() 
+        WHERE fecha_hora_hasta IS NULL;
         
 		INSERT INTO aikon_articulo_historial_utilidad(aik_ar_codigo, aik_ap_utilidad)
 		VALUES(NEW.aik_ar_codigo, NEW.aik_ap_utilidad);
@@ -79,6 +79,31 @@ BEGIN
 		UPDATE articulo_web
         SET ar_esa_codigo_ultima_fecha_modificado = NOW()
         WHERE aik_ar_codigo = OLD.aik_ar_codigo;
+    END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER `prisma-api`.`articulo_precio_AFTER_INSERT`
+AFTER INSERT
+ON articulo_precio FOR EACH ROW
+BEGIN
+    INSERT INTO articulo_precio_historial_arp_utilidad_web(aik_ar_codigo, arp_utilidad_web)
+    VALUES(NEW.aik_ar_codigo, NEW.arp_utilidad_web);
+END$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `prisma-api`.`articulo_precio_AFTER_UPDATE`
+AFTER UPDATE
+ON articulo_precio FOR EACH ROW
+BEGIN
+	IF(OLD.arp_utilidad_web != NEW.arp_utilidad_web) THEN
+		UPDATE articulo_precio_historial_arp_utilidad_web 
+        SET fecha_hora_hasta = NOW() 
+        WHERE fecha_hora_hasta IS NULL;
+        
+		INSERT INTO articulo_precio_historial_arp_utilidad_web(aik_ar_codigo, arp_utilidad_web)
+		VALUES(NEW.aik_ar_codigo, NEW.arp_utilidad_web);
     END IF;
 END$$
 DELIMITER ;
