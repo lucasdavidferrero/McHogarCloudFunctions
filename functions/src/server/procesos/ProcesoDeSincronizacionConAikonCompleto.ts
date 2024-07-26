@@ -125,13 +125,16 @@ export async function procesoDeSincronizacionConAikonCompleto() {
                 procesoInfo.mensaje_error = e.message
                 await procesoInfo.finalizar(0)
             }
+            console.error({
+                errorName: e.name,
+                errorStack: e.stack || '',
+                errorMessage: e.message,
+                functionName: 'procesoDeSincronizacionConAikonCompleto',
+                step: step_name,
+                timestamp: Date.now(),
+                errorType: 'process_error'
+            });
         }
-        console.error({
-            message: e.message,
-            functionName: 'procesoDeSincronizacionConAikonCompleto',
-            step: step_name,
-            timestamp: Date.now()
-        });
     }
 }
 
