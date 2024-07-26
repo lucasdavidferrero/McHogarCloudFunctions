@@ -9,17 +9,18 @@ import { ProcesoInfoTipo } from '../entidades/ProcesoInfoTipo';
 import { ProcesoInfo } from '../entidades/ProcesoInfo';
 import { ProcesoInfoDetalle } from '../entidades/ProcesoInfoDetalle';
 
-const tipoProceso = new ProcesoInfoTipo(1, 'ProcesoSincronizacionConAikonCompleto')
+const tipoProceso = new ProcesoInfoTipo(1, 'ProcesoSincronizacionConAikonCompleto') // Esto esta hardcodeado. repensarlo.
 /* 
     == Esta función agrupa todas las sincronizaciones que deben hacerse ==
     Estos son los requerimientos principales:
-    [ x ] Antes de ejecutar este preoceso en particular, es recomendable realizar un backup de las tablas que van a ser afectadas.
-    [ x ] Almacenar información de comienzo de ejecución del proceso completo. (idProceso, FechaHoraInicio, Nombre del proceso, Estado de ejecución, Disparador(Sistema, UsuarioId))
-    [ x ] Obtener el Token desde aquí.
-    [ x ] Preparar toda la información a sincronizar: Marcas, Categorías, Rubros, Familias y ArtículosPrecios respectivamente.
-    [ x ] Ejecutar todas las sincronizaciones en una transacción de Prisma (MySQL Transaction).
-    [ x ] Almacenar información de la ejecución satisfactoria del proceso. (Tiempo de ejecución, Estado: Finalizado, Error: false, FechaHoraFin)
-    [ x ] En caso de error. Almacenar error. Actualizar información de ejecución de proceso. (Estado: Finalizado, Error: true, FechaHoraFin). Crear una fila en MySQL o almacenar error en Firestore.
+    [OK] Antes de ejecutar este proceso en particular,se hace un backup completo con prisma. El archivo generado se almacena en un bucket específico para ficheros backups en Firebase Cloud Storage.
+    [OK] Almacenar información de procesoInfo.
+    [OK] Obtener el Token (hacer reintentos si es necesario).
+    [OK] Preparar toda la información a sincronizar: Marcas, Categorías, Rubros, Familias y ArtículosPrecios respectivamente.
+    [OK] Ejecutar cada sincronización de cada entidad en una transacción de prisma.
+    [OK] Finalizar procesoInfo.
+    [OK] En caso de error. Se almacena error en el procesoInfo y procesoInfoDetalle. Además se utiliza el sistema Cloud Logging (console.error y console.log publican automáticamente a este servicio si estamos dentro de Firebase Cloud Functions).
+    [OK] La información de cada paso se almacena en procesoInfoDetalle
 */
 export async function procesoDeSincronizacionConAikonCompleto() {
     const procesoInfo = new ProcesoInfo(-1, tipoProceso.id)
@@ -32,7 +33,7 @@ export async function procesoDeSincronizacionConAikonCompleto() {
         
         // Obtener Token. Hacer Retry (6 veces) cuando da Error. Este paso, por alguna razón externa, suele retornar errores de servidor.
         step_name = 'ObtenerToken'
-        const { tokenId, fechaUnixObtencionToken, id } = await envolverPasoConProcesoDetalle<fetchTokenReturnValue>(procesoInfo.id, step_name, async () => {
+        const { tokenId } = await envolverPasoConProcesoDetalle<fetchTokenReturnValue>(procesoInfo.id, step_name, async () => {
             const intentos = 5
             for(let i = 0; i < intentos; i++) {
                 try {
@@ -116,8 +117,6 @@ export async function procesoDeSincronizacionConAikonCompleto() {
         const tiempoEjecucionMs = endTime - startTime
         step_name = 'FinalizarProcesoInfo'
         await procesoInfo.finalizar(tiempoEjecucionMs)
-
-        console.log('FechaUnixToken y ID', fechaUnixObtencionToken, id)
     } catch (e: any) {
         if (e instanceof Error) {
             if(procesoInfo.fueIniciado()) {
