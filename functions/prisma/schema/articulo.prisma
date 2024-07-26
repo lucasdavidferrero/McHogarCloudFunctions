@@ -1,30 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-}
-// Naming: https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/custom-model-and-field-names
-// Relations: https://www.prisma.io/docs/orm/prisma-schema/data-model/relations
-// Application Models
-// Types: https://www.prisma.io/docs/orm/reference/prisma-schema-reference#decimal
-
-model aikon_familia {
-  aik_fa_codigo       String  @db.VarChar(20) @id
-  aik_fa_nombre       String  @db.VarChar(30)
-  aik_fa_nivel        String  @db.VarChar(2)
-  aik_fa_palm         String  @db.VarChar(1)
+model aikon_estado_articulo {
+  aik_esa_codigo      String  @db.VarChar(2) @id
+  aik_esa_descri      String @db.VarChar(30)
 
   aikon_articulo  aikon_articulo[]
-  rubro_familia   rubro_familia?
-  @@map("aikon_familia")
+  @@map("aikon_estado_articulo")
 }
-
 model aikon_marca {
   aik_ma_codigo       String  @db.VarChar(4) @id
   aik_ma_descri       String  @db.VarChar(30)
@@ -39,49 +19,6 @@ model marca_extension {
 
   aikon_marca aikon_marca @relation(fields:[aik_ma_codigo], references: [aik_ma_codigo])
   @@map("marca_extension")
-}
-
-model aikon_referencia01 {
-  aik_re1_codigo        String @db.VarChar(5) @id
-  aik_re1_descri        String @db.VarChar(30)
-
-  aikon_articulo        aikon_articulo[]
-  categoria_rubro       categoria_rubro[]
-}
-
-model aikon_referencia02 {
-  aik_re2_codigo        String @db.VarChar(5) @id
-  aik_re2_descri        String @db.VarChar(30)
-
-  aikon_articulo        aikon_articulo[]
-  categoria_rubro       categoria_rubro?
-  rubro_familia         rubro_familia[]
-}
-model categoria_rubro {
-  catrub_id               Int @id @default(autoincrement())
-
-  aikon_referencia01      aikon_referencia01 @relation(fields:[aik_re1_codigo], references: [aik_re1_codigo])
-  aik_re1_codigo          String @db.VarChar(5)
-
-  aik_re2_codigo          String @db.VarChar(5) @unique
-  aikon_referencia02      aikon_referencia02 @relation(fields:[aik_re2_codigo], references: [aik_re2_codigo])
-}
-model rubro_familia {
-  rubfa_id                Int @id @default(autoincrement())
-
-  aik_fa_codigo           String  @db.VarChar(20) @unique
-  aikon_familia           aikon_familia @relation(fields: [aik_fa_codigo], references: [aik_fa_codigo])
-
-  aik_re2_codigo          String @db.VarChar(5)
-  aikon_referencia02      aikon_referencia02 @relation(fields: [aik_re2_codigo], references: [aik_re2_codigo])
-}
-
-model aikon_estado_articulo {
-  aik_esa_codigo      String  @db.VarChar(2) @id
-  aik_esa_descri      String @db.VarChar(30)
-
-  aikon_articulo  aikon_articulo[]
-  @@map("aikon_estado_articulo")
 }
 
 model aikon_articulo {
@@ -186,39 +123,4 @@ model aikon_articulo_historial_stock_total {
   hst_fecha_hora_hasta      DateTime? @db.DateTime(2)
 
   aikon_articulo          aikon_articulo @relation(fields: [aik_ar_codigo], references: [aik_ar_codigo])
-}
-
-// Modelos de Proceso
-model tipo_proceso_info {
-  id                       Int @id @default(autoincrement())
-  nombre                   String @db.VarChar(150) @unique
-  descripcion              String? @db.VarChar(255)
-
-  proceso_info             proceso_info[]
-}
-model proceso_info {
-  id                       Int @id @default(autoincrement())
-  fecha_hora_inicio        BigInt @db.UnsignedBigInt
-  fecha_hora_fin           BigInt? @db.UnsignedBigInt
-  estado_ejecucion         String @db.VarChar(100) // "Procesando" || "Finalizado"
-  id_usuario               Int? // TODO hacer relacion cuando creemos el módulo de Usuarios y Grupos
-  tiempo_ejecucion         Int?
-  error                    Boolean @default(false)
-  mensaje_error            String? @db.VarChar(10000)
-
-  id_tipo_proceso_info     Int
-  tipo_proceso_info        tipo_proceso_info @relation(fields: [id_tipo_proceso_info], references: [id])
-
-  proceso_info_detalle     proceso_info_detalle[]
-}
-model proceso_info_detalle {
-  id                       Int @id @default(autoincrement())
-  nombre_paso              String @db.VarChar(255)
-  estado_ejecucion         String @db.VarChar(100) // "Procesando" || "Finalizado"
-  tiempo_ejecucion         Int?
-  error                    Boolean @default(false)
-  mensaje_error            String? @db.VarChar(10000)
-
-  id_proceso_info          Int
-  proceso_info             proceso_info @relation(fields: [id_proceso_info], references: [id])
 }

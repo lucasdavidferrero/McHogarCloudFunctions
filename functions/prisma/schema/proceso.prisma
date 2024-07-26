@@ -1,0 +1,35 @@
+model tipo_proceso_info {
+  id                       Int @id @default(autoincrement())
+  nombre                   String @db.VarChar(150) @unique
+  descripcion              String? @db.VarChar(255)
+
+  proceso_info             proceso_info[]
+}
+
+model proceso_info {
+  id                       Int @id @default(autoincrement())
+  fecha_hora_inicio        BigInt @db.UnsignedBigInt
+  fecha_hora_fin           BigInt? @db.UnsignedBigInt
+  estado_ejecucion         String @db.VarChar(100) // "Procesando" || "Finalizado"
+  id_usuario               Int? // TODO hacer relacion cuando creemos el módulo de Usuarios y Grupos
+  tiempo_ejecucion         Int?
+  error                    Boolean @default(false)
+  mensaje_error            String? @db.VarChar(10000)
+
+  id_tipo_proceso_info     Int
+  tipo_proceso_info        tipo_proceso_info @relation(fields: [id_tipo_proceso_info], references: [id])
+
+  proceso_info_detalle     proceso_info_detalle[]
+}
+
+model proceso_info_detalle {
+  id                       Int @id @default(autoincrement())
+  nombre_paso              String @db.VarChar(255)
+  estado_ejecucion         String @db.VarChar(100) // "Procesando" || "Finalizado"
+  tiempo_ejecucion         Int?
+  error                    Boolean @default(false)
+  mensaje_error            String? @db.VarChar(10000)
+
+  id_proceso_info          Int
+  proceso_info             proceso_info @relation(fields: [id_proceso_info], references: [id])
+}

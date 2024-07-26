@@ -23,6 +23,7 @@ export class PrismaService {
     }
 
     static async generateBackupForProcesoDeSincronizacionConAikonCompleto () {
+        // TODO -> Agregar backup de proceso_info
         const [
             aikon_familia,
             aikon_categoria,
