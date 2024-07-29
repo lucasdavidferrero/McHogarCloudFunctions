@@ -23,48 +23,61 @@ export class PrismaService {
     }
 
     static async generateBackupForProcesoDeSincronizacionConAikonCompleto () {
-        // TODO -> Agregar backup de proceso_info
         const [
             aikon_familia,
             aikon_referencia01,
             aikon_referencia02,
+            categoria_rubro,
+            rubro_familia,
             aikon_marca,
             marca_extension,
             aikon_articulo,
-            aikon_articulo_historial_costo_neto,
-            aikon_articulo_historial_stock_total,
-            aikon_articulo_historial_utilidad,
-            articulo_precio_historial_arp_utilidad_web,
             articulo_web,
-            articulo_precio
+            articulo_precio,
+            articulo_precio_historial_arp_utilidad_web,
+            aikon_articulo_historial_costo_neto,
+            aikon_articulo_historial_utilidad,
+            aikon_articulo_historial_stock_total,
+            tipo_proceso_info,
+            proceso_info,
+            proceso_info_detalle
         ] = await Promise.all([
             prisma.aikon_familia.findMany(),
             prisma.aikon_referencia01.findMany(),
             prisma.aikon_referencia02.findMany(),
+            prisma.categoria_rubro.findMany(),
+            prisma.rubro_familia.findMany(),
             prisma.aikon_marca.findMany(),
             prisma.marca_extension.findMany(),
             prisma.aikon_articulo.findMany(),
-            prisma.aikon_articulo_historial_costo_neto.findMany(),
-            prisma.aikon_articulo_historial_stock_total.findMany(),
-            prisma.aikon_articulo_historial_utilidad.findMany(),
-            prisma.articulo_precio_historial_arp_utilidad_web.findMany(),
             prisma.articulo_web.findMany(),
             prisma.articulo_precio.findMany(),
-            
+            prisma.articulo_precio_historial_arp_utilidad_web.findMany(),
+            prisma.aikon_articulo_historial_costo_neto.findMany(),
+            prisma.aikon_articulo_historial_utilidad.findMany(),
+            prisma.aikon_articulo_historial_stock_total.findMany(),
+            prisma.tipo_proceso_info.findMany(),
+            prisma.proceso_info.findMany(),
+            prisma.proceso_info_detalle.findMany()
         ])
         const backupData = {
             aikon_familia,
             aikon_referencia01,
             aikon_referencia02,
+            categoria_rubro,
+            rubro_familia,
             aikon_marca,
             marca_extension,
             aikon_articulo,
-            aikon_articulo_historial_costo_neto,
-            aikon_articulo_historial_stock_total,
-            aikon_articulo_historial_utilidad,
-            articulo_precio_historial_arp_utilidad_web,
             articulo_web,
             articulo_precio,
+            articulo_precio_historial_arp_utilidad_web,
+            aikon_articulo_historial_costo_neto,
+            aikon_articulo_historial_utilidad,
+            aikon_articulo_historial_stock_total,
+            tipo_proceso_info,
+            proceso_info,
+            proceso_info_detalle
         }
         /*  Save backupData to Cloud Storage in a special bucket designed for storing database backupfiles.
             BackupsGeneradosProcesoCompletoSincronizacion -> [año-mes] -> [dia-hora.json]

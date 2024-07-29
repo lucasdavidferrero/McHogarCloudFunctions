@@ -7,7 +7,7 @@ import { SyncReferencia02 } from '../servicios/SyncReferencia02';
 import { SyncFamilia } from '../servicios/SyncFamilia';
 import { ProcesoInfoTipo } from '../entidades/ProcesoInfoTipo';
 import { ProcesoInfo } from '../entidades/ProcesoInfo';
-import { ProcesoInfoDetalle } from '../entidades/ProcesoInfoDetalle';
+import { envolverPasoConProcesoDetalle } from './utilsProcesos'
 
 const tipoProceso = new ProcesoInfoTipo(1, 'ProcesoSincronizacionConAikonCompleto') // Esto esta hardcodeado. repensarlo.
 /* 
@@ -134,28 +134,6 @@ export async function procesoDeSincronizacionConAikonCompleto() {
                 errorType: 'process_error'
             });
         }
-    }
-}
-
-async function envolverPasoConProcesoDetalle<T>(procesoInfoId: number, nombrePaso: string, cbEjecucionPaso: () => Promise<T>) {
-    const procesoInfoDetalleBackupDb = new ProcesoInfoDetalle(-1, procesoInfoId, nombrePaso)
-    try {
-        await procesoInfoDetalleBackupDb.iniciar()
-        const startTime = performance.now()
-        const resultCallbackExecution = await cbEjecucionPaso()
-        const endTime = performance.now()
-        const tiempoEjecucionMs = endTime - startTime
-        await procesoInfoDetalleBackupDb.finalizar(tiempoEjecucionMs)
-        return resultCallbackExecution
-    } catch (e: any) {
-        if (e instanceof Error) {
-            if (procesoInfoDetalleBackupDb.fueIniciado()) {
-                procesoInfoDetalleBackupDb.error = true
-                procesoInfoDetalleBackupDb.mensaje_error = e.message
-                await procesoInfoDetalleBackupDb.finalizar(0)
-            }
-        }
-        throw e
     }
 }
 

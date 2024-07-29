@@ -13,5 +13,3 @@ datasource db {
 // Relations: https://www.prisma.io/docs/orm/prisma-schema/data-model/relations
 // Application Models
 // Types: https://www.prisma.io/docs/orm/reference/prisma-schema-reference#decimal
-
-

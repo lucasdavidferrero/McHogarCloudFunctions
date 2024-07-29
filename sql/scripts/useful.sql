@@ -11,7 +11,8 @@ Se sincroniza en el siguiente orden: Marca, Referencia01, Referencia02, Familia,
 
 SELECT * FROM tipo_proceso_info;
 SELECT * FROM proceso_info;
-SELECT * FROM proceso_info_detalle WHERE id_proceso_info = 3;
+SELECT * FROM proceso_info_detalle WHERE id_proceso_info = 14;
 
 SELECT * FROM articulo_precio;
 SELECT * FROM aikon_articulo ORDER BY aik_ar_fecha_alta DESC;
+

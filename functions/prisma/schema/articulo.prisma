@@ -77,8 +77,6 @@ model articulo_web {
   ar_descripcion_web                        String @db.VarChar(500) @default("")
   ar_esa_codigo_ultima_fecha_modificado     DateTime? @db.DateTime(2)
   ar_publicarweb_ultima_fecha_modificado    DateTime? @db.DateTime(2)
-  // id_ultimo_proceso_sincronizacion_completa  Int? Pensarlo...
-  // id_ultimo_proceso_sincronizacion_precios
   aikon_articulo                            aikon_articulo @relation(fields:[aik_ar_codigo], references: [aik_ar_codigo])
 
   @@map("articulo_web")
