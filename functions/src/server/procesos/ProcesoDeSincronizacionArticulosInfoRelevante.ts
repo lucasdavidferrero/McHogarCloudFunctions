@@ -11,9 +11,10 @@ const tipoProceso = new ProcesoInfoTipo(1, 'ProcesoSincronizacionConAikonComplet
 /*
     [X] Obtener Token
     [X] Obtener DtTabla=articulo y DtTabla=precios
+    [X] Obtener Todos los artículos Prisma
     [X] Convertir Estructuras.
-    [X] Hacer update con prisma.
-    [X] ## ##
+    [X] Hacer update con prisma únicamente de los artículos que están guardados en mysql. 
+    [X] Almacenar ProcesoInfo y ProcesoInfoDetalle
     [X] ## ##   
 */
 export async function procesoDeSincronizacionArticulosInfoRelevante () {
