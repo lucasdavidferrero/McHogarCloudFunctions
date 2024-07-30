@@ -6,7 +6,7 @@ import { PrismaService } from "../servicios/PrismaService"
 import { SyncArticuloInfoRelevante } from "../servicios/SyncArticuloInfoRelevante"
 
 
-const tipoProceso = new ProcesoInfoTipo(1, 'ProcesoSincronizacionConAikonCompleto')
+const tipoProceso = new ProcesoInfoTipo(2, 'ProcesoSincronizacionArticuloInfoRelevante')
 
 /*
     [X] Obtener Token
