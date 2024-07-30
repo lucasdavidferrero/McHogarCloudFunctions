@@ -38,6 +38,13 @@ export class SyncArticuloInfoRelevante {
         const articuloFiltradoParaActualizar = articulosConPrecioConvertidosToPrisma.filter((articulo) => {
             return aikonArticulosMcHogarObjectWithIds[articulo.id] && Number(aikonArticulosMcHogarObjectWithIds[articulo.id].aik_ar_fechamodif) !== articulo.data.aik_ar_fechamodif
         })
+        /*  TODO:
+            Aplicar un filtro más (tomando articuloFiltradoParaActualizar) que unicamente deje los artículos
+            que tengan distintos valores en uno de los atributos que se desea sincronizar: 
+            aik_stock_total, aik_ar_cosnet, aik_iva_porcen, aik_ar_fechamodif, aik_ap_precio_iva, aik_ap_impuesto_interno, aik_ap_utilidad
+            Esto es más eficiente. ya que la fecha de modificación toma un nuevo valor cuando se cambia cualquiera de los campos
+            de un artículo.
+        */
 
         const articulosPreparadosParaActualizar: PrismaPromise<aikon_articulo>[] = []
         articuloFiltradoParaActualizar.forEach((articulo) => {
@@ -61,7 +68,7 @@ export class SyncArticuloInfoRelevante {
             data: {
                 aik_stock_total: articulo.st_stock,
                 aik_ar_cosnet: articulo.ar_cosnet,
-                aik_iva_percen: articulo.AR_IVAPORCEN,
+                aik_iva_porcen: articulo.AR_IVAPORCEN,
                 aik_ar_fechamodif: DateUtils.convertDateStringAikonApiToUnixTimestamp(String(articulo.AR_FECHAMODIF))
             }
         }))
@@ -96,7 +103,7 @@ interface ArticuloPrismaTransformed {
 interface ArticuloPrismaDataTransformed {
     aik_stock_total: number
     aik_ar_cosnet: number
-    aik_iva_percen: number
+    aik_iva_porcen: number
     aik_ar_fechamodif: number | null
 }
 
