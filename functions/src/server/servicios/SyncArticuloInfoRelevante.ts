@@ -1,42 +1,58 @@
-import { Prisma, aikon_articulo } from '@prisma/client'
+import { Prisma, aikon_articulo, PrismaPromise } from '@prisma/client'
 import { AikonApiDtTablaService } from './AikonApiDtTablaService'
 import { DtTablaArticuloData, DtTablaPrecioData } from '../entidades/AikonApiTypes';
-// import { DateUtils } from '../../utils/DateUtils';
-// import { DtTablaArticuloDataEscencialSincronizacion, DtTablaPrecioDataEscencialSincronizacion, DtTablaArticuloPrecioEsencialSincronizacion } from '../entidades/AikonApiTypes';
-// import { AikonArticuloApiConvertido } from '../entidades/PrismaTypes';
 import { PrismaService } from './PrismaService';
 import { DateUtils } from '../../utils/DateUtils';
-// import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 const LP_CODIGO_PRECIO_VENTA_PUBLICO = '01';
-// const CODIGO_ERROR_PRISMA_NO_CUMPLE_CONDICION_WHERE = 'P2025'
-
 
 /*
     [X] Obtener Todos los artículos Prisma
     [X] Convertir Estructuras.
     [X] Hacer update con prisma únicamente de los artículos que están guardados en mysql.  
 */
+interface fetchAllAikonArticulosWithSelectSubsetReturnValue {
+    aik_ar_codigo: string
+    aik_ar_fechamodif: BigInt
+}
 export class SyncArticuloInfoRelevante {
     static async prepararSincronizacion (token: string): Promise<Prisma.PrismaPromise<aikon_articulo>[]> {
 
-        const [responseDtTablaArticulo, responseDtTablaPrecios, aikonArticulosMcHogarArray] = await Promise.all([
+        const [responseDtTablaArticulo, responseDtTablaPrecios, aikonArticulosMcHogarArray ] = await Promise.all([
             AikonApiDtTablaService.fetchArticulos(token),
             AikonApiDtTablaService.fetchPrecios(token),
-            PrismaService.fetchAllAikonArticulosWithSelectSubset({ aik_ar_codigo: true })
+            PrismaService.fetchAllAikonArticulosWithSelectSubset({ aik_ar_codigo: true, aik_ar_fechamodif: true })
         ])
 
         const dtTablaArticuloDataAikonApi = responseDtTablaArticulo.data
         const dtTablaPreciosDataAikonApi = responseDtTablaPrecios.data.filter(precio => precio.lp_codigo === LP_CODIGO_PRECIO_VENTA_PUBLICO);
 
-        const aikonArticulosMcHogarSet = new Set(aikonArticulosMcHogarArray.map( articulo => articulo.aik_ar_codigo ))
+        /* Transformamos todo listado de artículos que obtenemos de Prisma en un Objeto para mejorar la búsqueda posterior. */
+        const aikonArticulosMcHogarObjectWithIds = this.fromListadoCompletoAikonArticulosToAikonArticulosObject(aikonArticulosMcHogarArray)
 
+        /* Transformamos la info que viene de la API a estructuras de prisma y mergeamos la información de Artículos y Precios */
         const articulosPrisma = this.transformarArticuloAikonApiToArticuloPrisma(dtTablaArticuloDataAikonApi)
-        const articulosConPrecioPrisma = this.transformarConvertirArticuloPrismaToArticuloPrecioPrisma(articulosPrisma, dtTablaPreciosDataAikonApi)
-        
+        const articulosConPrecioConvertidosToPrisma = this.transformarConvertirArticuloPrismaToArticuloPrecioPrisma(articulosPrisma, dtTablaPreciosDataAikonApi)
 
+        /* Se filtran los artículos que ya existen en la base de datos de Prisma y que la fecha de modificación sea distinta. */
+        const articuloFiltradoParaActualizar = articulosConPrecioConvertidosToPrisma.filter((articulo) => {
+            return aikonArticulosMcHogarObjectWithIds[articulo.id] && Number(aikonArticulosMcHogarObjectWithIds[articulo.id].aik_ar_fechamodif) !== articulo.data.aik_ar_fechamodif
+        })
 
-        return []
+        const articulosPreparadosParaActualizar: PrismaPromise<aikon_articulo>[] = []
+        articuloFiltradoParaActualizar.forEach((articulo) => {
+            articulosPreparadosParaActualizar.push(PrismaService.updateAikonArticulo(articulo.id, articulo.data))
+        })
+
+        return articulosPreparadosParaActualizar
+    }
+
+    private static fromListadoCompletoAikonArticulosToAikonArticulosObject (aikonArticulosMcHogarArray: fetchAllAikonArticulosWithSelectSubsetReturnValue[]) {
+        const articulosAikonObject: { [key: string]: fetchAllAikonArticulosWithSelectSubsetReturnValue } = {}
+        aikonArticulosMcHogarArray.forEach((articulo) => {
+            articulosAikonObject[articulo.aik_ar_codigo] = articulo
+        })
+        return articulosAikonObject
     }
 
     private static transformarArticuloAikonApiToArticuloPrisma (articulosAikonApi: DtTablaArticuloData[]): ArticuloPrismaTransformed[] {

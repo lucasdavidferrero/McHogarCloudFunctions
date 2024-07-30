@@ -4,16 +4,13 @@ import { ProcesoInfo } from "../entidades/ProcesoInfo";
 import { ProcesoInfoDetalle } from "../entidades/ProcesoInfoDetalle";
 
 const prisma = new PrismaClient();
-interface fetchAllAikonArticulosWithSelectSubsetReturnValue {
-    aik_ar_codigo: string
-}
 
 export class PrismaService {
     static fetchAllAikonArticulos(): Promise<aikon_articulo[]> {
         return prisma.aikon_articulo.findMany();
     }
 
-    static fetchAllAikonArticulosWithSelectSubset (select: Prisma.aikon_articuloSelect<any> | null | undefined): PrismaPromise<fetchAllAikonArticulosWithSelectSubsetReturnValue[]> {
+    static fetchAllAikonArticulosWithSelectSubset (select: Prisma.aikon_articuloSelect<any> | null | undefined): PrismaPromise<any[]> {
         return prisma.aikon_articulo.findMany({
             select
         })
