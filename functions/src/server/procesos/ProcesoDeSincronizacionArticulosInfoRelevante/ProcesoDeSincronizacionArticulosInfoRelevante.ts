@@ -1,9 +1,9 @@
-import { ProcesoInfoTipo } from "../entidades/ProcesoInfoTipo"
-import { ProcesoInfo } from "../entidades/ProcesoInfo"
-import { envolverPasoConProcesoDetalle } from './utilsProcesos'
-import { AikonApiObtenerTokenService, fetchTokenReturnValue } from "../servicios/AikonApiObtenerTokenService"
-import { PrismaService } from "../servicios/PrismaService"
-import { SyncArticuloInfoRelevante } from "../servicios/SyncArticuloInfoRelevante"
+import { ProcesoInfoTipo } from "../../entidades/ProcesoInfoTipo"
+import { ProcesoInfo } from "../../entidades/ProcesoInfo"
+import { envolverPasoConProcesoDetalle } from '../utilsProcesos'
+import { AikonApiObtenerTokenService, fetchTokenReturnValue } from "../../servicios/AikonApiObtenerTokenService"
+import { PrismaService } from "../../servicios/PrismaService"
+import { SyncArticuloInfoRelevante } from "./SyncArticuloInfoRelevante"
 
 
 const tipoProceso = new ProcesoInfoTipo(2, 'ProcesoSincronizacionArticuloInfoRelevante')

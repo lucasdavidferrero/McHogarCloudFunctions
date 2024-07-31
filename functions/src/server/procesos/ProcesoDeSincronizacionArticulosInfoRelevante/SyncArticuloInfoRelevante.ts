@@ -1,12 +1,12 @@
 import { Prisma, aikon_articulo, PrismaPromise } from '@prisma/client'
-import { AikonApiDtTablaService } from './AikonApiDtTablaService'
-import { DtTablaArticuloData, DtTablaPrecioData } from '../entidades/AikonApiTypes';
-import { PrismaService } from './PrismaService';
-import { DateUtils } from '../../utils/DateUtils';
+import { AikonApiDtTablaService } from '../../servicios/AikonApiDtTablaService'
+import { DtTablaArticuloData, DtTablaPrecioData } from '../../entidades/AikonApiTypes';
+import { PrismaService } from '../../servicios/PrismaService';
+import { DateUtils } from '../../../utils/DateUtils';
 
 const LP_CODIGO_PRECIO_VENTA_PUBLICO = '01';
 
-interface fetchAllAikonArticulosWithSelectSubsetReturnValue {
+export interface fetchAllAikonArticulosWithSelectSubsetReturnValue {
     aik_ar_codigo: string
     aik_ar_fechamodif: BigInt
     aik_stock_total: number

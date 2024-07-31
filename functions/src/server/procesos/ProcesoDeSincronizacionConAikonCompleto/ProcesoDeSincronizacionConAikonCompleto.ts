@@ -1,13 +1,13 @@
-import { AikonApiObtenerTokenService, fetchTokenReturnValue } from '../servicios/AikonApiObtenerTokenService';
-import { PrismaService } from '../servicios/PrismaService';
-import { SyncMarca } from '../servicios/SyncMarca';
-import { SyncArticuloPrecioService } from '../servicios/SyncArticuloPrecioService';
-import { SyncReferencia01 } from '../servicios/SyncReferencia01';
-import { SyncReferencia02 } from '../servicios/SyncReferencia02';
-import { SyncFamilia } from '../servicios/SyncFamilia';
-import { ProcesoInfoTipo } from '../entidades/ProcesoInfoTipo';
-import { ProcesoInfo } from '../entidades/ProcesoInfo';
-import { envolverPasoConProcesoDetalle } from './utilsProcesos'
+import { AikonApiObtenerTokenService, fetchTokenReturnValue } from '../../servicios/AikonApiObtenerTokenService';
+import { PrismaService } from '../../servicios/PrismaService';
+import { SyncMarca } from './SyncMarca';
+import { SyncArticuloPrecioService } from './SyncArticuloPrecioService';
+import { SyncReferencia01 } from './SyncReferencia01';
+import { SyncReferencia02 } from './SyncReferencia02';
+import { SyncFamilia } from './SyncFamilia';
+import { ProcesoInfoTipo } from '../../entidades/ProcesoInfoTipo';
+import { ProcesoInfo } from '../../entidades/ProcesoInfo';
+import { envolverPasoConProcesoDetalle } from '../utilsProcesos'
 
 const tipoProceso = new ProcesoInfoTipo(1, 'ProcesoSincronizacionConAikonCompleto') // Esto esta hardcodeado. repensarlo.
 /* 

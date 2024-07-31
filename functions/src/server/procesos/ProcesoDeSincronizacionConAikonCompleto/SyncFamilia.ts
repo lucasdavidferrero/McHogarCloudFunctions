@@ -1,5 +1,5 @@
-import { AikonApiDtTablaService } from "./AikonApiDtTablaService";
-import prisma from "../../prisma";
+import { AikonApiDtTablaService } from "../../servicios/AikonApiDtTablaService";
+import prisma from "../../../prisma";
 import { aikon_familia, Prisma } from "@prisma/client";
 export class SyncFamilia {
     static async prepararSincronizacion(token: string): Promise<Prisma.PrismaPromise<aikon_familia>[]> {

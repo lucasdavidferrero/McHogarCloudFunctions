@@ -28,6 +28,58 @@ export class PrismaService {
         return prisma.$transaction(operations);
     }
 
+    static async crearProcesoInfo(procesoInfo: ProcesoInfo): Promise<number> {
+        const createdProceso = await prisma.proceso_info.create({
+            data: {
+                fecha_hora_inicio: procesoInfo.fecha_hora_inicio,
+                estado_ejecucion: procesoInfo.estado_ejecucion,
+                id_tipo_proceso_info: procesoInfo.id_tipo_proceso
+            }
+        })
+        return createdProceso.id
+    }
+    static async finalizarProcesoInfo(procesoInfo: ProcesoInfo) {
+        const updatedProceso = await prisma.proceso_info.update({
+            where: {
+                id: procesoInfo.id
+            },
+            data: {
+                fecha_hora_fin: procesoInfo.fecha_hora_fin,
+                estado_ejecucion: procesoInfo.estado_ejecucion,
+                tiempo_ejecucion: procesoInfo.tiempo_ejecucion,
+                error: procesoInfo.error,
+                mensaje_error: procesoInfo.mensaje_error
+            }
+        })
+        return updatedProceso
+    }
+
+    static async crearProcesoInfoDetalle (procesoInfoDetalle: ProcesoInfoDetalle): Promise<number> {
+        const createdProcesoInfoDetalle = await prisma.proceso_info_detalle.create({
+            data: {
+                nombre_paso: procesoInfoDetalle.nombre_paso,
+                estado_ejecucion: procesoInfoDetalle.estado_ejecucion,
+                id_proceso_info: procesoInfoDetalle.id_proceso_info
+            }
+        })
+        return createdProcesoInfoDetalle.id
+    }
+
+    static async finalizarProcesoInfoDetalle (procesoInfoDetalle: ProcesoInfoDetalle) {
+        const updatedProcesoInfoDetalle = await prisma.proceso_info_detalle.update({
+            where: {
+                id: procesoInfoDetalle.id
+            },
+            data: {
+                tiempo_ejecucion: procesoInfoDetalle.tiempo_ejecucion,
+                estado_ejecucion: procesoInfoDetalle.estado_ejecucion,
+                error: procesoInfoDetalle.error,
+                mensaje_error: procesoInfoDetalle.mensaje_error
+            }
+        })
+        return updatedProcesoInfoDetalle
+    }
+
     static async generateBackupForProcesoDeSincronizacionConAikonCompleto () {
         const [
             aikon_familia,
@@ -91,57 +143,5 @@ export class PrismaService {
             Además, sería buena idea cada 2 - 3 meses, limpiar los archivos backups.
          */
         await CloudStorageService.guardarJsonBackupCompleto(backupData)
-    }
-
-    static async crearProcesoInfo(procesoInfo: ProcesoInfo): Promise<number> {
-        const createdProceso = await prisma.proceso_info.create({
-            data: {
-                fecha_hora_inicio: procesoInfo.fecha_hora_inicio,
-                estado_ejecucion: procesoInfo.estado_ejecucion,
-                id_tipo_proceso_info: procesoInfo.id_tipo_proceso
-            }
-        })
-        return createdProceso.id
-    }
-    static async finalizarProcesoInfo(procesoInfo: ProcesoInfo) {
-        const updatedProceso = await prisma.proceso_info.update({
-            where: {
-                id: procesoInfo.id
-            },
-            data: {
-                fecha_hora_fin: procesoInfo.fecha_hora_fin,
-                estado_ejecucion: procesoInfo.estado_ejecucion,
-                tiempo_ejecucion: procesoInfo.tiempo_ejecucion,
-                error: procesoInfo.error,
-                mensaje_error: procesoInfo.mensaje_error
-            }
-        })
-        return updatedProceso
-    }
-
-    static async crearProcesoInfoDetalle (procesoInfoDetalle: ProcesoInfoDetalle): Promise<number> {
-        const createdProcesoInfoDetalle = await prisma.proceso_info_detalle.create({
-            data: {
-                nombre_paso: procesoInfoDetalle.nombre_paso,
-                estado_ejecucion: procesoInfoDetalle.estado_ejecucion,
-                id_proceso_info: procesoInfoDetalle.id_proceso_info
-            }
-        })
-        return createdProcesoInfoDetalle.id
-    }
-
-    static async finalizarProcesoInfoDetalle (procesoInfoDetalle: ProcesoInfoDetalle) {
-        const updatedProcesoInfoDetalle = await prisma.proceso_info_detalle.update({
-            where: {
-                id: procesoInfoDetalle.id
-            },
-            data: {
-                tiempo_ejecucion: procesoInfoDetalle.tiempo_ejecucion,
-                estado_ejecucion: procesoInfoDetalle.estado_ejecucion,
-                error: procesoInfoDetalle.error,
-                mensaje_error: procesoInfoDetalle.mensaje_error
-            }
-        })
-        return updatedProcesoInfoDetalle
     }
 }

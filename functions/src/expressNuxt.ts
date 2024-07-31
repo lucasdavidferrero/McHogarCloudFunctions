@@ -1,6 +1,6 @@
 import express from "express"
 import cors from "cors"
-import { procesoDeSincronizacionArticulosInfoRelevante } from "./server/procesos/ProcesoDeSincronizacionArticulosInfoRelevante"
+import { procesoDeSincronizacionArticulosInfoRelevante } from "./server/procesos/ProcesoDeSincronizacionArticulosInfoRelevante/ProcesoDeSincronizacionArticulosInfoRelevante"
 import { procesoDeSincronizacionConAikonCompleto } from "./server/procesos/ProcesoDeSincronizacionConAikonCompleto"
 
 const expressAppNuxt = express()

@@ -1,8 +1,8 @@
-import { AikonApiDtTablaService } from './AikonApiDtTablaService';
-import { PrismaService } from './PrismaService';
-import { DateUtils } from '../../utils/DateUtils';
-import { DtTablaArticuloDataEscencialSincronizacion, DtTablaPrecioDataEscencialSincronizacion, DtTablaDataArticuloNoHabilitado, DtTablaArticuloPrecioEsencialSincronizacion } from '../entidades/AikonApiTypes';
-import { /*AikonArticuloPrismaSchema,*/ AikonArticuloApiConvertido } from '../entidades/PrismaTypes';
+import { AikonApiDtTablaService } from '../../servicios/AikonApiDtTablaService';
+import { PrismaService } from '../../servicios/PrismaService';
+import { DateUtils } from '../../../utils/DateUtils';
+import { DtTablaArticuloDataEscencialSincronizacion, DtTablaPrecioDataEscencialSincronizacion, DtTablaDataArticuloNoHabilitado, DtTablaArticuloPrecioEsencialSincronizacion } from '../../entidades/AikonApiTypes';
+import { /*AikonArticuloPrismaSchema,*/ AikonArticuloApiConvertido } from '../../entidades/PrismaTypes';
 import { Prisma, aikon_articulo } from '@prisma/client'
 
 const LP_CODIGO_PRECIO_VENTA_PUBLICO = '01';

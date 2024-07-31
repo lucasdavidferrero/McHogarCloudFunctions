@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="49a23fb2-4b81-4b45-9386-c4a9baa5355d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/functions/src/expressNuxt.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/expressNuxt.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/server/procesos/ProcesoDeSincronizacionArticulosInfoRelevante.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/server/procesos/ProcesoDeSincronizacionConAikonCompleto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/server/servicios/SyncArticuloInfoRelevante.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/server/servicios/SyncArticuloPrecioService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/server/servicios/SyncFamilia.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/server/servicios/SyncMarca.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/server/servicios/SyncReferencia01.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/server/servicios/SyncReferencia02.ts" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2k0sOqu2W9nARJqbwk8fufd7Wxc" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/lukas/Documents/proyectos-lucas/cloudfunctions-express-prisma-mysql-template",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\lukas\\Documents\\proyectos-lucas\\cloudfunctions-express-prisma-mysql-template\\functions\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="49a23fb2-4b81-4b45-9386-c4a9baa5355d" name="Changes" comment="" />
+      <created>1722431800019</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1722431800019</updated>
+      <workItem from="1722431801674" duration="275000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

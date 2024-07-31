@@ -1,5 +1,5 @@
-import { AikonApiDtTablaService } from "./AikonApiDtTablaService";
-import prisma from "../../prisma";
+import { AikonApiDtTablaService } from "../../servicios/AikonApiDtTablaService";
+import prisma from "../../../prisma";
 import { aikon_referencia02, Prisma } from "@prisma/client";
 
 export class SyncReferencia02 {
