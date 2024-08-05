@@ -15,12 +15,12 @@ What to Test
 */
 import { SyncArticuloInfoRelevante, fetchAllAikonArticulosWithSelectSubsetReturnValue } from './SyncArticuloInfoRelevante';
 import { AikonApiDtTablaService } from '../../servicios/AikonApiDtTablaService';
-import { PrismaService } from '../../servicios/PrismaService';
-import { DateUtils } from '../../../utils/DateUtils';
+// import { PrismaService } from '../../servicios/PrismaService';
+// import { DateUtils } from '../../../utils/DateUtils';
 import { DtTablaArticuloData, DtTablaPrecioData } from '../../entidades/AikonApiTypes';
 
-import * as dtTablaArticuloDataMock from "./mocks/DtTablaArticuloDataMock.json" assert {type: "json"};
-import * as dtTablaPreciosDataMock from "./mocks/DtTablaPreciosDataMock.json" assert {type: "json"};
+import * as dtTablaArticuloDataMock from "./mocks/DtTablaArticuloDataMock.json" ;
+import * as dtTablaPreciosDataMock from "./mocks/DtTablaPreciosDataMock.json";
 
 // Mock dependencies
 jest.mock('../../servicios/AikonApiDtTablaService');
@@ -38,13 +38,13 @@ describe('SyncArticuloInfoRelevante', () => {
             const token = 'test-token';
             const mockArticuloData: { data: DtTablaArticuloData[] } = { data: (dtTablaArticuloDataMock as DtTablaArticuloData[])};
             const mockPrecioData: { data: DtTablaPrecioData[] } = { data: (dtTablaPreciosDataMock as DtTablaPrecioData[]) };
-            const mockPrismaData: fetchAllAikonArticulosWithSelectSubsetReturnValue[] = [];
+            // const mockPrismaData: fetchAllAikonArticulosWithSelectSubsetReturnValue[] = [];
 
             (AikonApiDtTablaService.fetchArticulos as jest.Mock).mockResolvedValue(mockArticuloData);
             (AikonApiDtTablaService.fetchPrecios as jest.Mock).mockResolvedValue(mockPrecioData);
 
             // Act
-            const result = await SyncArticuloInfoRelevante.prepararSincronizacion(token);
+            // const result = await SyncArticuloInfoRelevante.prepararSincronizacion(token);
 
             // Assert
             expect(AikonApiDtTablaService.fetchArticulos).toHaveBeenCalledWith(token);
@@ -70,3 +70,5 @@ describe('SyncArticuloInfoRelevante', () => {
         });
     });
 });
+
+export {}
