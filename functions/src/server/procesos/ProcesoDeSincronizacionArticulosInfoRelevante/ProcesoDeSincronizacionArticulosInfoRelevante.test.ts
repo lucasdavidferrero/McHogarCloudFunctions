@@ -13,7 +13,7 @@ What to Test
 * transformarConvertirArticuloPrismaToArticuloPrecioPrisma: Ensure the combination of article data with price data is accurate.
 
 */
-import { SyncArticuloInfoRelevante, fetchAllAikonArticulosWithSelectSubsetReturnValue } from './SyncArticuloInfoRelevante';
+// import { SyncArticuloInfoRelevante, fetchAllAikonArticulosWithSelectSubsetReturnValue } from './SyncArticuloInfoRelevante';
 import { AikonApiDtTablaService } from '../../servicios/AikonApiDtTablaService';
 // import { PrismaService } from '../../servicios/PrismaService';
 // import { DateUtils } from '../../../utils/DateUtils';

@@ -26,7 +26,6 @@ model aikon_familia {
   @@map("aikon_familia")
 }
 
-// TODO -> Chequear esta relación...
 model categoria_rubro {
   catrub_id               Int @id @default(autoincrement())
 

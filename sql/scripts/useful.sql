@@ -14,8 +14,8 @@ VALUES('ProcesoSincronizacionArticuloInfoRelevante',
  );
 
 SELECT * FROM tipo_proceso_info;
-SELECT * FROM proceso_info;
-SELECT * FROM proceso_info_detalle WHERE id_proceso_info = 17;
+SELECT * FROM proceso_info WHERE id_tipo_proceso_info = 2;
+SELECT * FROM proceso_info_detalle WHERE id_proceso_info = 19;
 
 SELECT * FROM articulo_precio;
 SELECT * FROM aikon_articulo ORDER BY aik_ar_fecha_alta DESC;
@@ -23,3 +23,7 @@ SELECT * FROM aikon_articulo ORDER BY aik_ar_fecha_alta DESC;
 UPDATE aikon_articulo
 SET aik_ap_utilidad = 70.00, aik_ar_fechamodif = 1722350163418
 WHERE aik_ar_codigo = '00010001';
+
+SELECT * FROM aikon_articulo;
+
+SELECT * FROM articulo_precio;
