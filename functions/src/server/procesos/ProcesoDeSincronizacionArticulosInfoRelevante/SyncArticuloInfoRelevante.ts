@@ -63,6 +63,10 @@ export class SyncArticuloInfoRelevante {
 
         const articulosPreparadosParaActualizar: PrismaPromise<aikon_articulo>[] = []
         articulosFiltradosUnicamenteValoresCamposDistintos.forEach((articulo) => {
+            /*  No deseamos guardar la fechamodif ya que genera conflictos en el proceso de sincronización completa.
+                Únicamente se actualiza la fechamodif en Prisma desde el proceso completo de sincronización.
+            */
+            delete articulo.data.aik_ar_fechamodif
             articulosPreparadosParaActualizar.push(PrismaService.updateAikonArticulo(articulo.id, articulo.data))
         })
 
@@ -119,7 +123,7 @@ interface ArticuloPrismaDataTransformed {
     aik_stock_total: number
     aik_ar_cosnet: number
     aik_iva_porcen: number
-    aik_ar_fechamodif: number | null
+    aik_ar_fechamodif?: number | null
 }
 
 interface ArticuloPrecioPrismaTransformed {
