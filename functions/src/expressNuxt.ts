@@ -2,6 +2,8 @@ import express from "express"
 import cors from "cors"
 import { procesoDeSincronizacionArticulosInfoRelevante } from "./server/procesos/ProcesoDeSincronizacionArticulosInfoRelevante/ProcesoDeSincronizacionArticulosInfoRelevante";
 import { procesoDeSincronizacionConAikonCompleto } from "./server/procesos/ProcesoDeSincronizacionConAikonCompleto/ProcesoDeSincronizacionConAikonCompleto";
+import { JerarquiaPrismaService } from './SharedApp/services/Prisma/JerarquiaPrismaService'
+import v1JerarquiaRouter from './NuxtApp/routes/jerarquiaRoutes'
 
 const expressAppNuxt = express()
 
@@ -18,10 +20,17 @@ expressAppNuxt.use('/apiNuxt/v1/articulo', async (req, res) => {
     res.send({ nuxt: true })
 })
 
+expressAppNuxt.use('/test/', async (req, res) => {
+    const result = await JerarquiaPrismaService.obtenerJerarquiaCompleta()
+    res.send(result)
+})
+
 expressAppNuxt.use('/apiNuxt/v1/procesoInfoRelevante', async (req, res) => {
     await procesoDeSincronizacionArticulosInfoRelevante()
     res.send({ procesoInfoRelevante: true })
 })
+
+expressAppNuxt.use('/api/v1/jerarquias', v1JerarquiaRouter)
 
 export {
     expressAppNuxt
