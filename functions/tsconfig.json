@@ -17,7 +17,7 @@
   "compileOnSave": true,
   "include": [
     "src","src/**/*.js"
-  ],
+, "env.ts"  ],
   "ts-node": {
     "esm": true
   }

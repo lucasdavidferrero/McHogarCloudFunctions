@@ -1,6 +1,9 @@
 {
   "projects": {
-    "default": "cloudfunctions-express-templat"
+    "default": "cloudfunctions-express-templat",
+    "development": "cloudfunctions-express-templat",
+    "preview": "mc-hogar-firebase-preview",
+    "production": "mc-hogar-firebase-production"
   },
   "targets": {
     "cloudfunctions-express-templat": {

@@ -1,0 +1,842 @@
+[
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00010001",
+        "ap_precio": 3709.6,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 4402.6,
+        "impuestoInterno": 409.6
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00010001",
+        "ap_precio": 2669.6,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 3144.2,
+        "impuestoInterno": 409.6
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00010001",
+        "ap_precio": 3369.6,
+        "Utilidad": 48.0,
+        "ap_precio_iva": 3991.2,
+        "impuestoInterno": 409.6
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00010027",
+        "ap_precio": 61050.0,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 73870.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00010027",
+        "ap_precio": 41810.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 50590.1,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00010027",
+        "ap_precio": 53650.0,
+        "Utilidad": 45.0,
+        "ap_precio_iva": 64916.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00010039",
+        "ap_precio": 70950.0,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 85849.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00010039",
+        "ap_precio": 48590.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 58793.9,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00010039",
+        "ap_precio": 62350.0,
+        "Utilidad": 45.0,
+        "ap_precio_iva": 75443.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00010040",
+        "ap_precio": 103950.0,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 125779.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00010040",
+        "ap_precio": 71190.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 86139.9,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00010040",
+        "ap_precio": 91350.0,
+        "Utilidad": 45.0,
+        "ap_precio_iva": 110533.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00010041",
+        "ap_precio": 112200.0,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 135762.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00010041",
+        "ap_precio": 76840.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 92976.4,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00010041",
+        "ap_precio": 98600.0,
+        "Utilidad": 45.0,
+        "ap_precio_iva": 119306.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00020025",
+        "ap_precio": 883500.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 1069035.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00020025",
+        "ap_precio": 644100.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 779361.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00020025",
+        "ap_precio": 855000.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 1034550.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00030007",
+        "ap_precio": 602175.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 728631.75,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00030007",
+        "ap_precio": 439005.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 531196.05,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00030007",
+        "ap_precio": 582750.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 705127.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040031",
+        "ap_precio": 883500.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 1069035.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040031",
+        "ap_precio": 644100.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 779361.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040031",
+        "ap_precio": 809400.0,
+        "Utilidad": 42.0,
+        "ap_precio_iva": 979374.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040065",
+        "ap_precio": 906750.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 1097167.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040065",
+        "ap_precio": 661050.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 799870.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040065",
+        "ap_precio": 830700.0,
+        "Utilidad": 42.0,
+        "ap_precio_iva": 1005147.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040110",
+        "ap_precio": 602950.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 729569.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040110",
+        "ap_precio": 439570.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 531879.7,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040110",
+        "ap_precio": 552380.0,
+        "Utilidad": 42.0,
+        "ap_precio_iva": 668379.8,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040114",
+        "ap_precio": 3856400.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 4666244.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040114",
+        "ap_precio": 2811440.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 3401842.4,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040114",
+        "ap_precio": 3732000.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 4515720.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040116",
+        "ap_precio": 906750.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 1097167.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040116",
+        "ap_precio": 661050.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 799870.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040116",
+        "ap_precio": 848250.0,
+        "Utilidad": 45.0,
+        "ap_precio_iva": 1026382.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040125",
+        "ap_precio": 604500.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 731445.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040125",
+        "ap_precio": 440700.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 533247.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040125",
+        "ap_precio": 546000.0,
+        "Utilidad": 40.0,
+        "ap_precio_iva": 660660.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040127",
+        "ap_precio": 3856400.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 4666244.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040127",
+        "ap_precio": 2811440.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 3401842.4,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040127",
+        "ap_precio": 3732000.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 4515720.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040130",
+        "ap_precio": 578150.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 699561.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040130",
+        "ap_precio": 421490.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 510002.9,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040130",
+        "ap_precio": 522200.0,
+        "Utilidad": 40.0,
+        "ap_precio_iva": 631862.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040131",
+        "ap_precio": 612250.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 740822.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040131",
+        "ap_precio": 446350.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 540083.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040131",
+        "ap_precio": 553000.0,
+        "Utilidad": 40.0,
+        "ap_precio_iva": 669130.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040132",
+        "ap_precio": 694400.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 840224.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040132",
+        "ap_precio": 506240.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 612550.4,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040132",
+        "ap_precio": 627200.0,
+        "Utilidad": 40.0,
+        "ap_precio_iva": 758912.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040134",
+        "ap_precio": 930000.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 1125300.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040134",
+        "ap_precio": 678000.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 820380.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040134",
+        "ap_precio": 840000.0,
+        "Utilidad": 40.0,
+        "ap_precio_iva": 1016400.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040136",
+        "ap_precio": 1091032.6,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 1320149.45,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040136",
+        "ap_precio": 795397.96,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 962431.53,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040136",
+        "ap_precio": 985448.8,
+        "Utilidad": 40.0,
+        "ap_precio_iva": 1192393.05,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040137",
+        "ap_precio": 703700.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 851477.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040137",
+        "ap_precio": 513020.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 620754.2,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040137",
+        "ap_precio": 681000.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 824010.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040139",
+        "ap_precio": 607600.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 735196.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040139",
+        "ap_precio": 442960.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 535981.6,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040139",
+        "ap_precio": 548800.0,
+        "Utilidad": 40.0,
+        "ap_precio_iva": 664048.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040141",
+        "ap_precio": 728500.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 881485.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040141",
+        "ap_precio": 531100.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 642631.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040141",
+        "ap_precio": 658000.0,
+        "Utilidad": 40.0,
+        "ap_precio_iva": 796180.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040143",
+        "ap_precio": 1069500.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 1294095.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040143",
+        "ap_precio": 779700.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 943437.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040143",
+        "ap_precio": 1035000.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 1252350.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040145",
+        "ap_precio": 612250.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 740822.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040145",
+        "ap_precio": 446350.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 540083.5,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040145",
+        "ap_precio": 553000.0,
+        "Utilidad": 40.0,
+        "ap_precio_iva": 669130.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040147",
+        "ap_precio": 883500.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 1069035.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040147",
+        "ap_precio": 644100.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 779361.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040147",
+        "ap_precio": 826500.0,
+        "Utilidad": 45.0,
+        "ap_precio_iva": 1000065.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040149",
+        "ap_precio": 602175.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 728631.75,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040149",
+        "ap_precio": 439005.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 531196.05,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040149",
+        "ap_precio": 543900.0,
+        "Utilidad": 40.0,
+        "ap_precio_iva": 658119.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00040150",
+        "ap_precio": 542500.0,
+        "Utilidad": 55.0,
+        "ap_precio_iva": 656425.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00040150",
+        "ap_precio": 395500.0,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 478555.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00040150",
+        "ap_precio": 490000.0,
+        "Utilidad": 40.0,
+        "ap_precio_iva": 592900.0,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00050001",
+        "ap_precio": 65168.4,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 78853.76,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00050001",
+        "ap_precio": 44630.48,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 54002.88,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00050001",
+        "ap_precio": 59244.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 71685.24,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00050002",
+        "ap_precio": 65168.4,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 78853.76,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00050002",
+        "ap_precio": 44630.48,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 54002.88,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00050002",
+        "ap_precio": 59244.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 71685.24,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00050003",
+        "ap_precio": 65168.4,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 78853.76,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00050003",
+        "ap_precio": 44630.48,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 54002.88,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00050003",
+        "ap_precio": 59244.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 71685.24,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00050004",
+        "ap_precio": 71646.3,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 86692.02,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00050004",
+        "ap_precio": 49066.86,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 59370.9,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00050004",
+        "ap_precio": 65133.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 78810.93,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00050005",
+        "ap_precio": 71646.3,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 86692.02,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00050005",
+        "ap_precio": 49066.86,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 59370.9,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00050005",
+        "ap_precio": 65133.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 78810.93,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00050006",
+        "ap_precio": 71646.3,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 86692.02,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00050006",
+        "ap_precio": 49066.86,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 59370.9,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00050006",
+        "ap_precio": 65133.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 78810.93,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00050007",
+        "ap_precio": 78226.5,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 94654.07,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00050007",
+        "ap_precio": 53573.3,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 64823.69,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00050007",
+        "ap_precio": 71115.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 86049.15,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "01",
+        "ar_codigo": "00050008",
+        "ap_precio": 78226.5,
+        "Utilidad": 65.0,
+        "ap_precio_iva": 94654.07,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "02",
+        "ar_codigo": "00050008",
+        "ap_precio": 53573.3,
+        "Utilidad": 13.0,
+        "ap_precio_iva": 64823.69,
+        "impuestoInterno": 0.0
+    },
+    {
+        "lp_codigo": "03",
+        "ar_codigo": "00050008",
+        "ap_precio": 71115.0,
+        "Utilidad": 50.0,
+        "ap_precio_iva": 86049.15,
+        "impuestoInterno": 0.0
+    }
+]

@@ -1,9 +1,11 @@
 import dotenv from 'dotenv';
-import functions from 'firebase-functions';
+import * as functions from 'firebase-functions';
 
 // Load the correct .env file based on the environment
-const environment = functions.config().environment || 'development';
-dotenv.config({ path: `../.env.${environment}` });
+const environment = functions.config().app.environment || 'development';
+dotenv.config({ path: `.env.${environment}`, debug: true });
+
+console.log('CURRENT ENVIROMENT: ', environment)
 
 export const FIRE_API_KEY = process.env.FIRE_API_KEY || '';
 export const FIRE_AUTH_DOMAIN = process.env.FIRE_AUTH_DOMAIN || '';
@@ -17,3 +19,5 @@ export const GOOGLE_APPLICATION_CREDENTIALS_JSON_FILENAME = process.env.GOOGLE_A
 export const DATABASE_URL = process.env.DATABASE_URL || '';
 
 export default process.env;
+
+console.log('BUCKET_NAME: ' + FIRE_STORAGE_BUCKET)
