@@ -12,5 +12,3 @@ Se sincroniza en el siguiente orden: Marca, Referencia01, Referencia02, Familia,
 VALUES('ProcesoSincronizacionArticuloInfoRelevante',
  'Se sincronizan los atributos escenciales del artículo para mostrar en el ecommerce.'
  );
-
-SELECT * FROM aikon_familia WHERE aik_fa_nombre = 'SOPLADOR'
