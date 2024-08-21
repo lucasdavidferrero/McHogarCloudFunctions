@@ -10,3 +10,6 @@ node_modules/
 
 .env
 .vscode
+.env.development
+.env.preview
+.env.production
