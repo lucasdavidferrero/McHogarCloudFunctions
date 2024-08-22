@@ -1,9 +1,9 @@
 {
   "name": "functions",
   "scripts": {
-    "deploy:dev": "firebase functions:config:set app.environment=development && firebase deploy --only functions",
-    "deploy:preview": "firebase functions:config:set app.environment=preview && firebase deploy --only functions",
-    "deploy:prod": "firebase functions:config:set app.environment=production && firebase deploy --only functions",
+    "deploy:dev": "firebase use development && firebase functions:config:set app.environment=development && firebase deploy --only functions",
+    "deploy:preview": "firebase use preview && firebase functions:config:set app.environment=preview && firebase deploy --only functions",
+    "deploy:prod": "firebase use production && firebase functions:config:set app.environment=production && firebase deploy --only functions",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "serve": "npm run build && firebase emulators:start --only functions",
