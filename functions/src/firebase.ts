@@ -3,7 +3,7 @@ import { getStorage } from "firebase-admin/storage";
 import { initializeApp, cert  } from "firebase-admin/app";
 import { FIRE_API_KEY, FIRE_AUTH_DOMAIN, FIRE_PROJECT_ID, FIRE_STORAGE_BUCKET, FIRE_MESSAGING_SENDER_ID, FIRE_APP_ID, FIRE_MEASUREMENT_ID, GOOGLE_APPLICATION_CREDENTIALS_JSON_FILENAME } from '../env'
 const serviceAccount = require(`../../${GOOGLE_APPLICATION_CREDENTIALS_JSON_FILENAME}`)
-
+console.log('SERVICE ACCOUNT: ', serviceAccount)
 const firebaseConfig = {
     apiKey: FIRE_API_KEY,
     authDomain: FIRE_AUTH_DOMAIN,

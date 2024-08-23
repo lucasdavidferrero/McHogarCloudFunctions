@@ -1,9 +1,9 @@
 {
   "name": "functions",
   "scripts": {
-    "deploy:dev": "firebase use development && firebase functions:config:set app.environment=development && firebase deploy --only functions",
-    "deploy:preview": "firebase use preview && firebase functions:config:set app.environment=preview && firebase deploy --only functions",
-    "deploy:prod": "firebase use production && firebase functions:config:set app.environment=production && firebase deploy --only functions",
+    "deploy:dev": "cross-env NODE_ENV=development firebase use development && firebase deploy --only functions",
+    "deploy:preview": "cross-env NODE_ENV=preview firebase use preview && firebase deploy --only functions",
+    "deploy:prod": "cross-env NODE_ENV=production firebase use production && firebase deploy --only functions",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "serve": "npm run build && firebase emulators:start --only functions",
@@ -37,6 +37,7 @@
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.2",
     "@types/uuid": "^10.0.0",
+    "cross-env": "^7.0.3",
     "firebase-functions-test": "^3.1.0",
     "jest": "^29.7.0",
     "prisma": "^5.9.1",

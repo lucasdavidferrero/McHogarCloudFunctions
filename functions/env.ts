@@ -1,9 +1,10 @@
 import dotenv from 'dotenv';
-import * as functions from 'firebase-functions';
+type ENV_TYPE = 'development' | 'preview' | 'production'
 
 // Load the correct .env file based on the environment
-const environment = functions.config().app.environment || 'development';
-dotenv.config({ path: `.env.${environment}`, debug: environment !== 'production' });
+
+export const CURRENT_ENVIROMENT = process.env.NODE_ENV as ENV_TYPE || 'development';
+dotenv.config({ path: `.env.${CURRENT_ENVIROMENT}`, debug: CURRENT_ENVIROMENT !== 'production' });
 
 export const FIRE_API_KEY = process.env.FIRE_API_KEY || '';
 export const FIRE_AUTH_DOMAIN = process.env.FIRE_AUTH_DOMAIN || '';

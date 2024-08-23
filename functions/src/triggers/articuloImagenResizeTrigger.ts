@@ -10,19 +10,19 @@ import { firestore } from "../firebase";
 import { LogErrorFirestoreService } from '../QuasarApp/services/Firestore/LogErrorService';
 import { ErrorTypeDocumentNames } from '../QuasarApp/services/Firestore/log-error-service.types'
 import { NOMBRE_CARPETA_IMAGEN_PRINCIPAL_ARTICULO, PREFIJO_IMAGEN_OPTIMIZADA, RUTA_IMAGENES_ARTICULOS } from '@mc-hogar/gestion-articulos';
-import { REGION_SOUTHAMERICA, STORAGE_BUCKET_NAMES } from '@mc-hogar/app'
+import { REGION_SOUTHAMERICA } from '@mc-hogar/app'
 import { v4 as uuidv4 }  from 'uuid'
+import { MC_HOGAR_ENVIROMENT_BUCKET_NAME } from '../configs';
 
 // https://firebase.google.com/docs/functions/manage-functions?gen=2nd
 
 export const resizeImage = onObjectFinalized({
     region: REGION_SOUTHAMERICA,
-    bucket: STORAGE_BUCKET_NAMES.GESTION_ARTICULO_IMAGEN , // specify your bucket name if needed
+    bucket: MC_HOGAR_ENVIROMENT_BUCKET_NAME , // specify your bucket name if needed
     eventFilters: {
         // Filter to only include images in the /articulos/img/ directory
         name: RUTA_IMAGENES_ARTICULOS
     },
-    labels: { GestorImagenesArticulo: ErrorTypeDocumentNames.ProcesoRedimencionarOptimizarImagenArticulo },
     cpu: 2,
     timeoutSeconds: 120,
     memory: '512MiB',
@@ -113,10 +113,10 @@ export const resizeImage = onObjectFinalized({
         return logger.log("Process of resizing image was run successfully!");
     } catch (error: any) {
         logger.error("Error en el proceso de redimencionamiento de imagen:", error);
-        await LogErrorFirestoreService.logProcessError(ErrorTypeDocumentNames.ProcesoRedimencionarOptimizarImagenArticulo, 
-            {   errorCode: error.code, 
-                stack: error.stack, 
-                context: { filePath: event.data.name, bucket: event.data.bucket }, 
+        await LogErrorFirestoreService.logProcessError(ErrorTypeDocumentNames.ProcesoRedimencionarOptimizarImagenArticulo,
+            {   errorCode: error.code,
+                stack: error.stack,
+                context: { filePath: event.data.name, bucket: event.data.bucket },
                 message: error.message})
         throw error; // Ensure the function retries on failure
     }
